@@ -42,6 +42,14 @@
       label: "Upload a file: ",
       layout: { type: "file" },
     },
+    {
+      label: "Table",
+      layout: { type: "table", amount: [3, 2] },
+    },
+    {
+      label: "Checkbox",
+      layout: { type: "checkbox", amount: 5 },
+    },
   ];
 
   let dataURL: string = ""; // = "data:application/pdf;base64,";
