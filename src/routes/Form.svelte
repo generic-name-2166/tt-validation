@@ -1,18 +1,19 @@
 <script lang="ts">
-  import { onMount } from "svelte";
+  // import { onMount } from "svelte";
   import Cell from "./Cell.svelte";
-  import init from "../../form-validation/pkg/form_validation_bg.wasm?init";
+  // import init from "../../form-validation/pkg/form_validation_bg.wasm?init";
   import { jsPDF } from "jspdf";
-  import type { InputLayout } from "./template.ts";
+  import { cell_list } from "./template.ts";
 
   let addFunction: CallableFunction = (...args: any[]) => typeof args;
-
+  /*
   function initialize() {
     init().then((instance) => {
       addFunction = instance.exports.add as CallableFunction;
       console.log(addFunction(2, 3));
     });
   }
+  */
 
   function generate_pdf(): string {
     const doc = new jsPDF();
@@ -20,37 +21,7 @@
     return doc.output("datauristring");
   }
 
-  onMount(initialize);
-
-  interface ICell {
-    label: string;
-    title?: string;
-    layout: InputLayout;
-  }
-
-  let cell_list: ICell[] = [
-    {
-      title: "Test",
-      label: "Enter title: ",
-      layout: { type: "text" },
-    },
-    {
-      label: "Enter technical task: ",
-      layout: { type: "textarea" },
-    },
-    {
-      label: "Upload a file: ",
-      layout: { type: "file" },
-    },
-    {
-      label: "Table",
-      layout: { type: "table", amount: [3, 2] },
-    },
-    {
-      label: "Checkbox",
-      layout: { type: "checkbox", amount: 5 },
-    },
-  ];
+  // onMount(initialize);
 
   let dataURL: string = ""; // = "data:application/pdf;base64,";
 
@@ -72,7 +43,7 @@
   <button type="button" on:click={validate}> Submit </button>
 </main>
 
-<p>{addFunction(3, 7)}</p>
+<!-- <p>{addFunction(3, 7)}</p> -->
 <button type="button">
   <a href={dataURL} download="tt.pdf">Download pdf file</a>
 </button>

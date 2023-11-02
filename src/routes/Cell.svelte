@@ -5,7 +5,6 @@
   export let layout: InputLayout;
   export let id: number;
   export let label: string;
-  export let amount: number | [number, number] = 1;
   export let title: string | undefined;
 </script>
 
@@ -18,8 +17,9 @@
 
   {#if layout.type === "textarea"}
     <textarea id={String(id)}> somehting </textarea>
-  {:else if layout.type === "checkbox" && typeof amount === 'number' && amount > 0}
-    {#each [...Array(amount).keys()] as n_id}
+  {:else if layout.type === "checkbox" && typeof layout.amount === "number" && layout.amount > 0}
+    {#each [...Array(layout.amount).keys()] as n_id}
+      {@debug layout}
       <label hidden for={`${id}_${n_id}`}></label>
       <input type={layout.type} id={`${id}_${n_id}`} />
     {/each}
