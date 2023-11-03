@@ -9,7 +9,8 @@
       <tr>
         {#each [...Array(dimensions[1]).keys()] as row_id}
           <td>
-            <input type="text" />
+            <label hidden for={`${col_id}_${row_id}`}></label>
+            <input type="text" id={`${col_id}_${row_id}`} />
           </td>
         {/each}
       </tr>

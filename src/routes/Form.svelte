@@ -4,6 +4,8 @@
   // import init from "../../form-validation/pkg/form_validation_bg.wasm?init";
   import { jsPDF } from "jspdf";
   import { cell_list } from "./template.ts";
+  import { formData } from "$lib/formStorage.ts";
+  import type { FormData } from "$lib/formStorage.ts";
 
   /*
   let addFunction: CallableFunction = (...args: any[]) => typeof args;
@@ -31,6 +33,15 @@
     const a = generate_pdf();
     console.log(a);
     dataURL = a;
+  }
+
+  {
+    const form_data: FormData[] = cell_list.map((cell) => ({
+      label: cell.label,
+      dimensions: [1, 1],
+      data: null,
+    }));
+    formData.set(form_data);
   }
 </script>
 

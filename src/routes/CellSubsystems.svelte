@@ -12,7 +12,7 @@
         {#each [...Array(dimensions[1]).keys()] as row_id}
           <td>
             <label for={`${col_id}_${row_id}`} hidden></label>
-            <input type="text" />
+            <input id={`${col_id}_${row_id}`} type="text" />
           </td>
         {/each}
       </tr>
