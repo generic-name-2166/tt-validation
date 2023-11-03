@@ -5,8 +5,8 @@
   import { jsPDF } from "jspdf";
   import { cell_list } from "./template.ts";
 
-  let addFunction: CallableFunction = (...args: any[]) => typeof args;
   /*
+  let addFunction: CallableFunction = (...args: any[]) => typeof args;
   function initialize() {
     init().then((instance) => {
       addFunction = instance.exports.add as CallableFunction;

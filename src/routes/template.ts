@@ -1,5 +1,5 @@
 export interface InputLayout {
-  type: "text" | "textarea" | "file" | "checkbox" | "table";
+  type: "text" | "textarea" | "file" | "checkbox" | "table" | "date" | "subsystems";
   amount?: number | [number, number];
 }
 
@@ -13,45 +13,75 @@ export let cell_list: ICell[] = [
   {
     label: "Заказчик",
     layout: { type: "text" },
-    title: "Организационная структура выполнения Работ",
+    title: "Организационная структура выполнения работ",
   },
   {
     label: "Функциональный заказчик",
     layout: { type: "text" },
   },
   {
-    label: "Isp",
+    label: "Исполнитель",
     layout: { type: "text" },
   },
   {
-    title: "Osnov",
-    label: "Conception for development",
+    title: "Основание для проведения работ",
+    label: "Концепция на разработку",
     layout: { type: "text" },
   },
   {
-    title: "Point",
-    label: "Point",
+    title: "Цель выполнения работ",
+    label: "Цель работы",
     layout: { type: "textarea" },
   },
   {
-    title: "Test",
-    label: "Enter title: ",
-    layout: { type: "text" },
+    label: "Обозначения и сокращения",
+    layout: { type: "table", amount: [10, 2] }
   },
   {
-    label: "Enter technical task: ",
-    layout: { type: "textarea" },
+    title: "Состояние вопроса",
+    label: "Техническая документация",
+    layout: { type: "textarea" }
   },
   {
-    label: "Upload a file: ",
-    layout: { type: "file" },
+    title: "Основные требования к работам",
+    label: "В соответсвии со следующими документациями",
+    layout: { type: "checkbox" }
   },
   {
-    label: "Table",
-    layout: { type: "table", amount: [3, 2] },
+    title: "Назначение программы для ЭВМ",
+    label: "Предназначение",
+    layout: { type: "textarea" }
   },
   {
-    label: "Checkbox",
-    layout: { type: "checkbox", amount: 5 },
+    title: "Сроки и этапы выполнения работ",
+    label: "Количество этапов",
+    layout: { type: "text" }
+  },
+  {
+    label: "Начало выполнения работ",
+    layout: { type: "date" }
+  },
+  {
+    label: "Конец выполнения работ",
+    layout: { type: "date" }
+  },
+  {
+    title: "Содержание работ",
+    label: "Работы по требованиям ТЗ выполняют",
+    layout: { type: "checkbox", amount: 11 }
+  },
+  {
+    label: "Прогнозный срок полезного использования",
+    layout: { type: "text" }
+  },
+  {
+    title: "Разработка ЧТЗ и описания инормационной технологии",
+    label: "ЧТЗ должно быть разработа в соответствии со следующими стандартами",
+    layout: { type: "checkbox", amount: 1 }
+  },
+  {
+    title: "Разработка программы для ЭВМ",
+    label: "Должны быть разработаны следующие подсистемы",
+    layout: { type: "subsystems", amount: [4, 1] }
   },
 ];
