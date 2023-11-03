@@ -2,6 +2,7 @@
   import type { InputLayout } from "./template.ts";
   import CellTable from "./CellTable.svelte";
   import CellSubsystems from "./CellSubsystems.svelte";
+  import CellCheckbox from "./CellCheckbox.svelte";
 
   export let layout: InputLayout;
   export let id: number;
@@ -19,15 +20,12 @@
 
   {#if layout.type === "textarea"}
     <textarea id={String(id)}></textarea>
-  {:else if layout.type === "checkbox" && typeof layout.amount === "number" && layout.amount > 0}
-    {#each [...Array(layout.amount).keys()] as n_id}
-      <label hidden for={`${id}_${n_id}`}></label>
-      <input type={layout.type} id={`${id}_${n_id}`} />
-    {/each}
-  {:else if layout.type === "table" && Array.isArray(layout.amount)}
+  {:else if layout.type === "checkbox"}
+    <CellCheckbox {layout} {id} />
+  {:else if layout.type === "table"}
     <CellTable id={String(id)} dimensions={layout.amount} />
-  {:else if layout.type === "subsystems" && Array.isArray(layout.amount)}
-    <CellSubsystems id={String(id)} dimensions={layout.amount}/>
+  {:else if layout.type === "subsystems"}
+    <CellSubsystems id={String(id)} dimensions={layout.amount} />
   {:else}
     <input type={layout.type} id={String(id)} />
   {/if}

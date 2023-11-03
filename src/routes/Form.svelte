@@ -18,6 +18,7 @@
   function generate_pdf(): string {
     const doc = new jsPDF();
     doc.text("hello", 10, 10);
+    doc.setFont("Times New Roman");
     return doc.output("datauristring");
   }
 

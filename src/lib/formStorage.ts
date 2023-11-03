@@ -1,9 +1,30 @@
 import { writable } from "svelte/store";
 
-interface InputLayout {
-  type: "text" | "textarea" | "file" | "checkbox" | "table";
-  amount?: number | [number, number];
+interface IInputLayout {
+  type: "text" | "textarea" | "file" | "date";
 }
+
+export interface SubsystemsLayout {
+  type: "subsystems";
+  amount: [number, number];
+}
+
+export interface CheckboxLayout {
+  type: "checkbox";
+  amount: number;
+  labels: string[];
+}
+
+export interface TableLayout {
+  type: "table";
+  amount: [number, number];
+}
+
+export type InputLayout =
+  | CheckboxLayout
+  | TableLayout
+  | IInputLayout
+  | SubsystemsLayout;
 
 interface ICell {
   label: string;
@@ -11,8 +32,4 @@ interface ICell {
   layout: InputLayout;
 }
 
-interface FormData {
-  [id: string]: ICell;
-}
-
-export const formData = writable();
+export const formData = writable([]);
