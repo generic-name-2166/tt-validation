@@ -1,9 +1,11 @@
 import { jsPDF } from "jspdf";
+import { applyPlugin } from "jspdf-autotable";
 import type { FormData } from "../lib/formStorage.ts";
 import "./TimesCyr-normal.js";
 import "./TimesCyr-bold.js";
 import "./TimesCyr-italic.js";
 import "./TimesCyr-bolditalic.js";
+applyPlugin(jsPDF);
 
 function shiftCoordinates(doc: jsPDF, y: number): number {
   if (y >= 297) {
@@ -32,26 +34,13 @@ function writeData(
     return [x, y];
   }
 
-  const tableOffset: number = 210 / data.length;
-
-  for (const row of data) {
-    for (const cell of row) {
-      if (cell === "") {
-        continue;
-      }
-
-      doc.text(cell, x, y);
-
-      if (x < 210) {
-        x += tableOffset;
-      } else {
-        x = 10;
-      }
-    }
-
-    y = shiftCoordinates(doc, y);
-    x = 10;
-  }
+  //@ts-expect-error
+  doc.autoTable({
+    startY: y,
+    body: data,
+  });
+  //@ts-expect-error
+  y = doc.lastAutoTable.finalY;
 
   return [x, y];
 }
