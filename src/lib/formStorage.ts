@@ -4,7 +4,7 @@ export interface FormData {
   label: string;
   title?: string;
   dimensions: [number, number];
-  data: string | string[][] | boolean[] | null;
+  data: string | string[][] | null;
 }
 
 const temp: FormData[] = [];

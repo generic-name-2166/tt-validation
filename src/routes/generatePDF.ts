@@ -1,11 +1,11 @@
 import { jsPDF } from "jspdf";
 import type { FormData } from "../lib/formStorage.ts";
-import './TimesCyr-normal.js';
-import './TimesCyr-bold.js';
-import './TimesCyr-italic.js';
-import './TimesCyr-bolditalic.js';
+import "./TimesCyr-normal.js";
+import "./TimesCyr-bold.js";
+import "./TimesCyr-italic.js";
+import "./TimesCyr-bolditalic.js";
 
-function shiftCoordinates(doc: jsPDF, y: number) : number {
+function shiftCoordinates(doc: jsPDF, y: number): number {
   if (y >= 297) {
     y = 10;
     doc.addPage();
@@ -15,22 +15,69 @@ function shiftCoordinates(doc: jsPDF, y: number) : number {
   return y;
 }
 
-function addCell(doc: jsPDF, x: number, y: number, cellData: FormData) : [number, number] {
-  if (!cellData.data) {
+function writeData(
+  doc: jsPDF,
+  x: number,
+  y: number,
+  label: string,
+  data: string | string[][],
+): [number, number] {
+  doc.text(label, x, y);
+  y = shiftCoordinates(doc, y);
+
+  if (!Array.isArray(data)) {
+    doc.text(doc.splitTextToSize(data, 190), x, y);
+    y = shiftCoordinates(doc, y);
+
     return [x, y];
   }
-  console.log(cellData);
-  if (cellData.title) {
-    doc.text(cellData.title, x, y);
-    y = shiftCoordinates(doc, y);
-  }
 
-  doc.text(cellData.label, x, y);
+  const tableOffset: number = 210 / data.length;
+
+  for (const row of data) {
+    for (const cell of row) {
+      if (cell === "") {
+        continue;
+      }
+
+      doc.text(cell, x, y);
+
+      if (x < 210) {
+        x += tableOffset;
+      } else {
+        x = 10;
+      }
+    }
+
+    y = shiftCoordinates(doc, y);
+    x = 10;
+  }
 
   return [x, y];
 }
 
-export function generate_pdf( formData: FormData[] ): string {
+function addCell(
+  doc: jsPDF,
+  x: number,
+  y: number,
+  cellData: FormData,
+): [number, number] {
+  if (!cellData.data) {
+    return [x, y];
+  }
+  if (cellData.title) {
+    doc.setFont("TimesCyr", "bold");
+    doc.text(cellData.title, x, y);
+    y = shiftCoordinates(doc, y);
+    doc.setFont("TimesCyr", "normal");
+  }
+
+  [x, y] = writeData(doc, x, y, cellData.label, cellData.data);
+
+  return [x, y];
+}
+
+export function generate_pdf(formData: FormData[]): string {
   const doc = new jsPDF();
   doc.setFont("TimesCyr", "normal");
   let x: number = 10;

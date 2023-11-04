@@ -10,7 +10,7 @@
   export let label: string;
   export let title: string | undefined;
 
-  function saveChange(e: Event) : void {
+  function saveChange(e: Event): void {
     e.preventDefault();
     const target = e.currentTarget as HTMLInputElement;
     const value: string = target.value;
@@ -18,13 +18,13 @@
       if (!(typeof form_data[id].data !== "string")) {
         form_data[id].dimensions = [1, 1];
       }
-      
+
       form_data[id].data = value;
       return form_data;
     });
   }
 
-  function saveChangeTextarea(e: Event) : void {
+  function saveChangeTextarea(e: Event): void {
     e.preventDefault();
     const target = e.currentTarget as HTMLElement;
     const value: string = target.textContent!;
@@ -32,7 +32,7 @@
       if (!(typeof form_data[id].data !== "string")) {
         form_data[id].dimensions = [1, 1];
       }
-      
+
       form_data[id].data = value;
       return form_data;
     });
