@@ -6,6 +6,7 @@
   export let id: number;
 
   function saveChange(e: Event, n_id: number) : void {
+    e.preventDefault();
     const target = e.currentTarget as HTMLInputElement;
     const checked: boolean = target.checked;
     formData.update((form_data) => {
@@ -15,7 +16,6 @@
       }
       //@ts-expect-error
       form_data[id].data[n_id] = checked;
-      console.log(form_data);
       return form_data;
     });
   }
