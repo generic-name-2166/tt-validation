@@ -34,6 +34,8 @@ export let cell_list: ICell[] = [
   {
     title: "Организационная структура выполнения работ",
     label: "Заказчик",
+    //title: "Test",
+    //label: "Test1",
     layout: { type: "text" },
   },
   {

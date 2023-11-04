@@ -1,8 +1,8 @@
 <script lang="ts">
   // import { onMount } from "svelte";
-  import Cell from "./Cell.svelte";
   // import init from "../../form-validation/pkg/form_validation_bg.wasm?init";
-  import { jsPDF } from "jspdf";
+  import { generate_pdf } from "./generatePDF.ts";
+  import Cell from "./Cell.svelte";
   import { cell_list } from "./template.ts";
   import { formData } from "$lib/formStorage.ts";
   import type { FormData } from "$lib/formStorage.ts";
@@ -17,27 +17,20 @@
   }
   */
 
-  function generate_pdf(): string {
-    const doc = new jsPDF();
-    doc.text("hello", 10, 10);
-    doc.setFont("Times New Roman");
-    return doc.output("datauristring");
-  }
-
   // onMount(initialize);
 
   let dataURL: string = ""; // = "data:application/pdf;base64,";
 
   function validate(event: Event) {
     event.preventDefault();
-    const a = generate_pdf();
-    console.log(a);
+    const a = generate_pdf($formData);
     dataURL = a;
   }
 
   {
     const form_data: FormData[] = cell_list.map((cell) => ({
       label: cell.label,
+      title: cell.title,
       dimensions: [1, 1],
       data: null,
     }));
