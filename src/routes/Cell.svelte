@@ -23,6 +23,20 @@
       return form_data;
     });
   }
+
+  function saveChangeTextarea(e: Event) : void {
+    e.preventDefault();
+    const target = e.currentTarget as HTMLElement;
+    const value: string = target.textContent!;
+    formData.update((form_data) => {
+      if (!(typeof form_data[id].data !== "string")) {
+        form_data[id].dimensions = [1, 1];
+      }
+      
+      form_data[id].data = value;
+      return form_data;
+    });
+  }
 </script>
 
 <div>
@@ -34,11 +48,11 @@
   <br />
 
   {#if layout.type === "textarea"}
-    <textarea id={String(id)} on:change={saveChange}></textarea>
+    <textarea id={String(id)} on:change={saveChangeTextarea}></textarea>
   {:else if layout.type === "checkbox"}
     <CellCheckbox {layout} {id} />
   {:else if layout.type === "table"}
-    <CellTable id={String(id)} dimensions={layout.amount} />
+    <CellTable {id} dimensions={layout.amount} />
   {:else if layout.type === "subsystems"}
     <CellSubsystems id={String(id)} dimensions={layout.amount} />
   {:else}
