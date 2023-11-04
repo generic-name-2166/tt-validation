@@ -1,9 +1,16 @@
 import { jsPDF } from "jspdf";
+import { applyPlugin } from "jspdf-autotable";
 import type { FormData } from "../lib/formStorage.ts";
 import "./TimesCyr-normal.js";
 import "./TimesCyr-bold.js";
 import "./TimesCyr-italic.js";
 import "./TimesCyr-bolditalic.js";
+applyPlugin(jsPDF);
+
+interface jsPDFPlugin extends jsPDF {
+  autoTable: Function;
+  lastAutoTable: { finalY: number };
+}
 
 function shiftCoordinates(doc: jsPDF, y: number): number {
   if (y >= 297) {
@@ -16,7 +23,7 @@ function shiftCoordinates(doc: jsPDF, y: number): number {
 }
 
 function writeData(
-  doc: jsPDF,
+  doc: jsPDFPlugin,
   x: number,
   y: number,
   label: string,
@@ -32,32 +39,25 @@ function writeData(
     return [x, y];
   }
 
-  const tableOffset: number = 210 / data.length;
-
-  for (const row of data) {
-    for (const cell of row) {
-      if (cell === "") {
-        continue;
-      }
-
-      doc.text(cell, x, y);
-
-      if (x < 210) {
-        x += tableOffset;
-      } else {
-        x = 10;
-      }
-    }
-
-    y = shiftCoordinates(doc, y);
-    x = 10;
+  const head: Object = data.length === 2 ? { abbr: "Обозначение/сокращение", meaning: "Расшифровка" } : { list: "Список" };
+  const columnStyles: { [key: string]: { font: string } } = {};
+  for (const column of Object.keys(head)) {
+    columnStyles[column] = { font: "TimesCyr" };
   }
+  
+  doc.autoTable({
+    startY: y,
+    body: data,
+    head: head,
+    columnStyles: columnStyles 
+  });
+  y = doc.lastAutoTable.finalY + 10;
 
   return [x, y];
 }
 
 function addCell(
-  doc: jsPDF,
+  doc: jsPDFPlugin,
   x: number,
   y: number,
   cellData: FormData,
@@ -78,7 +78,7 @@ function addCell(
 }
 
 export function generate_pdf(formData: FormData[]): string {
-  const doc = new jsPDF();
+  const doc = new jsPDF() as jsPDFPlugin;
   doc.setFont("TimesCyr", "normal");
   let x: number = 10;
   let y: number = 10;
