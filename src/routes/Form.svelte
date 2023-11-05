@@ -23,8 +23,7 @@
 
   function validate(event: Event) {
     event.preventDefault();
-    const a = generate_pdf($formData);
-    dataURL = a;
+    dataURL = generate_pdf(structuredClone($formData));
   }
 
   {
