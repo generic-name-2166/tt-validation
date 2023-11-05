@@ -23,10 +23,13 @@ function shiftCoordinates(doc: jsPDFtable, y: number): number {
 }
 
 function transformData(data: string[][]): { [key: string]: string }[] {
+  return data.map((row) => ({ abbr: row[0], mean: row[1] }));
+  /*
   return [
     { ["abbr"]: "gaming", ["mean"]: "data" },
     { abbr: "abbr", mean: "mean" },
   ];
+  */
 }
 
 function writeData(
@@ -87,7 +90,7 @@ function writeData(
     head: head,
     columnStyles: styles,
     headStyles: {
-      font: "TimesCry",
+      font: "TimesCyr",
       fontStyle: "bold",
     },
   });
