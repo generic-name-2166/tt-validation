@@ -70,7 +70,7 @@ function writeData(
     return [x, y];
   }
 
-  const head: { [key: string]: string }[] = [{ abbr: "abbr", mean: "mean" }];
+  const head: { [key: string]: string }[] = [{ abbr: "Обозначение", mean: "Расшифровка" }];
   /*
   const styles: { [key: string]: { font: string } }[] = head.map((column) => {
     const res = {};
@@ -81,7 +81,7 @@ function writeData(
     return res;
   });
   */
-  const styles = { abbr: { font: "TimesCyr" }, mean: { font: "TimesCyr" } };
+  const styles = { abbr: { font: "TimesCyr", cellWidth: 25 }, mean: { font: "TimesCyr" } };
   const new_data = transformData(data);
 
   doc.autoTable({
@@ -92,6 +92,7 @@ function writeData(
     headStyles: {
       font: "TimesCyr",
       fontStyle: "bold",
+      fillColor: "#ffffff",
     },
   });
   //@ts-expect-error
