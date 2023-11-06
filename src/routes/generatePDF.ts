@@ -32,6 +32,27 @@ function transformData(data: string[][]): { [key: string]: string }[] {
   */
 }
 
+function writeText(
+  doc: jsPDFtable,
+  x: number,
+  y: number,
+  text: string,
+  label: string,
+  labelOnSameLine: boolean = true,
+): [number, number] {
+  const splitText: string[] = labelOnSameLine
+    ? doc
+        .splitTextToSize(`    ${label}`, 190)
+        .concat(doc.splitTextToSize(`    ${text}`, 190))
+    : doc.splitTextToSize(`    ${label} - ${text}`, 190);
+  for (const row of splitText) {
+    doc.text(row, x, y);
+    y = shiftCoordinates(doc, y);
+  }
+
+  return [x, y];
+}
+
 function writeData(
   doc: jsPDFtable,
   x: number,
@@ -39,18 +60,11 @@ function writeData(
   label: string,
   data: string | string[][],
 ): [number, number] {
+  if (!Array.isArray(data)) {
+    return writeText(doc, x, y, data, label, true);
+  }
   doc.text(label, x, y);
   y = shiftCoordinates(doc, y);
-
-  if (!Array.isArray(data)) {
-    const splitText: string[] = doc.splitTextToSize(data, 190);
-    for (const row of splitText) {
-      doc.text(row, x, y);
-      y = shiftCoordinates(doc, y);
-    }
-
-    return [x, y];
-  }
 
   if (data.length === 1 || data[0].length === 1) {
     for (const cell of data.flat(2)) {
@@ -70,7 +84,9 @@ function writeData(
     return [x, y];
   }
 
-  const head: { [key: string]: string }[] = [{ abbr: "Обозначение", mean: "Расшифровка" }];
+  const head: { [key: string]: string }[] = [
+    { abbr: "Обозначение", mean: "Расшифровка" },
+  ];
   /*
   const styles: { [key: string]: { font: string } }[] = head.map((column) => {
     const res = {};
@@ -81,7 +97,10 @@ function writeData(
     return res;
   });
   */
-  const styles = { abbr: { font: "TimesCyr", cellWidth: 25 }, mean: { font: "TimesCyr" } };
+  const styles = {
+    abbr: { font: "TimesCyr", cellWidth: 25 },
+    mean: { font: "TimesCyr" },
+  };
   const new_data = transformData(data);
 
   doc.autoTable({
