@@ -1,7 +1,7 @@
 <script lang="ts">
   // import { onMount } from "svelte";
   // import init from "../../form-validation/pkg/form_validation_bg.wasm?init";
-  import { generate_pdf } from "./generatePDF.ts";
+  import { generatePdf } from "./generatePDF.ts";
   import Cell from "./Cell.svelte";
   import { cell_list } from "./template.ts";
   import { formData } from "$lib/formStorage.ts";
@@ -23,7 +23,7 @@
 
   function validate(event: Event) {
     event.preventDefault();
-    dataURL = generate_pdf(structuredClone($formData));
+    dataURL = generatePdf(structuredClone($formData));
   }
 
   {

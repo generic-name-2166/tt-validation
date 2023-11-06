@@ -24,12 +24,6 @@ function shiftCoordinates(doc: jsPDFtable, y: number): number {
 
 function transformData(data: string[][]): { [key: string]: string }[] {
   return data.map((row) => ({ abbr: row[0], mean: row[1] }));
-  /*
-  return [
-    { ["abbr"]: "gaming", ["mean"]: "data" },
-    { abbr: "abbr", mean: "mean" },
-  ];
-  */
 }
 
 function writeText(
@@ -53,55 +47,43 @@ function writeText(
   return [x, y];
 }
 
-function writeData(
+function writeList(
   doc: jsPDFtable,
   x: number,
   y: number,
-  label: string,
-  data: string | string[][],
+  list: string[]
 ): [number, number] {
-  if (!Array.isArray(data)) {
-    return writeText(doc, x, y, data, label, true);
-  }
-  doc.text(label, x, y);
-  y = shiftCoordinates(doc, y);
-
-  if (data.length === 1 || data[0].length === 1) {
-    for (const cell of data.flat(2)) {
-      const new_cell = cell.trim();
-      if (!new_cell || new_cell === "") {
-        continue;
-      }
-
-      const splitText: string[] = doc.splitTextToSize(`- ${new_cell}`, 190);
-
-      for (const row of splitText) {
-        doc.text(row, x, y);
-        y = shiftCoordinates(doc, y);
-      }
+  for (const cell of list) {
+    const new_cell = cell.trim();
+    if (!new_cell || new_cell === "") {
+      continue;
     }
 
-    return [x, y];
+    const splitText: string[] = doc.splitTextToSize(`- ${new_cell}`, 190);
+
+    for (const row of splitText) {
+      doc.text(row, x, y);
+      y = shiftCoordinates(doc, y);
+    }
   }
 
+  return [x, y];
+}
+
+function writeTable(
+  doc: jsPDFtable,
+  x: number, 
+  y: number,
+  table: string[][]
+): [number, number] {
   const head: { [key: string]: string }[] = [
     { abbr: "Обозначение", mean: "Расшифровка" },
   ];
-  /*
-  const styles: { [key: string]: { font: string } }[] = head.map((column) => {
-    const res = {};
-    for (const name of Object.keys(column)) {
-      //@ts-expect-error
-      res[name] = { font: "TimesCyr" };
-    }
-    return res;
-  });
-  */
   const styles = {
     abbr: { font: "TimesCyr", cellWidth: 25 },
     mean: { font: "TimesCyr" },
   };
-  const new_data = transformData(data);
+  const new_data = transformData(table);
 
   doc.autoTable({
     startY: y,
@@ -120,6 +102,26 @@ function writeData(
   return [x, y];
 }
 
+function writeData(
+  doc: jsPDFtable,
+  x: number,
+  y: number,
+  label: string,
+  data: string | string[][],
+): [number, number] {
+  if (!Array.isArray(data)) {
+    return writeText(doc, x, y, data, label, true);
+  }
+  doc.text(label, x, y);
+  y = shiftCoordinates(doc, y);
+
+  if (data.length === 1 || data[0].length === 1) {
+    return writeList(doc, x, y, data.flat(2));
+  }
+
+  return writeTable(doc, x, y, data);
+}
+
 function addCell(
   doc: jsPDFtable,
   x: number,
@@ -128,20 +130,17 @@ function addCell(
 ): [number, number] {
   if (!cellData.data) {
     return [x, y];
-  }
-  if (cellData.title) {
+  } else if (cellData.title) {
     doc.setFont("TimesCyr", "bold");
     doc.text(cellData.title, x, y);
     y = shiftCoordinates(doc, y);
     doc.setFont("TimesCyr", "normal");
   }
 
-  [x, y] = writeData(doc, x, y, cellData.label, cellData.data);
-
-  return [x, y];
+  return writeData(doc, x, y, cellData.label, cellData.data);
 }
 
-export function generate_pdf(formData: FormData[]): string {
+export function generatePdf(formData: FormData[]): string {
   const doc = new jsPDF() as jsPDFtable;
   doc.setFont("TimesCyr", "normal");
   let x: number = 10;
@@ -151,6 +150,5 @@ export function generate_pdf(formData: FormData[]): string {
     [x, y] = addCell(doc, x, y, cellData);
   }
 
-  // doc.text("hello", x, y);
   return doc.output("datauristring");
 }
