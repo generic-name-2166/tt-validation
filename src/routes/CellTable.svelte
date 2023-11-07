@@ -3,6 +3,7 @@
 
   export let dimensions: [number, number] = [1, 1];
   export let id: number;
+  let item: boolean = true;
 
   function saveChange(e: Event, col_id: number, row_id: number): void {
     e.preventDefault();
@@ -26,6 +27,12 @@
 
 <table id={String(id)}>
   <tbody>
+    {#if dimensions[1] === 2}
+      <tr>
+        <th class:item={item}>Обозначение/Сокращение</th>
+        <th>Расшифровка</th>
+      </tr>
+    {/if}
     {#each [...Array(dimensions[0]).keys()] as col_id}
       <tr>
         {#each [...Array(dimensions[1]).keys()] as row_id}
@@ -37,6 +44,7 @@
               on:change={(e) => {
                 saveChange(e, col_id, row_id);
               }}
+              style="width: 100%"
             />
           </td>
         {/each}
@@ -44,3 +52,9 @@
     {/each}
   </tbody>
 </table>
+
+<style>
+  .item {
+    width: 15%;
+  }
+</style>
