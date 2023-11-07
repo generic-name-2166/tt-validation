@@ -13,7 +13,7 @@ interface jsPDFtable extends jsPDF {
 }
 
 function shiftCoordinates(doc: jsPDFtable, y: number): number {
-  if (y >= 297) {
+  if (y >= 287) {
     y = 10;
     doc.addPage();
   } else {
@@ -39,6 +39,7 @@ function writeText(
         .splitTextToSize(`    ${label}`, 190)
         .concat(doc.splitTextToSize(`    ${text}`, 190))
     : doc.splitTextToSize(`    ${label} - ${text}`, 190);
+
   for (const row of splitText) {
     doc.text(row, x, y);
     y = shiftCoordinates(doc, y);
@@ -51,7 +52,7 @@ function writeList(
   doc: jsPDFtable,
   x: number,
   y: number,
-  list: string[]
+  list: string[],
 ): [number, number] {
   for (const cell of list) {
     const new_cell = cell.trim();
@@ -72,9 +73,9 @@ function writeList(
 
 function writeTable(
   doc: jsPDFtable,
-  x: number, 
+  x: number,
   y: number,
-  table: string[][]
+  table: string[][],
 ): [number, number] {
   const head: { [key: string]: string }[] = [
     { abbr: "Обозначение", mean: "Расшифровка" },
@@ -112,7 +113,7 @@ function writeData(
   if (!Array.isArray(data)) {
     return writeText(doc, x, y, data, label, true);
   }
-  doc.text(label, x, y);
+  doc.text(doc.splitTextToSize(`    ${label}`, 190), x, y);
   y = shiftCoordinates(doc, y);
 
   if (data.length === 1 || data[0].length === 1) {

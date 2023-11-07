@@ -34,8 +34,6 @@ export let cell_list: ICell[] = [
   {
     title: "Организационная структура выполнения работ",
     label: "Заказчик",
-    //title: "Test",
-    //label: "Test1",
     layout: { type: "text" },
   },
   {
@@ -58,7 +56,7 @@ export let cell_list: ICell[] = [
   },
   {
     label: "Обозначения и сокращения",
-    layout: { type: "table", amount: [10, 2] },
+    layout: { type: "table", amount: [3, 2] },
   },
   {
     title: "Состояние вопроса",
@@ -76,6 +74,11 @@ export let cell_list: ICell[] = [
         "A",
         "B",
         "C",
+        "0",
+        "0",
+        "0",
+        "0",
+        "0",
       ],
     },
   },
@@ -100,7 +103,11 @@ export let cell_list: ICell[] = [
   {
     title: "Содержание работ",
     label: "Работы по требованиям ТЗ выполняют",
-    layout: { type: "checkbox", amount: 11, labels: ["", ""] },
+    layout: {
+      type: "checkbox",
+      amount: 11,
+      labels: ["0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0"],
+    },
   },
   {
     label: "Прогнозный срок полезного использования",
@@ -114,6 +121,6 @@ export let cell_list: ICell[] = [
   {
     title: "Разработка программы для ЭВМ",
     label: "Должны быть разработаны следующие подсистемы",
-    layout: { type: "subsystems", amount: [4, 1] },
+    layout: { type: "subsystems", amount: [2, 1] },
   },
 ];

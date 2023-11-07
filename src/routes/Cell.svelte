@@ -14,6 +14,7 @@
     e.preventDefault();
     const target = e.currentTarget as HTMLInputElement;
     const value: string = target.value;
+
     formData.update((form_data) => {
       if (!(typeof form_data[id].data !== "string")) {
         form_data[id].dimensions = [1, 1];

@@ -10,6 +10,7 @@
     const target = e.currentTarget as HTMLInputElement;
     const checked: boolean = target.checked;
     const value: string = layout.labels[n_id];
+
     formData.update((form_data) => {
       if (!Array.isArray(form_data[id].data)) {
         form_data[id].dimensions = [layout.amount, 1];
