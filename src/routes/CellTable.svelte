@@ -15,7 +15,7 @@
   }
 
   function removeField(form_data: FormData[]): FormData[] {
-    form_data[id].data = form_data[id].data!.slice(0, dimensions[0])
+    form_data[id].data = form_data[id].data!.slice(0, dimensions[0]);
     return form_data;
   }
 

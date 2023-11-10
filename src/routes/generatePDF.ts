@@ -141,7 +141,7 @@ function addCell(
   return writeData(doc, x, y, cellData.label, cellData.data);
 }
 
-export function generatePdf(formData: FormData[]): string {
+export function generatePDF(formData: FormData[]): string {
   const doc = new jsPDF() as jsPDFtable;
   doc.setFont("TimesCyr", "normal");
   let x: number = 10;

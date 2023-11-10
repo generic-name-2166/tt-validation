@@ -27,6 +27,7 @@
   },
   "type": "module",
   "dependencies": {
+    "docx": "^8.2.4",
     "jspdf": "^2.5.1",
     "jspdf-autotable": "^3.7.1"
   }

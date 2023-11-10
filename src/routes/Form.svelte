@@ -1,7 +1,8 @@
 <script lang="ts">
   // import { onMount } from "svelte";
   // import init from "../../form-validation/pkg/form_validation_bg.wasm?init";
-  import { generatePdf } from "./generatePDF.ts";
+  import { generatePDF } from "./generatePDF.ts";
+  import { generateDOCX } from "./generateDOCX.ts";
   import Cell from "./Cell.svelte";
   import { cell_list } from "./template.ts";
   import { formData } from "$lib/formStorage.ts";
@@ -21,9 +22,12 @@
 
   let dataURL: string = ""; // = "data:application/pdf;base64,";
 
-  function validate(event: Event) {
+  // The value is ignored so no Promise<void>
+  //@ts-expect-error
+  async function validate(event: Event): void {
     event.preventDefault();
-    dataURL = generatePdf(structuredClone($formData));
+    // dataURL = generatePDF(structuredClone($formData));
+    dataURL = await generateDOCX(structuredClone($formData));
   }
 
   {
@@ -49,7 +53,7 @@
 
 <!-- <p>{addFunction(3, 7)}</p> -->
 <button type="button">
-  <a href={dataURL} download="tt.pdf">Download pdf file</a>
+  <a href={dataURL} download="tt.docx">Download docx file</a>
 </button>
 
 <style>
