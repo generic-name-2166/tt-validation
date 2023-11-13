@@ -15,6 +15,9 @@
   export let label: string;
   export let title: string | undefined;
 
+  let textElement: HTMLTextAreaElement;
+  let inputElement: HTMLInputElement;
+
   function saveChange(e: Event): void {
     e.preventDefault();
     const target = e.currentTarget as HTMLInputElement;
@@ -45,6 +48,15 @@
     });
   }
 
+  function setValue(value: string): void {
+    if (inputElement) {
+      inputElement.value = value;
+      return;
+    } else if (textElement) {
+      textElement.textContent = value;
+    }
+  }
+
   function saveTextToLocalStorage(): void {
     saveCellToLocalStorage($formData[id], id);
   }
@@ -60,6 +72,8 @@
       form_data[id] = formDataFromStorage[id];
       return form_data;
     });
+
+    setValue(formDataFromStorage[id].data as string);
   }
 </script>
 
@@ -72,7 +86,8 @@
   <br />
 
   {#if layout.type === "textarea"}
-    <textarea id={String(id)} on:change={saveChangeTextarea}></textarea>
+    <textarea id={String(id)} on:change={saveChangeTextarea} bind:this={textElement}></textarea>
+    <br />
     <button type="button" on:click={saveTextToLocalStorage}>
       Save to localStorage
     </button>
@@ -86,7 +101,8 @@
   {:else if layout.type === "subsystems"}
     <CellSubsystems id={String(id)} dimensions={layout.amount} />
   {:else}
-    <input type={layout.type} id={String(id)} on:change={saveChange} />
+    <input type={layout.type} id={String(id)} on:change={saveChange} bind:this={inputElement} />
+    <br />
     <button type="button" on:click={saveTextToLocalStorage}>
       Save to localStorage
     </button>
