@@ -1,24 +1,9 @@
 <script lang="ts">
-  // import { onMount } from "svelte";
-  // import init from "../../form-validation/pkg/form_validation_bg.wasm?init";
-  import { generatePDF } from "./generatePDF.ts";
   import { generateDOCX } from "./generateDOCX.ts";
   import Cell from "./Cell.svelte";
   import { cell_list } from "./template.ts";
   import { formData } from "$lib/formStorage.ts";
   import type { FormData } from "$lib/formStorage.ts";
-
-  /*
-  let addFunction: CallableFunction = (...args: any[]) => typeof args;
-  function initialize() {
-    init().then((instance) => {
-      addFunction = instance.exports.add as CallableFunction;
-      console.log(addFunction(2, 3));
-    });
-  }
-  */
-
-  // onMount(initialize);
 
   let dataURL: string = ""; // = "data:application/pdf;base64,";
 
@@ -26,7 +11,6 @@
   //@ts-expect-error
   async function validate(event: Event): void {
     event.preventDefault();
-    // dataURL = generatePDF(structuredClone($formData));
     dataURL = await generateDOCX(structuredClone($formData));
   }
 
@@ -51,7 +35,6 @@
   <button type="button" on:click={validate}> Submit </button>
 </main>
 
-<!-- <p>{addFunction(3, 7)}</p> -->
 <button type="button">
   <a href={dataURL} download="tt.docx">Download docx file</a>
 </button>

@@ -46,7 +46,7 @@ function getTableCell(cell: string): docx.TableCell {
     width: {
       size: 2000,
       type: docx.WidthType.AUTO,
-    }
+    },
   });
 }
 
@@ -115,8 +115,8 @@ function addSection(cellData: FormData): docx.ISectionOptions {
   const children = !Array.isArray(cellData.data)
     ? generateText(cellData.data!, cellData.label)
     : cellData.data.length === 1 || cellData.data[0].length === 1
-    ? generateList(cellData.data.flat(2), cellData.label)
-    : generateTable(cellData.data, cellData.label);
+      ? generateList(cellData.data.flat(2), cellData.label)
+      : generateTable(cellData.data, cellData.label);
 
   if (cellData.title) {
     return {

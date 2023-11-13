@@ -1,5 +1,9 @@
 <script lang="ts">
-  import { formData } from "$lib/formStorage.ts";
+  import {
+    formData,
+    saveCellToLocalStorage,
+    readFromLocalStorage,
+  } from "$lib/formStorage.ts";
   import type { FormData } from "$lib/formStorage.ts";
 
   export let dimensions: [number, number] = [1, 1];
@@ -47,6 +51,28 @@
       return form_data;
     });
   }
+
+  function loadTableFromLocalStorage(): void {
+    const formDataFromStorage: FormData[] | null = readFromLocalStorage();
+    if (
+      !formDataFromStorage ||
+      !Array.isArray(formDataFromStorage[id].data) ||
+      formDataFromStorage[id].data!.length !== dimensions[0] ||
+      formDataFromStorage[id].data![0].length !== dimensions[1]
+    ) {
+      console.error("Nothing to load from localStorage");
+      return;
+    }
+
+    formData.update((form_data: FormData[]) => {
+      form_data[id] = formDataFromStorage[id];
+      return form_data;
+    });
+  }
+
+  function saveTableToLocalStorage(): void {
+    saveCellToLocalStorage($formData[id], id);
+  }
 </script>
 
 <table id={String(id)}>
@@ -76,6 +102,13 @@
     {/each}
   </tbody>
 </table>
+
+<button type="button" on:click={loadTableFromLocalStorage}>
+  Load from localStorage
+</button>
+<button type="button" on:click={saveTableToLocalStorage}>
+  Save to localStorage
+</button>
 
 <style>
   .item {

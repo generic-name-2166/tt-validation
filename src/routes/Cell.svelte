@@ -64,5 +64,8 @@
 <style>
   div {
     margin: 1em;
+    border: solid #888888;
+    border-width: 0.5em;
+    padding: 0.5em;
   }
 </style>

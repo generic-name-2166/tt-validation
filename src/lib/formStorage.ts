@@ -16,14 +16,15 @@ function storageAvailable(type: string) {
     // I don't even know what it wants from me here
     //@ts-expect-error
     storage = window[type];
-    const x = '__storage_test__';
+    const x = "__storage_test__";
     storage.setItem(x, x);
     storage.removeItem(x);
     return true;
   } catch (e) {
     return (
       e instanceof DOMException &&
-      (e.name === 'QuotaExceededError' || e.name === 'NS_ERROR_DOM_QUOTA_REACHED') &&
+      (e.name === "QuotaExceededError" ||
+        e.name === "NS_ERROR_DOM_QUOTA_REACHED") &&
       // acknowledge QuotaExceededError only if there's something already stored
       storage &&
       storage.length !== 0
@@ -35,8 +36,8 @@ export function readFromLocalStorage(): FormData[] | null {
   if (!storageAvailable("localStorage")) {
     console.error("localStorage no available");
     return null;
-  } 
-  
+  }
+
   const item: string | null = localStorage.getItem("formData");
 
   if (!item) {
@@ -48,13 +49,16 @@ export function readFromLocalStorage(): FormData[] | null {
 
 function setToLocalStorage(data: (FormData | null)[]): void {
   try {
-    localStorage.setItem("formData", JSON.stringify(data))
+    localStorage.setItem("formData", JSON.stringify(data));
   } catch (e) {
     console.error(e);
   }
 }
 
-export function saveCellToLocalStorage(cellData: FormData, cellNumber: number): void {
+export function saveCellToLocalStorage(
+  cellData: FormData,
+  cellNumber: number,
+): void {
   if (!storageAvailable("localStorage")) {
     console.error("localStorage no available");
     return;
