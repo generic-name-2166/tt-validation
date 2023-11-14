@@ -86,7 +86,11 @@
   <br />
 
   {#if layout.type === "textarea"}
-    <textarea id={String(id)} on:change={saveChangeTextarea} bind:this={textElement}></textarea>
+    <textarea
+      id={String(id)}
+      on:change={saveChangeTextarea}
+      bind:this={textElement}
+    ></textarea>
     <br />
     <button type="button" on:click={saveTextToLocalStorage}>
       Save to localStorage
@@ -101,7 +105,12 @@
   {:else if layout.type === "subsystems"}
     <CellSubsystems id={String(id)} dimensions={layout.amount} />
   {:else}
-    <input type={layout.type} id={String(id)} on:change={saveChange} bind:this={inputElement} />
+    <input
+      type={layout.type}
+      id={String(id)}
+      on:change={saveChange}
+      bind:this={inputElement}
+    />
     <br />
     <button type="button" on:click={saveTextToLocalStorage}>
       Save to localStorage
