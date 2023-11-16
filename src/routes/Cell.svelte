@@ -103,7 +103,7 @@
   {:else if layout.type === "table"}
     <CellTable {id} dimensions={layout.amount} />
   {:else if layout.type === "subsystems"}
-    <CellSubsystems id={String(id)} dimensions={layout.amount} />
+    <CellSubsystems id={String(id)} amount={layout.amount} />
   {:else}
     <input
       type={layout.type}

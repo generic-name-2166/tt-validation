@@ -1,4 +1,4 @@
-<script lang='ts'>
+<script lang="ts">
   function deleteLocalStorage(): void {
     localStorage.clear();
   }

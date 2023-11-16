@@ -4,7 +4,7 @@ interface IInputLayout {
 
 export interface SubsystemsLayout {
   type: "subsystems";
-  amount: [number, number];
+  amount: number;
 }
 
 export interface CheckboxLayout {
@@ -121,6 +121,6 @@ export let cell_list: ICell[] = [
   {
     title: "Разработка программы для ЭВМ",
     label: "Должны быть разработаны следующие подсистемы",
-    layout: { type: "subsystems", amount: [2, 1] },
+    layout: { type: "subsystems", amount: 2 },
   },
 ];

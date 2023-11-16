@@ -35,11 +35,11 @@
 
   function saveChange(e: Event, col_id: number, row_id: number): void {
     e.preventDefault();
-    // I have to get value from target rather than dataTable because 
+    // I have to get value from target rather than dataTable because
     // dataTable doesn't update before the event
     const target = e.currentTarget as HTMLInputElement;
     const value: string = target.value;
-    
+
     // This is the only place where dimensions has to be synced with dataTable
     if (row_id + 2 === dimensions[0] && value === "") {
       dimensions[0] -= 1;
