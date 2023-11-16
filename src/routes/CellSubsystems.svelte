@@ -30,6 +30,7 @@
     }}
     value={dataCell}
   />
+  <br />
 {/each}
 
 <br />
@@ -38,26 +39,13 @@
   <label for={String(s_id)} hidden>
     В подсистеме должны быть реализованы следующие функции
   </label>
+
   <br />
-
-  <table id={String(s_id)}>
-    <tbody>
-      {#each [...Array(3).keys()] as col_id}
-        <tr>
-          {#each [...Array(1).keys()] as col_id}
-            <td>
-              <label for={`${col_id}_${col_id}_name`}>Название функции</label>
-              <br />
-              <input id={`${col_id}_${col_id}_name`} type="text" />
-
-              <br />
-
-              <label for={`${col_id}_${col_id}_desc`}>Описание функции</label>
-              <input id={`${col_id}_${col_id}_desc`} type="textarea" />
-            </td>
-          {/each}
-        </tr>
-      {/each}
-    </tbody>
-  </table>
+  <label for={`${s_id}_name`}>Название функции</label>
+  <br />
+  <input id={`${s_id}_name`} type="text" />
+  <br />
+  <label for={`${s_id}_desc`}>Описание функции</label>
+  <br />
+  <textarea id={`${s_id}_desc`}></textarea>
 {/each}
