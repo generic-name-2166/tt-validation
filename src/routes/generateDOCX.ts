@@ -48,8 +48,8 @@ function generateHeading(title: string): docx.Paragraph {
 function generateSubheading(label: string): docx.Paragraph {
   return new docx.Paragraph({
     heading: docx.HeadingLevel.HEADING_2,
-    alignment: docx.AlignmentType.CENTER,
     spacing: { before: 24, after: 18 },
+    indent: { left: "1.25mm" },
     children: [
       new docx.TextRun({
         text: label,
@@ -79,7 +79,7 @@ function getTableRow(row: string[]): docx.TableRow {
 
 function getGenericParagraph(text?: string | undefined): docx.Paragraph {
   return new docx.Paragraph({
-    indent: { left: 720 },
+    indent: { left: "1.25mm" },
     spacing: { after: 18, before: 18 },
     text: text,
   });
@@ -89,7 +89,7 @@ function getGenericParagraphChildren(
   children?: docx.TextRun[],
 ): docx.Paragraph {
   return new docx.Paragraph({
-    indent: { left: 720 },
+    indent: { left: "1.25mm" },
     spacing: { after: 18, before: 18 },
     children: children,
   });
@@ -109,6 +109,7 @@ function generateTable(
 
 function getListPoint(point: string): docx.Paragraph {
   return new docx.Paragraph({
+    // Every TextRun here needs to end with a dot
     children: [new docx.TextRun(point)],
     spacing: { after: 18, before: 18 },
     bullet: { level: 0 },
@@ -143,9 +144,16 @@ function addSection(cellData: FormData): docx.ISectionOptions {
     };
   }
   return {
-    properties: { type: docx.SectionType.CONTINUOUS },
+    properties: {
+      type: docx.SectionType.CONTINUOUS,
+      page: {
+        margin: { top: "25mm", left: "20mm", right: "10mm", bottom: "15mm" },
+        pageNumbers: { start: 2 },
+      },
+    },
     children: children,
   };
+  // I have no idea how am I supposed to do headers and page numbers at the top
 }
 
 export async function generateDOCX(formData: FormData[]): Promise<string> {
@@ -154,7 +162,7 @@ export async function generateDOCX(formData: FormData[]): Promise<string> {
     ...formData.filter(filterNoData).map(addSection),
   ];
 
-  // It's only readonly once passed to the document but TS doesn't know
+  // It becomes readonly once passed to the document but TS doesn't know
   //@ts-expect-error
   sections[1]["properties"]!["type"] = docx.SectionType.NEXT_PAGE;
 
