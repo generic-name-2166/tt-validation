@@ -17,6 +17,7 @@ function generateTitle(): ISectionPart {
             text: "ТЕХНИЧЕСКОЕ ЗАДАНИЕ",
             allCaps: true,
             bold: true,
+            font: "Times",
           }),
         ],
       }),
@@ -32,13 +33,32 @@ function generateHeading(title: string): docx.Paragraph {
   return new docx.Paragraph({
     heading: docx.HeadingLevel.HEADING_1,
     alignment: docx.AlignmentType.CENTER,
-    spacing: { before: 21, after: 9 },
-    children: [new docx.TextRun({ text: title, bold: true, size: 16 })],
+    spacing: { before: 30, after: 18 },
+    children: [
+      new docx.TextRun({
+        text: title,
+        bold: true,
+        size: "18pt",
+        font: "Times",
+      }),
+    ],
   });
 }
 
 function generateSubheading(label: string): docx.Paragraph {
-  //TODO
+  return new docx.Paragraph({
+    heading: docx.HeadingLevel.HEADING_2,
+    alignment: docx.AlignmentType.CENTER,
+    spacing: { before: 24, after: 18 },
+    children: [
+      new docx.TextRun({
+        text: label,
+        bold: true,
+        size: "16pt",
+        font: "Times",
+      }),
+    ],
+  });
 }
 
 function getTableCell(cell: string): docx.TableCell {
@@ -60,7 +80,7 @@ function getTableRow(row: string[]): docx.TableRow {
 function getGenericParagraph(text?: string | undefined): docx.Paragraph {
   return new docx.Paragraph({
     indent: { left: 720 },
-    spacing: { after: 9, before: 9 },
+    spacing: { after: 18, before: 18 },
     text: text,
   });
 }
@@ -70,7 +90,7 @@ function getGenericParagraphChildren(
 ): docx.Paragraph {
   return new docx.Paragraph({
     indent: { left: 720 },
-    spacing: { after: 9, before: 9 },
+    spacing: { after: 18, before: 18 },
     children: children,
   });
 }
@@ -90,13 +110,13 @@ function generateTable(
 function getListPoint(point: string): docx.Paragraph {
   return new docx.Paragraph({
     children: [new docx.TextRun(point)],
-    spacing: { after: 9, before: 9 },
+    spacing: { after: 18, before: 18 },
     bullet: { level: 0 },
   });
 }
 
 function generateList(list: string[], label: string): docx.Paragraph[] {
-  return [getGenericParagraph(label), ...list.map(getListPoint)];
+  return [generateSubheading(label), ...list.map(getListPoint)];
 }
 
 function generateText(
@@ -106,12 +126,7 @@ function generateText(
 ): docx.Paragraph[] {
   return labelOnSameLine
     ? [getGenericParagraph(`${label} - ${text}`)]
-    : [
-        getGenericParagraphChildren([
-          new docx.TextRun({ text: label, bold: true }),
-          new docx.TextRun(text),
-        ]),
-      ];
+    : [generateSubheading(label), getGenericParagraph(text)];
 }
 
 function addSection(cellData: FormData): docx.ISectionOptions {

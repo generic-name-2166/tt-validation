@@ -10,40 +10,70 @@
   export let dimensions: [number, number] = [1, 1];
   export let id: number;
   let item: boolean = true;
+  let dataTable: string[][] = new Array(dimensions[0])
+    .fill(null)
+    .map(() => new Array(dimensions[1]).fill(""));
 
   interface FormDataTable extends FormData {
     data: string[][];
   }
 
-  function addField(form_data: FormDataTable[]): FormDataTable[] {
+  function changeField(
+    table_data: string[][],
+    new_value: string,
+    col_id: number,
+    row_id: number,
+  ): string[][] {
+    const new_table: string[][] = table_data;
+    new_table[row_id][col_id] = new_value;
+    return new_table;
+  }
+
+  function addField(form_data: FormData[]): FormData[] {
     form_data[id].dimensions[0] = dimensions[0];
     form_data[id].data = [
-      ...form_data[id].data,
+      ...(form_data[id] as FormDataTable).data,
       new Array(dimensions[1]).fill(""),
     ];
     return form_data;
   }
 
-  function removeField(form_data: FormDataTable[]): FormDataTable[] {
-    form_data[id].dimensions[0] = dimensions[0];
-    form_data[id].data = form_data[id].data!.slice(0, dimensions[0]);
-    return form_data;
+  function removeField(form_data: FormData[]): FormData[] {
+    const new_data: FormData[] = structuredClone(form_data);
+    new_data[id].dimensions[0] = dimensions[0];
+    new_data[id].data = (form_data[id] as FormDataTable).data.slice(
+      0,
+      dimensions[0],
+    );
+    return new_data;
   }
 
-  function saveChange(e: Event, row_id: number): void {
+  function saveChange(e: Event, col_id: number, row_id: number): void {
     e.preventDefault();
     // I have to get value from target rather than dataTable because
     // dataTable doesn't update before the event
     const target = e.currentTarget as HTMLInputElement;
     const value: string = target.value;
+    // const value: string = dataTable[col_id][row_id];
 
     if (row_id + 2 === dimensions[0] && value === "") {
       dimensions[0] -= 1;
-      formData.update((form_data) => removeField(form_data as FormDataTable[]));
+      dataTable = dataTable.slice(0, dimensions[0]);
+      formData.update(removeField);
     } else if (row_id + 1 === dimensions[0] && value !== "") {
       dimensions[0] += 1;
-      formData.update((form_data) => addField(form_data as FormDataTable[]));
+      dataTable = [...dataTable, new Array(dimensions[1]).fill("")];
+      formData.update(addField);
     }
+    formData.update((form_data) => {
+      form_data[id].data = changeField(
+        (form_data[id] as FormDataTable).data,
+        value,
+        col_id,
+        row_id,
+      );
+      return form_data;
+    });
   }
 
   function loadTableFromLocalStorage(): void {
@@ -58,13 +88,16 @@
       return;
     }
 
+    console.log(formDataFromStorage[id].data);
     formData.update((form_data: FormData[]) => {
       form_data[id] = formDataFromStorage[id];
       return form_data;
     });
+    dataTable = (formDataFromStorage[id] as FormDataTable).data;
   }
 
   function saveTableToLocalStorage(): void {
+    console.log($formData[id].data);
     saveCellToLocalStorage($formData[id], id);
   }
 
@@ -86,21 +119,20 @@
         <th>Расшифровка</th>
       </tr>
     {/if}
-    {#each [...Array(dimensions[0]).keys()] as row_id}
+    {#each dataTable as dataRow, row_id}
       <tr>
-        {#each [...Array(dimensions[1]).keys()] as col_id}
+        {#each dataRow as dataCell, col_id}
           <td>
             <label hidden for={`${col_id}_${row_id}`}></label>
             <input
               type="text"
               id={`${col_id}_${row_id}`}
               on:change={(e) => {
-                saveChange(e, row_id);
+                saveChange(e, col_id, row_id);
               }}
               style="width: 100%"
-              value={$formData[id].data[col_id][row_id]}
+              value={dataCell ? dataCell : ""}
             />
-            <!-- Object should never be null -->
           </td>
         {/each}
       </tr>
