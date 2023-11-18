@@ -108,11 +108,11 @@
   </tbody>
 </table>
 
-<button type="button" on:click={loadTableFromLocalStorage}>
-  Load from localStorage
-</button>
 <button type="button" on:click={saveTableToLocalStorage}>
-  Save to localStorage
+  Сохранить ячейку
+</button>
+<button type="button" on:click={loadTableFromLocalStorage}>
+  Загрузить ячейку
 </button>
 
 <style>

@@ -93,10 +93,10 @@
     ></textarea>
     <br />
     <button type="button" on:click={saveTextToLocalStorage}>
-      Save to localStorage
+      Сохранить ячейку
     </button>
     <button type="button" on:click={loadTextFromLocalStorage}>
-      Load from localStorage
+      Загрузить ячейку
     </button>
   {:else if layout.type === "checkbox"}
     <CellCheckbox {layout} {id} />
@@ -113,10 +113,10 @@
     />
     <br />
     <button type="button" on:click={saveTextToLocalStorage}>
-      Save to localStorage
+      Сохранить ячейку
     </button>
     <button type="button" on:click={loadTextFromLocalStorage}>
-      Load from localStorage
+      Загрузить ячейку
     </button>
   {/if}
 </div>
