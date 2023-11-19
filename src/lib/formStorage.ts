@@ -5,6 +5,7 @@ export interface FormData {
   title?: string;
   dimensions: [number, number];
   data: string | string[][] | null;
+  extra?: [string, string];
 }
 
 const temp: FormData[] = [];

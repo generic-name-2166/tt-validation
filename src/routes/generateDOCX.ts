@@ -123,16 +123,24 @@ function generateList(list: string[], label: string): docx.Paragraph[] {
 function generateText(
   text: string,
   label: string,
-  labelOnSameLine: boolean = true,
+  extra: [string, string] | undefined,
 ): docx.Paragraph[] {
-  return labelOnSameLine
+  return isLabelOnTheSameLine(extra)
     ? [getGenericParagraph(`${label} - ${text}`)]
-    : [generateSubheading(label), getGenericParagraph(text)];
+    : [generateSubheading(label), getGenericParagraph(applyExtra(text, extra))];
+}
+
+function applyExtra(text: string, extra: [string, string] | undefined): string {
+  return extra ? extra[0] + text + extra[1] : text;
+}
+
+function isLabelOnTheSameLine(label_text: [string, string] | undefined): boolean {
+  return ((!!label_text) && (label_text[0] === "label" && label_text[1] === "text"));
 }
 
 function addSection(cellData: FormData): docx.ISectionOptions {
   const children = !Array.isArray(cellData.data)
-    ? generateText(cellData.data!, cellData.label)
+    ? generateText(cellData.data!, cellData.label, cellData.extra)
     : cellData.data.length === 1 || cellData.data[0].length === 1
       ? generateList(cellData.data.flat(2), cellData.label)
       : generateTable(cellData.data, cellData.label);

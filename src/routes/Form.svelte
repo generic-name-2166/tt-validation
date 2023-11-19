@@ -20,6 +20,7 @@
       title: cell.title,
       dimensions: [1, 1],
       data: null,
+      extra: cell.extra,
     }));
     formData.set(form_data);
   }
