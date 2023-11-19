@@ -36,18 +36,18 @@ export let cell_list: ICell[] = [
   {
     title: "Организационная структура выполнения работ",
     label: "Заказчик",
-    layout: { type: "text", },
-    extra: ["label", "text"] 
+    layout: { type: "text" },
+    extra: ["label", "text"],
   },
   {
     label: "Функциональный заказчик",
     layout: { type: "text" },
-    extra: ["label", "text"] 
+    extra: ["label", "text"],
   },
   {
     label: "Исполнитель",
     layout: { type: "text" },
-    extra: ["label", "text"] 
+    extra: ["label", "text"],
   },
   {
     title: "Основание для проведения работ",
@@ -96,17 +96,17 @@ export let cell_list: ICell[] = [
     title: "Сроки и этапы выполнения работ",
     label: "Количество этапов",
     layout: { type: "text" },
-    extra: ["label", "text"] 
+    extra: ["label", "text"],
   },
   {
     label: "Начало выполнения работ",
     layout: { type: "date" },
-    extra: ["label", "text"] 
+    extra: ["label", "text"],
   },
   {
     label: "Конец выполнения работ",
     layout: { type: "date" },
-    extra: ["label", "text"] 
+    extra: ["label", "text"],
   },
   {
     title: "Содержание работ",

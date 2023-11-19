@@ -117,7 +117,10 @@ function getListPoint(point: string): docx.Paragraph {
 }
 
 function generateList(list: string[], label: string): docx.Paragraph[] {
-  return [generateSubheading(label), ...list.map(getListPoint)];
+  return [
+    generateSubheading(label),
+    ...list.filter((point) => point !== "").map(getListPoint),
+  ];
 }
 
 function generateText(
@@ -134,8 +137,10 @@ function applyExtra(text: string, extra: [string, string] | undefined): string {
   return extra ? extra[0] + text + extra[1] : text;
 }
 
-function isLabelOnTheSameLine(label_text: [string, string] | undefined): boolean {
-  return ((!!label_text) && (label_text[0] === "label" && label_text[1] === "text"));
+function isLabelOnTheSameLine(
+  label_text: [string, string] | undefined,
+): boolean {
+  return !!label_text && label_text[0] === "label" && label_text[1] === "text";
 }
 
 function addSection(cellData: FormData): docx.ISectionOptions {
