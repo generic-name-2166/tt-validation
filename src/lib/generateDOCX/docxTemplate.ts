@@ -11,7 +11,7 @@ export function generateTitle(): docx.ISectionOptions {
             text: "ТЕХНИЧЕСКОЕ ЗАДАНИЕ",
             allCaps: true,
             bold: true,
-            font: "Times",
+            font: "Times New Roman",
           }),
         ],
       }),
@@ -29,7 +29,7 @@ export function generateHeading(title: string): docx.Paragraph {
         text: title,
         bold: true,
         size: "18pt",
-        font: "Times",
+        font: "Times New Roman",
       }),
     ],
   });
@@ -45,7 +45,7 @@ export function generateSubheading(label: string): docx.Paragraph {
         text: label,
         bold: true,
         size: "16pt",
-        font: "Times",
+        font: "Times New Roman",
       }),
     ],
   });

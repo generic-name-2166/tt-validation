@@ -1,11 +1,11 @@
 import * as docx from "docx";
 import { getGenericParagraph } from "./docxTemplate";
 
-function getTableCell(cell: string): docx.TableCell {
+function getTableCell(cell: string, width: number): docx.TableCell {
   return new docx.TableCell({
     children: [new docx.Paragraph(cell)],
     width: {
-      size: 2000,
+      size: width,
       type: docx.WidthType.AUTO,
     },
   });
@@ -13,7 +13,8 @@ function getTableCell(cell: string): docx.TableCell {
 
 function getTableRow(row: string[]): docx.TableRow {
   return new docx.TableRow({
-    children: row.map(getTableCell),
+    children: [getTableCell(row[0], 2505), getTableCell(row[1], 6505)],
+    // row.map(getTableCell),
   });
 }
 
@@ -24,6 +25,7 @@ export function generateTable(
   return [
     getGenericParagraph(label),
     new docx.Table({
+      columnWidths: [2505, 6505],
       rows: table.map(getTableRow),
     }),
   ];

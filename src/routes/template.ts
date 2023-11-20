@@ -95,8 +95,8 @@ export let cell_list: ICell[] = [
   {
     title: "Сроки и этапы выполнения работ",
     label: "Количество этапов",
-    layout: { type: "text" },
-    extra: ["label", "text"],
+    layout: { type: "number" },
+    extra: ["Работы по настоящему ТЗ выполняются в ", " этап(а/ов)"],
   },
   {
     label: "Начало выполнения работ",

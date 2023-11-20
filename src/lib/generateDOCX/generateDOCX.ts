@@ -52,7 +52,7 @@ export async function generateDOCX(formData: FormData[]): Promise<string> {
         document: {
           run: {
             size: "14pt",
-            font: "Times",
+            font: "Times New Roman",
           },
         },
       },

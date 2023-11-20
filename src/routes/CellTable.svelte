@@ -39,7 +39,7 @@
   }
 
   function removeField(form_data: FormData[]): FormData[] {
-    const new_data: FormData[] = structuredClone(form_data);
+    const new_data: FormData[] = form_data;
     new_data[id].dimensions[0] = dimensions[0];
     new_data[id].data = (form_data[id] as FormDataTable).data.slice(
       0,
@@ -88,7 +88,6 @@
       return;
     }
 
-    console.log(formDataFromStorage[id].data);
     formData.update((form_data: FormData[]) => {
       form_data[id] = formDataFromStorage[id];
       return form_data;
