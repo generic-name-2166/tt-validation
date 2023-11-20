@@ -1,9 +1,9 @@
 <script lang="ts">
-  import { generateDOCX } from "./generateDOCX.ts";
+  import type { FormData } from "$lib/formStorage.ts";
+  import { formData } from "$lib/formStorage.ts";
+  import { generateDOCX } from "$lib/generateDOCX/generateDOCX.ts";
   import Cell from "./Cell.svelte";
   import { cell_list } from "./template.ts";
-  import { formData } from "$lib/formStorage.ts";
-  import type { FormData } from "$lib/formStorage.ts";
 
   let dataURL: string = ""; // = "data:application/pdf;base64,";
 

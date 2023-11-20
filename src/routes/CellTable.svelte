@@ -1,10 +1,10 @@
 <script lang="ts">
+  import type { FormData } from "$lib/formStorage.ts";
   import {
     formData,
     saveCellToLocalStorage,
     readFromLocalStorage,
   } from "$lib/formStorage.ts";
-  import type { FormData } from "$lib/formStorage.ts";
 
   // First number is row number, second is column number
   export let dimensions: [number, number] = [1, 1];
