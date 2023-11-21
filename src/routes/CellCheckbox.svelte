@@ -4,6 +4,7 @@
 
   export let layout: CheckboxLayout;
   export let id: number;
+  let additional: number = 1;
 
   function saveChange(e: Event, n_id: number): void {
     e.preventDefault();
@@ -38,4 +39,8 @@
   {#if layout.amount - n_id !== 1}
     <br />
   {/if}
+{/each}
+
+{#each [...Array(additional).keys()] as m_id}
+  <input type="text" id={`${id}_${layout.amount + m_id}`} />
 {/each}
