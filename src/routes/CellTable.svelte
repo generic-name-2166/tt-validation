@@ -50,17 +50,14 @@
 
   function saveChange(e: Event, col_id: number, row_id: number): void {
     e.preventDefault();
-    // I have to get value from target rather than dataTable because
-    // dataTable doesn't update before the event
-    const target = e.currentTarget as HTMLInputElement;
-    const value: string = target.value;
-    // const value: string = dataTable[col_id][row_id];
+    const value: string = dataTable[row_id][col_id];
 
-    if (row_id + 2 === dimensions[0] && value === "") {
+    console.log(value, row_id, col_id);
+    if (row_id + 2 === dimensions[0] && value.length === 0) {
       dimensions[0] -= 1;
       dataTable = dataTable.slice(0, dimensions[0]);
       formData.update(removeField);
-    } else if (row_id + 1 === dimensions[0] && value !== "") {
+    } else if (row_id + 1 === dimensions[0] && value.length > 0) {
       dimensions[0] += 1;
       dataTable = [...dataTable, new Array(dimensions[1]).fill("")];
       formData.update(addField);
@@ -126,11 +123,11 @@
             <input
               type="text"
               id={`${col_id}_${row_id}`}
+              bind:value={dataTable[row_id][col_id]}
               on:change={(e) => {
                 saveChange(e, col_id, row_id);
               }}
               style="width: 100%"
-              value={dataCell ? dataCell : ""}
             />
           </td>
         {/each}
