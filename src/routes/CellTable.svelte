@@ -105,9 +105,19 @@
   }
 
   // Set for performance and convenience for jumpCell func
-  const supportedKeys = new Set(["Enter", "ArrowUp", "ArrowDown", "ArrowLeft", "ArrowRight"]);
+  const supportedKeys = new Set([
+    "Enter",
+    "ArrowUp",
+    "ArrowDown",
+    "ArrowLeft",
+    "ArrowRight",
+  ]);
 
-  function jumpCell(event: KeyboardEvent, col_id: number, row_id: number): void {
+  function jumpCell(
+    event: KeyboardEvent,
+    col_id: number,
+    row_id: number,
+  ): void {
     const key: string = event.key;
     if (!supportedKeys.has(key)) {
       return;
