@@ -97,6 +97,15 @@
     saveCellToLocalStorage($formData[id], id);
   }
 
+  function jumpCell(event: KeyboardEvent, col_id: number, row_id: number): void {
+    const key: string = event.key;
+    if (key !== "Enter") {
+      return;
+    } else if (col_id + 1 < dimensions[1]) {
+      // TODO
+    }
+  }
+
   // This ensures the object is not null in there
   formData.update((form_data: FormData[]) => {
     form_data[id].dimensions = dimensions;
@@ -126,6 +135,9 @@
               bind:value={dataTable[row_id][col_id]}
               on:change={(e) => {
                 saveChange(e, col_id, row_id);
+              }}
+              on:keydown={(e) => {
+                jumpCell(e, col_id, row_id);
               }}
               style="width: 100%"
             />

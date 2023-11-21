@@ -15,8 +15,8 @@
   export let label: string;
   export let title: string | undefined;
 
-  let textElement: HTMLTextAreaElement;
-  let inputElement: HTMLInputElement;
+  let textElementValue: string;
+  let inputElementValue: string;
 
   function saveChange(e: Event): void {
     e.preventDefault();
@@ -48,15 +48,6 @@
     });
   }
 
-  function setValue(value: string): void {
-    if (inputElement) {
-      inputElement.value = value;
-      return;
-    } else if (textElement) {
-      textElement.textContent = value;
-    }
-  }
-
   function saveTextToLocalStorage(): void {
     saveCellToLocalStorage($formData[id], id);
   }
@@ -73,7 +64,8 @@
       return form_data;
     });
 
-    setValue(formDataFromStorage[id].data as string);
+    textElementValue = formDataFromStorage[id].data as string;
+    inputElementValue = formDataFromStorage[id].data as string;
   }
 </script>
 
@@ -88,8 +80,9 @@
   {#if layout.type === "textarea"}
     <textarea
       id={String(id)}
+      bind:textContent={textElementValue}
       on:change={saveChangeTextarea}
-      bind:this={textElement}
+      contenteditable="true"
     ></textarea>
     <br />
     <button type="button" on:click={saveTextToLocalStorage}>
