@@ -5,11 +5,11 @@
   export let layout: CheckboxLayout;
   export let id: number;
   let additional: number = 1;
+  let checkedList: boolean[] = new Array(layout.amount!).fill(false);
 
   function saveChange(e: Event, n_id: number): void {
     e.preventDefault();
-    const target = e.currentTarget as HTMLInputElement;
-    const checked: boolean = target.checked;
+    const checked: boolean = checkedList[n_id];
     const value: string = layout.labels[n_id];
 
     formData.update((form_data) => {
@@ -27,20 +27,22 @@
   }
 </script>
 
-{#each [...Array(layout.amount).keys()] as n_id}
+{#each checkedList as checkedCell, n_id}
   <input
-    type={layout.type}
+    type="checkbox"
     id={`${id}_${n_id}`}
+    bind:checked={checkedCell}
     on:change={(e) => {
       saveChange(e, n_id);
     }}
   />
   <label for={`${id}_${n_id}`}>{layout.labels[n_id]}</label>
-  {#if layout.amount - n_id !== 1}
-    <br />
-  {/if}
+  <br />
 {/each}
 
 {#each [...Array(additional).keys()] as m_id}
   <input type="text" id={`${id}_${layout.amount + m_id}`} />
+  {#if m_id + 1 < additional}
+    <br />
+  {/if}
 {/each}

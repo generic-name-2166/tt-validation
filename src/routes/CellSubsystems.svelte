@@ -5,10 +5,7 @@
 
   function saveChange(e: Event, col_id: number): void {
     e.preventDefault();
-    // I have to get value from target rather than dataColumn because
-    // dataColumn doesn't update before the event
-    const target = e.currentTarget as HTMLInputElement;
-    const value: string = target.value;
+    const value: string = dataColumn[col_id];
 
     // This is the only place where dimensions has to be synced with dataColumn
     if (col_id + 2 === amount && value === "") {
@@ -25,10 +22,10 @@
   <input
     type="text"
     id={`${id}_${col_id}`}
+    bind:value={dataCell}
     on:change={(e) => {
       saveChange(e, col_id);
     }}
-    value={dataCell}
   />
   <br />
 {/each}

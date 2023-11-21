@@ -15,13 +15,12 @@
   export let label: string;
   export let title: string | undefined;
 
-  let textElementValue: string;
-  let inputElementValue: string;
+  // Can also be a date, a number or a file maybe even
+  let inputValue: string;
 
   function saveChange(e: Event): void {
     e.preventDefault();
-    const target = e.currentTarget as HTMLInputElement;
-    const value: string = target.value;
+    const value: string = inputValue;
 
     formData.update((form_data) => {
       if (typeof form_data[id].data !== "string") {
@@ -35,8 +34,7 @@
 
   function saveChangeTextarea(e: Event): void {
     e.preventDefault();
-    const target = e.currentTarget as HTMLElement;
-    const value: string = target.textContent!;
+    const value: string = inputValue;
 
     formData.update((form_data) => {
       if (typeof form_data[id].data !== "string") {
@@ -64,8 +62,12 @@
       return form_data;
     });
 
-    textElementValue = formDataFromStorage[id].data as string;
-    inputElementValue = formDataFromStorage[id].data as string;
+    inputValue = formDataFromStorage[id].data as string;
+  }
+
+  function typeAction(element: HTMLInputElement): void {
+    // A crutch due to bind:value
+    element.type = layout.type;
   }
 </script>
 
@@ -80,7 +82,7 @@
   {#if layout.type === "textarea"}
     <textarea
       id={String(id)}
-      bind:textContent={textElementValue}
+      bind:textContent={inputValue}
       on:change={saveChangeTextarea}
       contenteditable="true"
     ></textarea>
@@ -99,10 +101,10 @@
     <CellSubsystems id={String(id)} amount={layout.amount} />
   {:else}
     <input
-      type={layout.type}
+      use:typeAction
       id={String(id)}
+      bind:value={inputValue}
       on:change={saveChange}
-      bind:this={inputElement}
     />
     <br />
     <button type="button" on:click={saveTextToLocalStorage}>

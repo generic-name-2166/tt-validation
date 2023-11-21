@@ -62,6 +62,7 @@
       dataTable = [...dataTable, new Array(dimensions[1]).fill("")];
       formData.update(addField);
     }
+
     formData.update((form_data) => {
       form_data[id].data = changeField(
         (form_data[id] as FormDataTable).data,
@@ -132,7 +133,7 @@
             <input
               type="text"
               id={`${col_id}_${row_id}`}
-              bind:value={dataTable[row_id][col_id]}
+              bind:value={dataCell}
               on:change={(e) => {
                 saveChange(e, col_id, row_id);
               }}
