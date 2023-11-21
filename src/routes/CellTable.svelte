@@ -13,6 +13,10 @@
   let dataTable: string[][] = new Array(dimensions[0])
     .fill(null)
     .map(() => new Array(dimensions[1]).fill(""));
+  // An entire table of elements just to jump cells at Enter press
+  let inputRefTable: HTMLInputElement[][] = new Array(dimensions[0])
+    .fill(null)
+    .map(() => new Array(dimensions[1]).fill(null));
 
   interface FormDataTable extends FormData {
     data: string[][];
@@ -48,18 +52,20 @@
     return new_data;
   }
 
-  function saveChange(e: Event, col_id: number, row_id: number): void {
-    e.preventDefault();
+  function saveChange(col_id: number, row_id: number): void {
     const value: string = dataTable[row_id][col_id];
 
-    console.log(value, row_id, col_id);
+    // console.log(value, row_id, col_id);
+    // Table needs to be synced with reality here
     if (row_id + 2 === dimensions[0] && value.length === 0) {
       dimensions[0] -= 1;
       dataTable = dataTable.slice(0, dimensions[0]);
+      inputRefTable = inputRefTable.slice(0, dimensions[0]);
       formData.update(removeField);
     } else if (row_id + 1 === dimensions[0] && value.length > 0) {
       dimensions[0] += 1;
       dataTable = [...dataTable, new Array(dimensions[1]).fill("")];
+      inputRefTable = [...inputRefTable, new Array(dimensions[1]).fill(null)];
       formData.update(addField);
     }
 
@@ -94,16 +100,51 @@
   }
 
   function saveTableToLocalStorage(): void {
-    console.log($formData[id].data);
+    // console.log($formData[id].data);
     saveCellToLocalStorage($formData[id], id);
   }
 
+  // Set for performance and convenience for jumpCell func
+  const supportedKeys = new Set(["Enter", "ArrowUp", "ArrowDown", "ArrowLeft", "ArrowRight"]);
+
   function jumpCell(event: KeyboardEvent, col_id: number, row_id: number): void {
     const key: string = event.key;
-    if (key !== "Enter") {
+    if (!supportedKeys.has(key)) {
       return;
-    } else if (col_id + 1 < dimensions[1]) {
-      // TODO
+    }
+    switch (key) {
+      case "Enter":
+        if (col_id + 1 < dimensions[1]) {
+          inputRefTable[row_id][col_id + 1].focus();
+        } else if (dataTable[row_id][col_id].length > 0) {
+          // Can just be assumed that change is to be saved
+          // I don't know if it runs a second time after this event but it should be fine
+          saveChange(col_id, row_id);
+          inputRefTable[row_id + 1][0].focus();
+        }
+        return;
+      case "ArrowUp":
+        if (row_id > 0) {
+          inputRefTable[row_id - 1][col_id].focus();
+        }
+        return;
+      case "ArrowDown":
+        if (row_id + 1 < dimensions[0]) {
+          inputRefTable[row_id + 1][col_id].focus();
+        }
+        return;
+      case "ArrowLeft":
+        if (col_id > 0) {
+          inputRefTable[row_id][col_id - 1].focus();
+        }
+        return;
+      case "ArrowRight":
+        if (col_id + 1 < dimensions[1]) {
+          inputRefTable[row_id][col_id + 1].focus();
+        }
+        return;
+      default:
+        throw new Error("What");
     }
   }
 
@@ -135,8 +176,9 @@
               id={`${col_id}_${row_id}`}
               bind:value={dataCell}
               on:change={(e) => {
-                saveChange(e, col_id, row_id);
+                saveChange(col_id, row_id);
               }}
+              bind:this={inputRefTable[row_id][col_id]}
               on:keydown={(e) => {
                 jumpCell(e, col_id, row_id);
               }}
