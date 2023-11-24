@@ -12,6 +12,7 @@ export function generateTitle(): docx.ISectionOptions {
             allCaps: true,
             bold: true,
             font: "Times New Roman",
+            color: "000000",
           }),
         ],
       }),
@@ -30,6 +31,7 @@ export function generateHeading(title: string): docx.Paragraph {
         bold: true,
         size: "18pt",
         font: "Times New Roman",
+        color: "000000",
       }),
     ],
   });
@@ -46,6 +48,7 @@ export function generateSubheading(label: string): docx.Paragraph {
         bold: true,
         size: "16pt",
         font: "Times New Roman",
+        color: "000000",
       }),
     ],
   });
