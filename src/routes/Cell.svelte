@@ -110,6 +110,7 @@
     <button type="button" on:click={saveTextToLocalStorage}>
       Сохранить ячейку
     </button>
+    <!-- BUG: Loading doesn't actually work with type date -->
     <button type="button" on:click={loadTextFromLocalStorage}>
       Загрузить ячейку
     </button>

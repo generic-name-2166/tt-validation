@@ -84,7 +84,7 @@
     });
 
     const allData: [string][] = (formDataFromStorage[id] as FormDataList).data;
-    // This layout.amount is technically a bug
+    // BUG: This layout.amount is technically a bug
     // because checked list can be different length
     checkedList = allData.slice(0, layout.amount).map(isChecked);
     additional = formDataFromStorage[id].dimensions[0] - checkedList.length;

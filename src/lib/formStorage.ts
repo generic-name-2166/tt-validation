@@ -80,3 +80,12 @@ export function saveCellToLocalStorage(
 
   setToLocalStorage(formDataList);
 }
+
+export function saveAll(form_data: FormData[]): void {
+  if (!storageAvailable("localStorage")) {
+    console.error("localStorage no available");
+    return;
+  }
+
+  setToLocalStorage(form_data);
+}
