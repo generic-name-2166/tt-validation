@@ -22,17 +22,6 @@
     data: string[][];
   }
 
-  function changeField(
-    table_data: string[][],
-    new_value: string,
-    col_id: number,
-    row_id: number,
-  ): string[][] {
-    const new_table: string[][] = table_data;
-    new_table[row_id][col_id] = new_value;
-    return new_table;
-  }
-
   function addField(form_data: FormData[]): FormData[] {
     form_data[id].dimensions[0] = dimensions[0];
     form_data[id].data = [
@@ -70,12 +59,7 @@
     }
 
     formData.update((form_data) => {
-      form_data[id].data = changeField(
-        (form_data[id] as FormDataTable).data,
-        value,
-        col_id,
-        row_id,
-      );
+      (form_data[id] as FormDataTable).data[row_id][col_id] = value;
       return form_data;
     });
   }
@@ -158,7 +142,6 @@
     }
   }
 
-  // This ensures the object is not null in there
   formData.update((form_data: FormData[]) => {
     form_data[id].dimensions = dimensions;
     form_data[id].data = new Array(dimensions[0])

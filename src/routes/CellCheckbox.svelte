@@ -1,31 +1,114 @@
 <script lang="ts">
   import type { CheckboxLayout } from "./template.ts";
-  import { formData } from "$lib/formStorage.ts";
+  import type { FormData } from "$lib/formStorage.ts";
+  import {
+    formData,
+    saveCellToLocalStorage,
+    readFromLocalStorage,
+  } from "$lib/formStorage.ts";
 
   export let layout: CheckboxLayout;
   export let id: number;
   let additional: number = 1;
   let checkedList: boolean[] = new Array(layout.amount!).fill(false);
+  let dataList: string[] = [""];
 
-  function saveChange(e: Event, n_id: number): void {
-    e.preventDefault();
+  interface FormDataList extends FormData {
+    data: [string][];
+  }
+
+  function addField(form_data: FormData[]): FormData[] {
+    form_data[id].dimensions[0] = layout.amount + additional;
+    form_data[id].data = [...(form_data[id] as FormDataList).data, [""]];
+    return form_data;
+  }
+
+  function removeField(form_data: FormData[]): FormData[] {
+    const new_data: FormData[] = form_data;
+    new_data[id].dimensions[0] = layout.amount + additional;
+    new_data[id].data = (form_data[id] as FormDataList).data.slice(
+      0,
+      layout.amount + additional,
+    );
+    return new_data;
+  }
+
+  function saveChange(n_id: number): void {
     const checked: boolean = checkedList[n_id];
     const value: string = layout.labels[n_id];
 
     formData.update((form_data) => {
-      if (!Array.isArray(form_data[id].data)) {
-        form_data[id].dimensions = [layout.amount, 1];
-        form_data[id].data = new Array(layout.amount)
-          .fill(null)
-          .map(() => new Array(1).fill(""));
-      }
-
-      //@ts-expect-error
-      form_data[id].data[n_id][0] = checked ? value : "";
+      (form_data[id] as FormDataList).data[n_id][0] = checked ? value : "";
       return form_data;
     });
   }
+
+  function saveChangeExtra(m_id: number): void {
+    const value: string = dataList[m_id];
+
+    // Length check instead of string comparison because of some weird <empty string> value it can have
+    if (m_id + 2 === additional && value.length === 0) {
+      additional -= 1;
+      dataList = dataList.slice(0, additional);
+      formData.update(removeField);
+    } else if (m_id + 1 === additional && value.length > 0) {
+      additional += 1;
+      dataList = [...dataList, ""];
+      formData.update(addField);
+    }
+
+    formData.update((form_data) => {
+      (form_data[id] as FormDataList).data![layout.amount + m_id][0] = value;
+      return form_data;
+    });
+  }
+
+  function isChecked([row_data]: [string]): boolean {
+    return row_data.length > 0;
+  }
+
+  function loadListFromLocalStorage(): void {
+    const formDataFromStorage: FormData[] | null = readFromLocalStorage();
+    if (
+      !formDataFromStorage ||
+      !Array.isArray(formDataFromStorage[id].data) ||
+      formDataFromStorage[id].data![0].length !== 1
+    ) {
+      console.error("Nothing to load from localStorage");
+      return;
+    }
+
+    formData.update((form_data: FormData[]) => {
+      form_data[id] = formDataFromStorage[id];
+      return form_data;
+    });
+
+    const allData: [string][] = (formDataFromStorage[id] as FormDataList).data;
+    // This layout.amount is technically a bug
+    // because checked list can be different length
+    checkedList = allData.slice(0, layout.amount).map(isChecked);
+    additional = formDataFromStorage[id].dimensions[0] - checkedList.length;
+    dataList = allData
+      .slice(layout.amount)
+      .map(([row_data]: [string]) => row_data);
+  }
+
+  function saveListToLocalStorage(): void {
+    console.log($formData[id]);
+    saveCellToLocalStorage($formData[id], id);
+  }
+
+  formData.update((form_data: FormData[]) => {
+    form_data[id].dimensions = [layout.amount, 1];
+    form_data[id].data = new Array(layout.amount + additional)
+      .fill(null)
+      .map(() => new Array(1).fill(""));
+    return form_data;
+  });
 </script>
+
+<!-- id for accessibility question mark -->
+<input id={String(id)} type="hidden" />
 
 {#each checkedList as checkedCell, n_id}
   <input
@@ -33,16 +116,42 @@
     id={`${id}_${n_id}`}
     bind:checked={checkedCell}
     on:change={(e) => {
-      saveChange(e, n_id);
+      saveChange(n_id);
     }}
   />
   <label for={`${id}_${n_id}`}>{layout.labels[n_id]}</label>
   <br />
 {/each}
 
-{#each [...Array(additional).keys()] as m_id}
-  <input type="text" id={`${id}_${layout.amount + m_id}`} />
-  {#if m_id + 1 < additional}
-    <br />
-  {/if}
-{/each}
+<ul>
+  {#each dataList as dataCell, m_id}
+    <li>
+      <input
+        type="text"
+        id={`${id}_${layout.amount + m_id}`}
+        bind:value={dataCell}
+        on:change={(e) => {
+          saveChangeExtra(m_id);
+        }}
+      />
+    </li>
+  {/each}
+</ul>
+
+<button type="button" on:click={saveListToLocalStorage}>
+  Сохранить ячейку
+</button>
+<button type="button" on:click={loadListFromLocalStorage}>
+  Загрузить ячейку
+</button>
+
+<style>
+  ul {
+    margin: 0.5em;
+    padding: 0 0.5em 0 0.5em;
+  }
+
+  li {
+    margin: 0.5em;
+  }
+</style>
