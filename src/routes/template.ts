@@ -34,6 +34,11 @@ interface ICell {
 
 export let cell_list: ICell[] = [
   {
+    title: "Титульный лист",
+    label: "Тема работы",
+    layout: { type: "text" },
+  },
+  {
     title: "Организационная структура выполнения работ",
     label: "Заказчик",
     layout: { type: "text" },

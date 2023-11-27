@@ -1,5 +1,5 @@
 import * as docx from "docx";
-import type { FormData } from "../formStorage.ts";
+import type { FormData, TitleData } from "$lib/formStorage.ts";
 import { generateTitle, generateHeading } from "./docxTemplate.ts";
 import { generateTable } from "./docxTable.ts";
 import { generateList } from "./docxList.ts";
@@ -36,9 +36,13 @@ function filterNoData(cellData: FormData): boolean {
   return !!cellData.data;
 }
 
-export async function generateDOCX(formData: FormData[]): Promise<string> {
+export async function generateDOCX(
+  formData: FormData[],
+  titleData: TitleData,
+): Promise<string> {
   const sections: docx.ISectionOptions[] = [
-    generateTitle(),
+    // TODO this
+    generateTitle(titleData),
     ...formData.filter(filterNoData).map(addSection),
   ];
 

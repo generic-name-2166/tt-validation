@@ -11,6 +11,14 @@ export interface FormData {
 const temp: FormData[] = [];
 export const formData = writable(temp);
 
+export interface TitleData {
+  documentTitle: string;
+  manager: string;
+}
+
+const temp_: TitleData = { documentTitle: "", manager: "" };
+export const titleData = writable(temp_);
+
 function storageAvailable(type: string) {
   let storage;
   try {

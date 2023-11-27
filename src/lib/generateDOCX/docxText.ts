@@ -1,4 +1,4 @@
-import * as docx from "docx";
+import type * as docx from "docx";
 import { generateSubheading, getGenericParagraph } from "./docxTemplate";
 
 function applyExtra(text: string, extra: [string, string] | undefined): string {

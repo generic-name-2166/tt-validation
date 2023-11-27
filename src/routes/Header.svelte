@@ -3,8 +3,8 @@
 </script>
 
 <header>
-  <button 
-    type="button" 
+  <button
+    type="button"
     on:click={(e) => {
       saveAll($formData);
     }}

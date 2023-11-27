@@ -1,8 +1,9 @@
 <script lang="ts">
   import type { FormData } from "$lib/formStorage.ts";
-  import { formData } from "$lib/formStorage.ts";
+  import { formData, titleData } from "$lib/formStorage.ts";
   import { generateDOCX } from "$lib/generateDOCX/generateDOCX.ts";
   import Cell from "./Cell.svelte";
+  import CellTitle from "./CellTitle.svelte";
   import { cell_list } from "./template.ts";
 
   let dataURL: string = ""; // = "data:application/pdf;base64,";
@@ -11,7 +12,7 @@
   //@ts-expect-error
   async function validate(event: Event): void {
     event.preventDefault();
-    dataURL = await generateDOCX(structuredClone($formData));
+    dataURL = await generateDOCX($formData, $titleData);
   }
 
   {
@@ -23,11 +24,15 @@
       extra: cell.extra,
     }));
     formData.set(form_data);
+
+    titleData.set({ documentTitle: "WORK TITLE", manager: "John Doe" });
   }
 </script>
 
 <main>
   <div>
+    <CellTitle />
+
     {#each cell_list as cell, id}
       <Cell {id} label={cell.label} layout={cell.layout} title={cell.title} />
     {/each}
