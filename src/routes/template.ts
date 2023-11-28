@@ -1,5 +1,5 @@
 interface IInputLayout {
-  type: "text" | "textarea" | "date" | "number";
+  type: "text" | "textarea" | "number";
 }
 // Having extra: ["label", "text"] is going to indicate labelOnSameLine
 
@@ -19,11 +19,17 @@ export interface TableLayout {
   amount: [number, number];
 }
 
+// TODO CellDate
+export interface DateLayout {
+  type: "date";
+}
+
 export type InputLayout =
   | CheckboxLayout
   | TableLayout
   | IInputLayout
-  | SubsystemsLayout;
+  | SubsystemsLayout
+  | DateLayout;
 
 interface ICell {
   label: string;
@@ -33,11 +39,6 @@ interface ICell {
 }
 
 export let cell_list: ICell[] = [
-  {
-    title: "Титульный лист",
-    label: "Тема работы",
-    layout: { type: "text" },
-  },
   {
     title: "Организационная структура выполнения работ",
     label: "Заказчик",

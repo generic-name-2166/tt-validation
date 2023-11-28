@@ -1,7 +1,7 @@
 <script lang="ts">
   import type { FormData } from "$lib/formStorage.ts";
   import { formData, titleData } from "$lib/formStorage.ts";
-  import { generateDOCX } from "$lib/generateDOCX/generateDOCX.ts";
+  import { generateDOCX } from "$lib/generateDOCX/generateDocx.ts";
   import Cell from "./Cell.svelte";
   import CellTitle from "./CellTitle.svelte";
   import { cell_list } from "./template.ts";
@@ -25,7 +25,10 @@
     }));
     formData.set(form_data);
 
-    titleData.set({ documentTitle: "WORK TITLE", manager: "John Doe" });
+    const title_data: Map<string, string> = new Map();
+    title_data.set("documentTitle", "N/A");
+    title_data.set("managerName", "N/A");
+    titleData.set(title_data);
   }
 </script>
 

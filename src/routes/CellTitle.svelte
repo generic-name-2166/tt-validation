@@ -17,7 +17,10 @@
 </script>
 
 <div>
-  <label for="documentTitle"> Document title </label>
+  <h2>Титульный лист</h2>
+
+  <label for="documentTitle"> Тема работы </label>
+  <br />
   <input
     id="documentTitle"
     type="text"
@@ -28,6 +31,7 @@
   <br />
 
   <label for="manager"> Manager in charge </label>
+  <br />
   <input
     id="manager"
     type="text"

@@ -11,13 +11,10 @@ export interface FormData {
 const temp: FormData[] = [];
 export const formData = writable(temp);
 
-export interface TitleData {
-  documentTitle: string;
-  manager: string;
-}
-
-const temp_: TitleData = { documentTitle: "", manager: "" };
-export const titleData = writable(temp_);
+const temp_: Map<string, string> = new Map();
+temp_.set("documentTitle", "");
+temp_.set("manager", "");
+export const titleData = writable(new Map());
 
 function storageAvailable(type: string) {
   let storage;
