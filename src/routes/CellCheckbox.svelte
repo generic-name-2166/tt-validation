@@ -71,6 +71,7 @@
     const formDataFromStorage: FormData[] | null = readFromLocalStorage();
     if (
       !formDataFromStorage ||
+      !formDataFromStorage[id]?.data ||
       !Array.isArray(formDataFromStorage[id].data) ||
       formDataFromStorage[id].data![0].length !== 1
     ) {

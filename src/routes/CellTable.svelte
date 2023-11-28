@@ -68,6 +68,7 @@
     const formDataFromStorage: FormData[] | null = readFromLocalStorage();
     if (
       !formDataFromStorage ||
+      !formDataFromStorage[id]?.data ||
       !Array.isArray(formDataFromStorage[id].data) ||
       // formDataFromStorage[id].data!.length !== dimensions[0] ||
       formDataFromStorage[id].data![0].length !== dimensions[1]

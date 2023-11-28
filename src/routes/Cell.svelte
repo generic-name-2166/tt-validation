@@ -4,6 +4,7 @@
   import CellTable from "./CellTable.svelte";
   import CellSubsystems from "./CellSubsystems.svelte";
   import CellCheckbox from "./CellCheckbox.svelte";
+  import CellDate from "./CellDate.svelte";
   import {
     formData,
     saveCellToLocalStorage,
@@ -52,7 +53,11 @@
 
   function loadTextFromLocalStorage(): void {
     const formDataFromStorage: FormData[] | null = readFromLocalStorage();
-    if (!formDataFromStorage || Array.isArray(formDataFromStorage[id].data)) {
+    if (
+      !formDataFromStorage ||
+      !formDataFromStorage[id]?.data ||
+      Array.isArray(formDataFromStorage[id].data)
+    ) {
       console.error("Nothing to load from localStorage");
       return;
     }
@@ -99,6 +104,8 @@
     <CellTable {id} dimensions={layout.amount} />
   {:else if layout.type === "subsystems"}
     <CellSubsystems id={String(id)} amount={layout.amount} />
+  {:else if layout.type === "date"}
+    <CellDate {id} />
   {:else}
     <input
       use:typeAction
@@ -110,7 +117,6 @@
     <button type="button" on:click={saveTextToLocalStorage}>
       Сохранить ячейку
     </button>
-    <!-- BUG: Loading doesn't actually work with type date -->
     <button type="button" on:click={loadTextFromLocalStorage}>
       Загрузить ячейку
     </button>

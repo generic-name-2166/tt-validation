@@ -19,7 +19,6 @@ export interface TableLayout {
   amount: [number, number];
 }
 
-// TODO CellDate
 export interface DateLayout {
   type: "date";
 }
