@@ -3,23 +3,23 @@ interface IInputLayout {
 }
 // Having extra: ["label", "text"] is going to indicate labelOnSameLine
 
-export interface SubsystemsLayout {
+interface SubsystemsLayout {
   type: "subsystems";
   amount: number;
 }
 
-export interface CheckboxLayout {
+interface CheckboxLayout {
   type: "checkbox";
   amount: number;
   labels: string[];
 }
 
-export interface TableLayout {
+interface TableLayout {
   type: "table";
   amount: [number, number];
 }
 
-export interface DateLayout {
+interface DateLayout {
   type: "date";
 }
 

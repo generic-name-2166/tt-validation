@@ -38,6 +38,7 @@ export function generateSubheading(label: string): docx.Paragraph {
 
 export function getGenericParagraph(text?: string | undefined): docx.Paragraph {
   return new docx.Paragraph({
+    alignment: docx.AlignmentType.JUSTIFIED,
     indent: { left: "1.25mm" },
     spacing: { after: STANDARD_SPACING, before: STANDARD_SPACING },
     text: text,

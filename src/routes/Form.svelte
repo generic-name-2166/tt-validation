@@ -3,7 +3,7 @@
   import { formData, titleData } from "$lib/formStorage.ts";
   import { generateDOCX } from "$lib/generateDOCX/generateDocx.ts";
   import Cell from "./Cell.svelte";
-  import CellTitle from "./CellTitle.svelte";
+  import CellTitle from "$lib/CellComponents/CellTitle.svelte";
   import { cell_list } from "./template.ts";
 
   let dataURL: string = ""; // = "data:application/pdf;base64,";

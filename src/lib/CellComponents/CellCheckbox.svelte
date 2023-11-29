@@ -1,5 +1,4 @@
 <script lang="ts">
-  import type { CheckboxLayout } from "./template.ts";
   import type { FormData } from "$lib/formStorage.ts";
   import {
     formData,
@@ -7,10 +6,11 @@
     readFromLocalStorage,
   } from "$lib/formStorage.ts";
 
-  export let layout: CheckboxLayout;
+  export let amount: number;
+  export let labels: string[];
   export let id: number;
   let additional: number = 1;
-  let checkedList: boolean[] = new Array(layout.amount!).fill(false);
+  let checkedList: boolean[] = new Array(amount!).fill(false);
   let dataList: string[] = [""];
 
   interface FormDataList extends FormData {
@@ -18,24 +18,24 @@
   }
 
   function addField(form_data: FormData[]): FormData[] {
-    form_data[id].dimensions[0] = layout.amount + additional;
+    form_data[id].dimensions[0] = amount + additional;
     form_data[id].data = [...(form_data[id] as FormDataList).data, [""]];
     return form_data;
   }
 
   function removeField(form_data: FormData[]): FormData[] {
     const new_data: FormData[] = form_data;
-    new_data[id].dimensions[0] = layout.amount + additional;
+    new_data[id].dimensions[0] = amount + additional;
     new_data[id].data = (form_data[id] as FormDataList).data.slice(
       0,
-      layout.amount + additional,
+      amount + additional,
     );
     return new_data;
   }
 
   function saveChange(n_id: number): void {
     const checked: boolean = checkedList[n_id];
-    const value: string = layout.labels[n_id];
+    const value: string = labels[n_id];
 
     formData.update((form_data) => {
       (form_data[id] as FormDataList).data[n_id][0] = checked ? value : "";
@@ -58,7 +58,7 @@
     }
 
     formData.update((form_data) => {
-      (form_data[id] as FormDataList).data![layout.amount + m_id][0] = value;
+      (form_data[id] as FormDataList).data![amount + m_id][0] = value;
       return form_data;
     });
   }
@@ -85,13 +85,11 @@
     });
 
     const allData: [string][] = (formDataFromStorage[id] as FormDataList).data;
-    // BUG: This layout.amount is technically a bug
+    // BUG: This amount is technically a bug
     // because checked list can be different length
-    checkedList = allData.slice(0, layout.amount).map(isChecked);
+    checkedList = allData.slice(0, amount).map(isChecked);
     additional = formDataFromStorage[id].dimensions[0] - checkedList.length;
-    dataList = allData
-      .slice(layout.amount)
-      .map(([row_data]: [string]) => row_data);
+    dataList = allData.slice(amount).map(([row_data]: [string]) => row_data);
   }
 
   function saveListToLocalStorage(): void {
@@ -100,8 +98,8 @@
   }
 
   formData.update((form_data: FormData[]) => {
-    form_data[id].dimensions = [layout.amount, 1];
-    form_data[id].data = new Array(layout.amount + additional)
+    form_data[id].dimensions = [amount, 1];
+    form_data[id].data = new Array(amount + additional)
       .fill(null)
       .map(() => new Array(1).fill(""));
     return form_data;
@@ -120,7 +118,7 @@
       saveChange(n_id);
     }}
   />
-  <label for={`${id}_${n_id}`}>{layout.labels[n_id]}</label>
+  <label for={`${id}_${n_id}`}>{labels[n_id]}</label>
   <br />
 {/each}
 
@@ -129,7 +127,7 @@
     <li>
       <input
         type="text"
-        id={`${id}_${layout.amount + m_id}`}
+        id={`${id}_${amount + m_id}`}
         bind:value={dataCell}
         on:change={(e) => {
           saveChangeExtra(m_id);

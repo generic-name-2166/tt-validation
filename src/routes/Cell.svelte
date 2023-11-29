@@ -1,10 +1,10 @@
 <script lang="ts">
   import type { InputLayout } from "./template.ts";
   import type { FormData } from "$lib/formStorage.ts";
-  import CellTable from "./CellTable.svelte";
-  import CellSubsystems from "./CellSubsystems.svelte";
-  import CellCheckbox from "./CellCheckbox.svelte";
-  import CellDate from "./CellDate.svelte";
+  import CellTable from "$lib/CellComponents/CellTable.svelte";
+  import CellSubsystems from "$lib/CellComponents/CellSubsystems.svelte";
+  import CellCheckbox from "$lib/CellComponents/CellCheckbox.svelte";
+  import CellDate from "$lib/CellComponents/CellDate.svelte";
   import {
     formData,
     saveCellToLocalStorage,
@@ -20,7 +20,6 @@
   let inputValue: string;
 
   function saveChange(e: Event): void {
-    e.preventDefault();
     const value: string = inputValue;
 
     formData.update((form_data) => {
@@ -34,7 +33,6 @@
   }
 
   function saveChangeTextarea(e: Event): void {
-    e.preventDefault();
     const value: string = inputValue;
 
     formData.update((form_data) => {
@@ -99,7 +97,7 @@
       Загрузить ячейку
     </button>
   {:else if layout.type === "checkbox"}
-    <CellCheckbox {layout} {id} />
+    <CellCheckbox amount={layout.amount} labels={layout.labels} {id} />
   {:else if layout.type === "table"}
     <CellTable {id} dimensions={layout.amount} />
   {:else if layout.type === "subsystems"}
