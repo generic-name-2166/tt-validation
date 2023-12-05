@@ -122,7 +122,7 @@
 </div>
 
 <style>
-  div {
+  .cell {
     margin: 1em;
     border: solid #888888;
     border-width: 0.5em;
@@ -136,5 +136,9 @@
     font-size: 16px;
     color: #333;
     transition: background-color 0.3s ease;
+  }
+
+  .cell:hover {
+    background-color: #e0e0e0;
   }
 </style>
