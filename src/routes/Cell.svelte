@@ -123,10 +123,6 @@
 
 <style>
   .cell {
-    margin: 1em;
-    border: solid #888888;
-    border-width: 0.5em;
-    padding: 0.5em;
     width: 100px;
     height: 100px;
     background-color: #f2f2f2;
