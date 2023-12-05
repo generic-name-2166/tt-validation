@@ -127,21 +127,14 @@
     border: solid #888888;
     border-width: 0.5em;
     padding: 0.5em;
+    width: 100px;
+    height: 100px;
+    background-color: #f2f2f2;
+    border: 1px solid #ccc;
+    text-align: center;
+    line-height: 100px;
+    font-size: 16px;
+    color: #333;
+    transition: background-color 0.3s ease;
   }
-</style>
-.cell {
-  width: 100px;
-  height: 100px;
-  background-color: #f2f2f2;
-  border: 1px solid #ccc;
-  text-align: center;
-  line-height: 100px;
-  font-size: 16px;
-  color: #333;
-  transition: background-color 0.3s ease;
-}
-
-.cell:hover {
-  background-color: #e0e0e0;
-}
 </style>
