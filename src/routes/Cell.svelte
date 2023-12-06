@@ -122,7 +122,6 @@
 </div>
 
 <style>
-<head>
 body {
   font-family: Arial, sans-serif;
   background-color: #f4f4f4;
@@ -172,5 +171,4 @@ input[type="submit"] {
 input[type="submit"]:hover {
   background-color: #0056b3;
 }
-</head>
 </style>
