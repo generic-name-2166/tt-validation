@@ -64,6 +64,7 @@
     margin: 2em 2em 1em 2em;
     block-size: 2em;
     inline-size: 20em;
+    background-color: #ffffff;
   }
 
   br + button {

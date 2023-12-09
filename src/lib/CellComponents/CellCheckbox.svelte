@@ -110,16 +110,19 @@
 <input id={String(id)} type="hidden" />
 
 {#each checkedList as checkedCell, n_id}
-  <input
-    type="checkbox"
-    id={`${id}_${n_id}`}
-    bind:checked={checkedCell}
-    on:change={(e) => {
-      saveChange(n_id);
-    }}
-  />
-  <label for={`${id}_${n_id}`}>{labels[n_id]}</label>
-  <br />
+  <div>  
+    <input
+      type="checkbox"
+      id={`${id}_${n_id}`}
+      bind:checked={checkedCell}
+      on:change={(e) => {
+        saveChange(n_id);
+      }}
+    />
+    <label for={`${id}_${n_id}`}>
+      <span>{labels[n_id]}</span>
+    </label>
+  </div>
 {/each}
 
 <ul>
@@ -159,5 +162,17 @@
     margin: 0.5em;
     background-color: #555555;
     color: #eeeeee;
+  }
+
+  div {
+    margin: 0.5em;
+  }
+
+  input[type="text"] {
+    block-size: 2em;
+    inline-size: 50%;
+    margin: 0.5em;
+    border-width: 0;
+    box-shadow: 0 0 1em 0.5em rgba(0, 0, 0, 0.2);
   }
 </style>
