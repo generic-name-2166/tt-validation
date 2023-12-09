@@ -1,5 +1,9 @@
 import * as docx from "docx";
-import { generateSubheading } from "./docxTemplate";
+import {
+  generateSubheading,
+  getGenericParagraph,
+  filterParagraphs,
+} from "./docxTemplate";
 
 function getListPoint(point: string): docx.Paragraph {
   return new docx.Paragraph({
@@ -10,9 +14,17 @@ function getListPoint(point: string): docx.Paragraph {
   });
 }
 
-export function generateList(list: string[], label: string): docx.Paragraph[] {
+export function generateList(
+  list: string[],
+  label: string,
+  extra: [string, string] | undefined,
+): docx.Paragraph[] {
+  // Filter takes care of the error
+  //@ts-expect-error
   return [
     generateSubheading(label),
+    getGenericParagraph(extra ? extra[0] : ""),
     ...list.filter((point) => point !== "").map(getListPoint),
-  ];
+    getGenericParagraph(extra ? extra[1] : ""),
+  ].filter(filterParagraphs);
 }

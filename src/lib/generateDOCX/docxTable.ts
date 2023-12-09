@@ -1,5 +1,5 @@
 import * as docx from "docx";
-import { getGenericParagraph } from "./docxTemplate";
+import { getGenericParagraph, filterParagraphs } from "./docxTemplate";
 
 function getTableCell(cell: string, width: number): docx.TableCell {
   return new docx.TableCell({
@@ -22,11 +22,13 @@ export function generateTable(
   table: string[][],
   label: string,
 ): [docx.Paragraph, docx.Table] {
+  // Filter takes care of the error
+  //@ts-expect-error
   return [
     getGenericParagraph(label),
     new docx.Table({
       columnWidths: [2505, 6505],
       rows: table.map(getTableRow),
     }),
-  ];
+  ].filter(filterParagraphs);
 }

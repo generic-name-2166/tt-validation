@@ -1,5 +1,10 @@
 import type * as docx from "docx";
-import { generateSubheading, getGenericParagraph } from "./docxTemplate";
+import {
+  generateSubheading,
+  getGenericParagraph,
+  getGenericParagraphs,
+  filterParagraphs,
+} from "./docxTemplate";
 
 function applyExtra(text: string, extra: [string, string] | undefined): string {
   return extra ? extra[0] + text + extra[1] : text;
@@ -16,7 +21,12 @@ export function generateText(
   label: string,
   extra: [string, string] | undefined,
 ): docx.Paragraph[] {
+  // Filter takes care of the error
+  //@ts-expect-error
   return isLabelOnTheSameLine(extra)
     ? [getGenericParagraph(`${label} - ${text}`)]
-    : [generateSubheading(label), getGenericParagraph(applyExtra(text, extra))];
+    : [
+        generateSubheading(label),
+        ...getGenericParagraphs(applyExtra(text, extra)),
+      ].filter(filterParagraphs);
 }

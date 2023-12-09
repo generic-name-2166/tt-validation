@@ -1,6 +1,10 @@
 import * as docx from "docx";
 import type { FormData } from "$lib/formStorage.ts";
-import { generateTitle, generateHeading } from "./docxTemplate.ts";
+import {
+  generateTitle,
+  generateHeading,
+  endingTemplate,
+} from "./docxTemplate.ts";
 import { generateTable } from "./docxTable.ts";
 import { generateList } from "./docxList.ts";
 import { generateText } from "./docxText.ts";
@@ -9,7 +13,7 @@ function addSection(cellData: FormData): docx.ISectionOptions {
   const children = !Array.isArray(cellData.data)
     ? generateText(cellData.data!, cellData.label, cellData.extra)
     : cellData.data.length === 1 || cellData.data[0].length === 1
-      ? generateList(cellData.data.flat(2), cellData.label)
+      ? generateList(cellData.data.flat(2), cellData.label, cellData.extra)
       : generateTable(cellData.data, cellData.label);
 
   if (cellData.title) {
@@ -44,6 +48,7 @@ export async function generateDOCX(
     // TODO this
     generateTitle(titleData),
     ...formData.filter(filterNoData).map(addSection),
+    ...endingTemplate.map(addSection),
   ];
 
   // It becomes readonly once passed to the document but TS doesn't know

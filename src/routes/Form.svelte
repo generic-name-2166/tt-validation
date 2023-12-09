@@ -44,7 +44,7 @@
   <button type="button" on:click={validate}> Submit </button>
   <br />
   <button type="button">
-    <a href={dataURL} download="tt.docx">Download docx file</a>
+    <a href={dataURL} download="Заготовка_ТЗ.docx">Download docx file</a>
   </button>
 </main>
 
