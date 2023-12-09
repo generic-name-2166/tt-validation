@@ -72,3 +72,12 @@
 <button type="button" on:click={loadDateFromLocalStorage}>
   Загрузить ячейку
 </button>
+
+<style>
+  button {
+    border-radius: 0;
+    margin: 0.5em;
+    background-color: #555555;
+    color: #eeeeee;
+  }
+</style>

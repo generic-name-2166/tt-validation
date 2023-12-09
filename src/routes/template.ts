@@ -55,6 +55,11 @@ export let cell_list: ICell[] = [
     extra: ["label", "text"],
   },
   {
+    label: "Соисполнитель",
+    layout: { type: "text" },
+    extra: ["label", "text"],
+  },
+  {
     title: "Основание для проведения работ",
     label: "Концепция на разработку",
     layout: { type: "text" },
@@ -138,7 +143,7 @@ export let cell_list: ICell[] = [
     ],
   },
   {
-    title: "Разработка ЧТЗ и описания инормационной технологии",
+    title: "Разработка ЧТЗ и описания информационной технологии",
     label: "ЧТЗ должно быть разработа в соответствии со следующими стандартами",
     layout: { type: "checkbox", amount: 1, labels: [""] },
   },

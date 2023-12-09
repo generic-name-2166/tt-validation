@@ -9,3 +9,14 @@
 
 <Form />
 <Footer />
+
+<style>
+  :global(body) {
+    font-family: Helvetica, Arial, sans-serif;
+    background-color: #eeeeee;
+  }
+
+  :global(button), :global(input) {
+    font-family: inherit;
+  }
+</style>

@@ -196,4 +196,11 @@
   .item {
     width: 15%;
   }
+
+  button {
+    border-radius: 0;
+    margin: 0.5em;
+    background-color: #555555;
+    color: #eeeeee;
+  }
 </style>
