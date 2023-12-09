@@ -54,7 +54,7 @@
     border-width: 0.5em;
     border-color: black rgba(0, 0, 0, 0) black rgba(0, 0, 0, 0);
   }
-  
+
   div {
     display: flex;
     flex-direction: column;

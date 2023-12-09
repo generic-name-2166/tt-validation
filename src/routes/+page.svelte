@@ -16,7 +16,8 @@
     background-color: #eeeeee;
   }
 
-  :global(button), :global(input) {
+  :global(button),
+  :global(input) {
     font-family: inherit;
   }
 </style>

@@ -49,12 +49,8 @@
 
 <br />
 
-<button type="button">
-  Сохранить ячейку
-</button>
-<button type="button">
-  Загрузить ячейку
-</button>
+<button type="button"> Сохранить ячейку </button>
+<button type="button"> Загрузить ячейку </button>
 
 <style>
   button {
@@ -63,13 +59,13 @@
     background-color: #555555;
     color: #eeeeee;
   }
-  
+
   input {
     block-size: 2em;
     inline-size: 50%;
     margin: 0.5em;
     border-width: 0;
-    box-shadow:0 0 1em 0.5em rgba(0,0,0,0.2);
+    box-shadow: 0 0 1em 0.5em rgba(0, 0, 0, 0.2);
   }
 
   textarea {
@@ -77,6 +73,6 @@
     inline-size: 50%;
     margin: 0.5em;
     border-width: 0;
-    box-shadow:0 0 1em 0.5em rgba(0,0,0,0.2);
+    box-shadow: 0 0 1em 0.5em rgba(0, 0, 0, 0.2);
   }
 </style>
