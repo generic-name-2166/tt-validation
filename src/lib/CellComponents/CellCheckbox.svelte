@@ -110,7 +110,7 @@
 <input id={String(id)} type="hidden" />
 
 {#each checkedList as checkedCell, n_id}
-  <div>  
+  <div>
     <input
       type="checkbox"
       id={`${id}_${n_id}`}

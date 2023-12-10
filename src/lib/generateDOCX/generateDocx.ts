@@ -5,7 +5,7 @@ import {
   generateHeading,
   endingTemplate,
 } from "./docxTemplate.ts";
-import { generateTable } from "./docxTable.ts";
+import { generateTable, templateTable } from "./docxTable.ts";
 import { generateList } from "./docxList.ts";
 import { generateText } from "./docxText.ts";
 
@@ -49,6 +49,7 @@ export async function generateDOCX(
     generateTitle(titleData),
     ...formData.filter(filterNoData).map(addSection),
     ...endingTemplate.map(addSection),
+    templateTable(),
   ];
 
   // It becomes readonly once passed to the document but TS doesn't know

@@ -32,3 +32,65 @@ export function generateTable(
     }),
   ].filter(filterParagraphs);
 }
+
+function getTemplateTable(): docx.Table {
+  return new docx.Table({
+    columnWidths: [4505, 4505],
+    rows: [
+      new docx.TableRow({
+        children: [
+          new docx.TableCell({
+            children: [
+              new docx.Paragraph({
+                children: [
+                  new docx.TextRun({
+                    text: "От Заказчика",
+                    bold: true,
+                  }),
+                ],
+              }),
+            ],
+            width: {
+              size: 4505,
+              type: docx.WidthType.AUTO,
+            },
+          }),
+          new docx.TableCell({
+            children: [
+              new docx.Paragraph({
+                children: [
+                  new docx.TextRun({
+                    text: "От Исполнителя",
+                    bold: true,
+                  }),
+                ],
+              }),
+            ],
+            width: {
+              size: 4505,
+              type: docx.WidthType.AUTO,
+            },
+          }),
+        ],
+      }),
+      new docx.TableRow({
+        children: [
+          getTableCell("________________________", 4505),
+          getTableCell("________________________", 4505),
+        ],
+      }),
+      new docx.TableRow({
+        children: [
+          getTableCell("______________________ / ФИО /", 4505),
+          getTableCell("___________________ / ФИО /", 4505),
+        ],
+      }),
+    ],
+  });
+}
+
+export function templateTable(): docx.ISectionOptions {
+  return {
+    children: [getTemplateTable()]
+  }
+}
