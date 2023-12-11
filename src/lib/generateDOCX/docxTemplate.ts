@@ -99,7 +99,6 @@ export function generateTitle(
       // TODO handle missing values
       getRightAlignedParagraph(titleData.get("managerName")!),
       new docx.Paragraph({
-        heading: docx.HeadingLevel.TITLE,
         alignment: docx.AlignmentType.CENTER,
         spacing: { after: 300, before: 2000 },
         children: [
