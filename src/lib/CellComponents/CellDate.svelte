@@ -83,7 +83,7 @@
 
   input {
     block-size: 2em;
-    inline-size: 50%;
+    padding: 0.5em;
     margin: 0.5em;
     border-width: 0;
     box-shadow: 0 0 1em 0.5em rgba(0, 0, 0, 0.2);
