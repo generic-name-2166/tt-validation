@@ -1,13 +1,12 @@
 import adapter from "@sveltejs/adapter-static";
 import { vitePreprocess } from "@sveltejs/vite-plugin-svelte";
 
-const local = process.argv.includes("dev") || process.argv.includes("preview");
-console.log(process.env.BASE_PATH);
-console.log("/tt-validation" === process.env.BASE_PATH);
+const dev = process.argv.includes("dev");
 /**
+ * Adding and deleting the slash because somehow it throws and error during svelte-kit sync
  * @type {`/${string}` | undefined}
  */
-const crutch = process.env.BASE_PATH;
+const crutch = process.env.BASE_PATH ? `/${process.env.BASE_PATH.slice(1)}` : undefined;
 
 /** @type {import('@sveltejs/kit').Config} */
 const config = {
@@ -21,7 +20,7 @@ const config = {
     // See https://kit.svelte.dev/docs/adapters for more information about adapters.
     adapter: adapter(),
     paths: {
-      base: local ? "" : crutch, 
+      base: dev ? "" : crutch, 
     },
   },
 };
