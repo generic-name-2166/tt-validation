@@ -1,44 +1,65 @@
-interface MappedValue {
+export interface MappedValue {
+  before: TextValue;
   key: string;
+  after: TextValue;
 }
 
-type TextValue = string | MappedValue;
+export function mapValue(key: MappedValue, dict: Map<string, string>): string {
+  const value: string | undefined = dict.get(key.key);
+  const before: string = isMapped(key.before)
+    ? mapValue(key.before, dict)
+    : key.before;
+  const after: string = isMapped(key.after)
+    ? mapValue(key.after, dict)
+    : key.after;
+  if (!value) {
+    // Can define default value here
+    return before + after;
+  }
+  return before + value + after;
+}
 
-interface SerializedTitle {
+export type TextValue = string | MappedValue;
+
+export function isMapped(value: TextValue): value is MappedValue {
+  return (value as MappedValue).key !== undefined;
+}
+
+export interface SerializedTitle {
+  indentifier: "title";
   inner: string;
 }
 
-interface SerializedLabel {
+export interface SerializedLabel {
+  indentifier: "label";
   inner: string;
 }
 
-interface SerializedText {
-  inner: Array<TextValue>;
+export interface SerializedText {
+  identifier: "text";
+  inner: TextValue;
 }
 
-interface SerializedDefinition {
+export interface SerializedDefinition {
+  identifier: "definition";
   word: string;
   definition: string;
 }
 
-interface SerializedCheckbox {
+export interface SerializedCheckbox {
+  identifier: "checkbox";
   checked: Array<string>;
 }
 
-interface SerializedTable {
+export interface SerializedTable {
+  identifier: "table";
   inner: Array<Array<string>>;
 }
 
-interface SerialziedSubsystem {
-  // TODO
-  inner: undefined;
-}
-
-type SerializedElement =
+export type SerializedElement =
   | SerializedTitle
   | SerializedLabel
   | SerializedText
   | SerializedDefinition
   | SerializedCheckbox
-  | SerializedTable
-  | SerialziedSubsystem;
+  | SerializedTable;
