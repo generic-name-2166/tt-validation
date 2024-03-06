@@ -1,3 +1,7 @@
+import * as docx from "docx";
+
+const STANDARD_SPACING: number = 180;
+
 export interface MappedValue {
   before: TextValue;
   key: string;
@@ -26,12 +30,12 @@ export function isMapped(value: TextValue): value is MappedValue {
 }
 
 export interface SerializedTitle {
-  indentifier: "title";
+  identifier: "title";
   inner: string;
 }
 
 export interface SerializedLabel {
-  indentifier: "label";
+  identifier: "label";
   inner: string;
 }
 
@@ -48,12 +52,12 @@ export interface SerializedDefinition {
 
 export interface SerializedCheckbox {
   identifier: "checkbox";
-  checked: Array<string>;
+  checked: string[];
 }
 
 export interface SerializedTable {
   identifier: "table";
-  inner: Array<Array<string>>;
+  inner: string[][];
 }
 
 export type SerializedElement =
@@ -63,3 +67,120 @@ export type SerializedElement =
   | SerializedDefinition
   | SerializedCheckbox
   | SerializedTable;
+
+function getHeading(title: string): docx.Paragraph {
+  return new docx.Paragraph({
+    heading: docx.HeadingLevel.HEADING_1,
+    alignment: docx.AlignmentType.CENTER,
+    spacing: { before: 300, after: STANDARD_SPACING },
+    children: [
+      new docx.TextRun({
+        text: title,
+        bold: true,
+        size: "18pt",
+        font: "Times New Roman",
+        color: "000000",
+      }),
+    ],
+  });
+}
+
+function getSubheading(label: string): docx.Paragraph {
+  return new docx.Paragraph({
+    heading: docx.HeadingLevel.HEADING_2,
+    spacing: { before: 240, after: STANDARD_SPACING },
+    indent: { left: "1.25mm" },
+    children: [
+      new docx.TextRun({
+        text: label,
+        bold: true,
+        size: "16pt",
+        font: "Times New Roman",
+        color: "000000",
+      }),
+    ],
+  });
+}
+
+function getParagraph(text: string): docx.Paragraph {
+  return new docx.Paragraph({
+    alignment: docx.AlignmentType.JUSTIFIED,
+    indent: { left: "1.25mm" },
+    spacing: { after: STANDARD_SPACING, before: STANDARD_SPACING },
+    text: text,
+  });
+}
+
+function getListPoint(point: string): docx.Paragraph {
+  return new docx.Paragraph({
+    // Every TextRun here needs to end with a dot
+    children: [new docx.TextRun(point)],
+    spacing: { after: 18, before: 18 },
+    bullet: { level: 0 },
+  });
+}
+
+function getTableCell(cell: string, width: number): docx.TableCell {
+  return new docx.TableCell({
+    children: [new docx.Paragraph(cell)],
+    width: {
+      size: width,
+      type: docx.WidthType.AUTO,
+    },
+  });
+}
+
+function getTableRow(row: string[]): docx.TableRow {
+  return new docx.TableRow({
+    // Only supports 2 columns now
+    children: [getTableCell(row[0], 2505), getTableCell(row[1], 6505)],
+  });
+}
+
+function getTable(table: string[][]): docx.Table {
+  return new docx.Table({
+    columnWidths: [2505, 6505],
+    rows: table.map(getTableRow),
+  });
+}
+
+function docxElement(
+  element: SerializedElement,
+  dict: Map<string, string>,
+): docx.ISectionOptions["children"][0] | docx.ISectionOptions["children"] {
+  switch (element.identifier) {
+    case "title":
+      return getHeading(element.inner);
+    case "label":
+      return getSubheading(element.inner);
+    case "text":
+      const text: string = isMapped(element.inner)
+        ? mapValue(element.inner, dict)
+        : element.inner;
+      return getParagraph(text);
+    case "definition":
+      // TODO maybe something more complex
+      return getParagraph(`${element.word} - ${element.definition}`);
+    case "checkbox":
+      return element.checked.map(getListPoint);
+    case "table":
+      return getTable(element.inner);
+  }
+}
+
+export function docxComponent(
+  elements: SerializedElement[],
+  dict: Map<string, string>,
+): docx.ISectionOptions {
+  const children = elements.flatMap((elem) => docxElement(elem, dict));
+  return {
+    properties: {
+      type: docx.SectionType.CONTINUOUS,
+      page: {
+        margin: { top: "25mm", left: "20mm", right: "10mm", bottom: "15mm" },
+        pageNumbers: { start: 2 },
+      },
+    },
+    children: children,
+  };
+}
