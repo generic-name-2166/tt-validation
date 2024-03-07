@@ -6,7 +6,9 @@ const dev = process.argv.includes("dev");
  * Adding and deleting the slash because somehow it throws and error during svelte-kit sync
  * @type {`/${string}` | undefined}
  */
-const crutch = process.env.BASE_PATH ? `/${process.env.BASE_PATH.slice(1)}` : undefined;
+const crutch = process.env.BASE_PATH
+  ? `/${process.env.BASE_PATH.slice(1)}`
+  : undefined;
 
 /** @type {import('@sveltejs/kit').Config} */
 const config = {
@@ -20,7 +22,7 @@ const config = {
     // See https://kit.svelte.dev/docs/adapters for more information about adapters.
     adapter: adapter(),
     paths: {
-      base: dev ? "" : crutch, 
+      base: dev ? "" : crutch,
     },
   },
 };

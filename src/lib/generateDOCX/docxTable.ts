@@ -91,6 +91,6 @@ function getTemplateTable(): docx.Table {
 
 export function templateTable(): docx.ISectionOptions {
   return {
-    children: [getTemplateTable()]
-  }
+    children: [getTemplateTable()],
+  };
 }
