@@ -1,5 +1,5 @@
-<script lang="ts">
-  import { titleData } from "$lib/formStorage";
+<!-- <script lang="ts">
+  import { valueMap } from "$lib/formStorage";
 
   interface TitleItem {
     key: string;
@@ -73,3 +73,4 @@
     margin: 0.5em;
   }
 </style>
+ -->

@@ -1,4 +1,4 @@
-import * as docx from "docx";
+/* import * as docx from "docx";
 import { getGenericParagraph, filterParagraphs } from "./docxTemplate";
 
 function getTableCell(cell: string, width: number): docx.TableCell {
@@ -94,3 +94,4 @@ export function templateTable(): docx.ISectionOptions {
     children: [getTemplateTable()],
   };
 }
+ */

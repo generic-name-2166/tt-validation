@@ -1,4 +1,4 @@
-<script lang="ts">
+<!-- <script lang="ts">
   import type { FormData } from "$lib/formStorage";
   import {
     saveCellToLocalStorage,
@@ -89,3 +89,4 @@
     box-shadow: 0 0 1em 0.5em rgba(0, 0, 0, 0.2);
   }
 </style>
+ -->

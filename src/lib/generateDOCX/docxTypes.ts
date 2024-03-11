@@ -1,6 +1,7 @@
+import type { SavedElement, SavedSubsystem } from "$lib/formStorage";
 import * as docx from "docx";
 
-const STANDARD_SPACING: number = 180;
+export const STANDARD_SPACING: number = 180;
 
 export interface MappedValue {
   before: TextValue;
@@ -30,34 +31,34 @@ export function isMapped(value: TextValue): value is MappedValue {
 }
 
 export interface SerializedTitle {
-  identifier: "title";
-  inner: string;
+  readonly identifier: "title";
+  readonly inner: string;
 }
 
 export interface SerializedLabel {
-  identifier: "label";
-  inner: string;
+  readonly identifier: "label";
+  readonly inner: string;
 }
 
 export interface SerializedText {
-  identifier: "text";
-  inner: TextValue;
+  readonly identifier: "text";
+  readonly inner: TextValue;
 }
 
 export interface SerializedDefinition {
-  identifier: "definition";
-  word: string;
-  definition: string;
+  readonly identifier: "definition";
+  readonly word: string;
+  readonly definition: string;
 }
 
 export interface SerializedCheckbox {
-  identifier: "checkbox";
-  checked: string[];
+  readonly identifier: "checkbox";
+  readonly checked: string[];
 }
 
 export interface SerializedTable {
-  identifier: "table";
-  inner: string[][];
+  readonly identifier: "table";
+  readonly inner: string[][];
 }
 
 export type SerializedElement =
@@ -107,7 +108,7 @@ function getParagraph(text: string): docx.Paragraph {
     alignment: docx.AlignmentType.JUSTIFIED,
     indent: { left: "1.25mm" },
     spacing: { after: STANDARD_SPACING, before: STANDARD_SPACING },
-    text: text,
+    text,
   });
 }
 
@@ -157,6 +158,8 @@ function docxElement(
       const text: string = isMapped(element.inner)
         ? mapValue(element.inner, dict)
         : element.inner;
+      // TODO transform the dates from YYYY-MM-DD to DD.MM.YYYY
+      // here or in `serialize`
       return getParagraph(text);
     case "definition":
       // TODO maybe something more complex
@@ -182,5 +185,65 @@ export function docxComponent(
       },
     },
     children: children,
-  };
+  } satisfies docx.ISectionOptions;
+}
+
+export function serialize(
+  element: SavedElement,
+): SerializedElement | SerializedElement[] {
+  switch (element.identifier) {
+    case "title":
+      return element satisfies SerializedTitle;
+    case "label":
+      return element satisfies SerializedLabel;
+    case "text":
+      if (element.implicit === "mappedOnly") {
+        return [];
+      } // This means the elements is only for valueMap and shouldn't be rendered
+      // TODO transform the dates from YYYY-MM-DD to DD.MM.YYYY
+      // here or in `docxElement`
+      return {
+        identifier: element.identifier,
+        inner: element.implicit ? element.implicit : element.inner,
+      } satisfies SerializedText;
+    case "implicitText":
+      return {
+        identifier: "text",
+        inner: element.inner,
+      } satisfies SerializedText;
+    case "definition":
+      return {
+        identifier: element.identifier,
+        word: element.word,
+        definition: element.inner,
+      } satisfies SerializedDefinition;
+    case "checkbox":
+      return {
+        identifier: element.identifier,
+        checked: element.inner
+          .filter(([check, value]) => check && value.length > 0)
+          .map(([_check, value]) => value),
+      } satisfies SerializedCheckbox;
+    case "table":
+      return element satisfies SerializedTable;
+    case "subsystem":
+      const subsystems: (SerializedLabel | SerializedText)[] =
+        element.inner.flatMap(
+          (
+            subsystem: SavedSubsystem["inner"][0],
+          ): [
+            SerializedLabel,
+            SerializedText,
+            SerializedLabel,
+            SerializedText,
+          ] => {
+            const name = subsystem.name satisfies SerializedLabel;
+            const nameInput = subsystem.nameInput satisfies SerializedText;
+            const description = subsystem.description satisfies SerializedLabel;
+            const descInput = subsystem.descInput satisfies SerializedText;
+            return [name, nameInput, description, descInput];
+          },
+        );
+      return subsystems;
+  }
 }

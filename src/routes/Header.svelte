@@ -12,9 +12,9 @@
     Save everything to localStorage
   </button>
 
-  <button type="button">
+  <!-- <button type="button">
     Load everything from localStorage (experimental)
-  </button>
+  </button> -->
 </header>
 
 <br />

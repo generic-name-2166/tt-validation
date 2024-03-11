@@ -1,23 +1,36 @@
 <script lang="ts">
-  import type { FormData } from "$lib/formStorage.ts";
+  import Buttons from "$lib/CellComponents/Buttons.svelte";
   import {
     formData,
-    saveCellToLocalStorage,
-    readFromLocalStorage,
+    saveElement,
+    loadElement,
+    type SavedElement,
+    type SavedCheckbox,
   } from "$lib/formStorage.ts";
+  import { onMount } from "svelte";
 
-  export let amount: number;
   export let labels: string[];
-  export let id: number;
-  let additional: number = 1;
-  let checkedList: boolean[] = new Array(amount!).fill(false);
+  export let componentId: number;
+  export let elementId: number;
+
+  /* const amount: number = labels.length;
+  // amount never mutates
+  const checkedList: boolean[] = new Array(amount!).fill(false);
   let dataList: string[] = [""];
+  let additional: number = 1; */
 
-  interface FormDataList extends FormData {
+  let values: [boolean, string][] = labels.map((label) => [false, label]);
+  //  .concat(new Array([true, ""]));
+  // All my homies hate JavaScript
+  values.push([true, ""]);
+  // If localStorage has less than labels.length then do nothing
+  // If localStorage has more than labels.length then change only the ones <= labels.length
+
+  /* interface FormDataList extends FormData {
     data: [string][];
-  }
+  } */
 
-  function addField(form_data: FormData[]): FormData[] {
+  /* function addField(form_data: FormData[]): FormData[] {
     form_data[id].dimensions[0] = amount + additional;
     form_data[id].data = [...(form_data[id] as FormDataList).data, [""]];
     return form_data;
@@ -31,9 +44,9 @@
       amount + additional,
     );
     return new_data;
-  }
+  } */
 
-  function saveChange(n_id: number): void {
+  /* function saveChange(n_id: number): void {
     const checked: boolean = checkedList[n_id];
     const value: string = labels[n_id];
 
@@ -41,9 +54,9 @@
       (form_data[id] as FormDataList).data[n_id][0] = checked ? value : "";
       return form_data;
     });
-  }
+  } */
 
-  function saveChangeExtra(m_id: number): void {
+  /* function saveChangeExtra(m_id: number): void {
     const value: string = dataList[m_id];
 
     // Length check instead of string comparison because of some weird <empty string> value it can have
@@ -61,13 +74,13 @@
       (form_data[id] as FormDataList).data![amount + m_id][0] = value;
       return form_data;
     });
-  }
+  } */
 
-  function isChecked([row_data]: [string]): boolean {
+  /* function isChecked([row_data]: [string]): boolean {
     return row_data.length > 0;
-  }
+  } */
 
-  function loadListFromLocalStorage(): void {
+  /* function loadListFromLocalStorage(): void {
     const formDataFromStorage: FormData[] | null = readFromLocalStorage();
     if (
       !formDataFromStorage ||
@@ -90,26 +103,70 @@
     checkedList = allData.slice(0, amount).map(isChecked);
     additional = formDataFromStorage[id].dimensions[0] - checkedList.length;
     dataList = allData.slice(amount).map(([row_data]: [string]) => row_data);
-  }
+  } */
 
-  function saveListToLocalStorage(): void {
+  /* function saveListToLocalStorage(): void {
     console.log($formData[id]);
     saveCellToLocalStorage($formData[id], id);
-  }
+  } */
 
-  formData.update((form_data: FormData[]) => {
+  /* formData.update((form_data: FormData[]) => {
     form_data[id].dimensions = [amount, 1];
     form_data[id].data = new Array(amount + additional)
       .fill(null)
       .map(() => new Array(1).fill(""));
     return form_data;
+  }); */
+
+  function load(): void {
+    const savedValues: [boolean, string][] | null = loadElement<SavedCheckbox>(
+      componentId,
+      elementId,
+      "checkbox",
+    );
+    if (!savedValues || labels.length >= savedValues.length) {
+      // nothing saved or saved values are clearly different from shown
+      // TODO better comparison
+      return;
+    }
+    values = savedValues;
+  }
+
+  function save(): void {
+    saveElement($formData[componentId][elementId], componentId, elementId);
+  }
+
+  function update(): void {
+    formData.update((thisData: SavedElement[][]) => {
+      const element: SavedElement = thisData[componentId][elementId];
+      if (element.identifier !== "checkbox") {
+        // This should never be realistically reachable
+        // because of onMount
+        throw new TypeError("onMount failed to update model");
+      }
+      const checkboxes: SavedCheckbox = {
+        ...element,
+        inner: values,
+      };
+      thisData[componentId][elementId] = checkboxes;
+      return thisData;
+    });
+  }
+
+  onMount(() => {
+    // TODO make this non-descructive if there's already something
+    formData.update((thisData: SavedElement[][]) => {
+      const element: SavedCheckbox = {
+        identifier: "checkbox",
+        inner: values,
+      };
+      thisData[componentId][elementId] = element;
+      return thisData;
+    });
   });
 </script>
 
-<!-- id for accessibility question mark -->
-<input id={String(id)} type="hidden" />
-
-{#each checkedList as checkedCell, n_id}
+<!-- {#each checkedList as checkedCell, n_id}
   <div>
     <input
       type="checkbox"
@@ -145,24 +202,49 @@
 </button>
 <button type="button" on:click={loadListFromLocalStorage}>
   Загрузить ячейку
-</button>
+</button> -->
+
+{#each values as row, rowId}
+  <div>
+    {#if rowId < labels.length}
+      <input
+        type="checkbox"
+        id={`${componentId}_${elementId}_${rowId}`}
+        bind:checked={row[0]}
+        on:change={update}
+      />
+      <label for={`${componentId}_${elementId}_${rowId}`}>
+        <span>{row[1]}</span>
+      </label>
+    {:else}
+      <input
+        type="text"
+        id={`${componentId}_${elementId}_${rowId}`}
+        bind:value={row[1]}
+        on:change={update}
+      />
+    {/if}
+  </div>
+{/each}
+
+<Buttons {save} {load} />
 
 <style>
-  ul {
+  /* ul {
     margin: 0.5em;
     padding: 0 0.5em 0 0.5em;
   }
 
   li {
     margin: 0.5em;
-  }
+  } */
 
-  button {
+  /* button {
     border-radius: 0;
     margin: 0.5em;
     background-color: #555555;
     color: #eeeeee;
-  }
+  } */
 
   div {
     margin: 0.5em;

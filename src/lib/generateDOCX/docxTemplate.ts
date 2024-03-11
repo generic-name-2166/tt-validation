@@ -1,15 +1,14 @@
-import * as docx from "docx";
-import type { FormData } from "$lib/formStorage.ts";
+/* import * as docx from "docx";
 
-const STANDARD_SPACING: number = 180;
+const STANDARD_SPACING: number = 180; */
 
-export function filterParagraphs(
+/* export function filterParagraphs(
   paragraph: docx.Paragraph | docx.Table | null | undefined,
 ): boolean {
   return !!paragraph;
-}
+} */
 
-export function generateHeading(title: string): docx.Paragraph {
+/* export function generateHeading(title: string): docx.Paragraph {
   return new docx.Paragraph({
     heading: docx.HeadingLevel.HEADING_1,
     alignment: docx.AlignmentType.CENTER,
@@ -24,9 +23,9 @@ export function generateHeading(title: string): docx.Paragraph {
       }),
     ],
   });
-}
+} */
 
-export function generateSubheading(label: string): docx.Paragraph | null {
+/* export function generateSubheading(label: string): docx.Paragraph | null {
   if (label.length === 0) {
     return null;
   }
@@ -44,9 +43,9 @@ export function generateSubheading(label: string): docx.Paragraph | null {
       }),
     ],
   });
-}
+} */
 
-export function getGenericParagraph(
+/* export function getGenericParagraph(
   text?: string | undefined,
 ): docx.Paragraph | null {
   if (!text || text.length === 0) {
@@ -58,27 +57,15 @@ export function getGenericParagraph(
     spacing: { after: STANDARD_SPACING, before: STANDARD_SPACING },
     text: text,
   });
-}
+} */
 
-export function getGenericParagraphs(text: string): docx.Paragraph[] {
+/* export function getGenericParagraphs(text: string): docx.Paragraph[] {
   // Filter takes care of the error
   //@ts-expect-error
   return text.split("\n").map(getGenericParagraph).filter(filterParagraphs);
-}
+} */
 
-function getRightAlignedParagraph(text: string): docx.Paragraph {
-  return new docx.Paragraph({
-    spacing: { after: STANDARD_SPACING, before: STANDARD_SPACING },
-    alignment: docx.AlignmentType.RIGHT,
-    children: [
-      new docx.TextRun({
-        text: text,
-      }),
-    ],
-  });
-}
-
-export function generateTitle(
+/* export function generateTitle(
   titleData: Map<string, string>,
 ): docx.ISectionOptions {
   return {
@@ -126,16 +113,16 @@ export function generateTitle(
         spacing: { after: STANDARD_SPACING, before: STANDARD_SPACING },
         children: [
           new docx.TextRun({
-            text: `"${titleData.get("documentTitle")!}"`,
+            text: titleData.get("documentTitle")!,
             bold: true,
           }),
         ],
       }),
     ],
   };
-}
+} */
 
-export const endingTemplate: FormData[] = [
+/* export const endingTemplate: FormData[] = [
   {
     title: "9.3. Разработка рабочей документации",
     dimensions: [9, 1],
@@ -245,3 +232,4 @@ export const endingTemplate: FormData[] = [
     ],
   },
 ];
+ */

@@ -1,22 +1,14 @@
 <script lang="ts">
-  import type { InputLayout } from "./template.ts";
-  import type { FormData } from "$lib/formStorage.ts";
-  import CellTable from "$lib/CellComponents/CellTable.svelte";
-  import CellSubsystems from "$lib/CellComponents/CellSubsystems.svelte";
-  import CellCheckbox from "$lib/CellComponents/CellCheckbox.svelte";
-  import CellDate from "$lib/CellComponents/CellDate.svelte";
-  import {
-    formData,
-    saveCellToLocalStorage,
-    readFromLocalStorage,
-  } from "$lib/formStorage.ts";
+  import type { Component } from "./template.ts";
+  import CellText from "./CellText.svelte";
+  import Label from "$lib/CellComponents/Label.svelte";
+  import Title from "$lib/CellComponents/Title.svelte";
+  import CellCheckbox from "./CellCheckbox.svelte";
 
-  export let layout: InputLayout;
-  export let id: number;
-  export let label: string;
-  export let title: string | undefined;
+  export let componentId: number;
+  export let component: Component;
 
-  // Can also be a date, a number or a file maybe even
+  /* // Can also be a date, a number or a file maybe even
   let inputValue: string;
 
   function saveChange(e: Event): void {
@@ -66,15 +58,23 @@
     });
 
     inputValue = formDataFromStorage[id].data as string;
-  }
+  } */
 
-  function typeAction(element: HTMLInputElement): void {
+  /* function typeAction(element: HTMLInputElement): void {
     // A crutch due to bind:value
     element.type = layout.type;
-  }
+  } */
+  // So the flow of data right now is like this
+  // Template --(on load)--> Svelte component
+  // Svelte component --(on change)--> formData store
+  // formData store --(on change)--> localStorage
+  // formData store --(on submit)--> docx
+
+  // So do I again serialize from formData
+  // or do it from the Svelte component
 </script>
 
-<div>
+<!-- <div>
   {#if title}
     <h2>{title}</h2>
   {/if}
@@ -121,37 +121,57 @@
       Загрузить ячейку
     </button>
   {/if}
+</div> -->
+<div hidden={component.implicit}>
+  <!-- Using hidden rather than if for the side effects -->
+  {#each component.inner as element, elementId}
+    {#if element.identifier === "title"}
+      <Title
+        inner={element.inner}
+        {componentId}
+        {elementId}
+        notRender={element.notRender}
+      />
+    {:else if element.identifier === "label"}
+      <Label
+        inner={element.inner}
+        {componentId}
+        {elementId}
+        notRender={element.notRender}
+      />
+    {:else if element.identifier === "text"}
+      <CellText
+        {componentId}
+        {elementId}
+        type={element.type}
+        mappedTo={element.mappedTo}
+        implicit={element.implicit}
+        defined={null}
+      />
+    {:else if element.identifier === "definition"}
+      <CellText
+        {componentId}
+        {elementId}
+        type="definition"
+        mappedTo={element.mappedTo}
+        implicit={null}
+        defined={element.word}
+      />
+    {:else if element.identifier === "checkbox"}
+      <CellCheckbox labels={element.inner} {componentId} {elementId} />
+    {:else if element.identifier === "table"}
+      <!-- TODO -->
+    {:else if element.identifier === "subsystem"}
+      <!-- TODO -->
+    {/if}
+    {#if elementId + 1 < component.inner.length}
+      <br />
+    {/if}
+  {/each}
 </div>
 
 <style>
   div {
     margin: 1em;
-  }
-
-  input {
-    block-size: 2em;
-    inline-size: 50%;
-    margin: 0.5em;
-    border-width: 0;
-    box-shadow: 0 0 1em 0.5em rgba(0, 0, 0, 0.2);
-  }
-
-  textarea {
-    block-size: 5em;
-    inline-size: 50%;
-    margin: 0.5em;
-    border-width: 0;
-    box-shadow: 0 0 1em 0.5em rgba(0, 0, 0, 0.2);
-  }
-
-  button {
-    border-radius: 0;
-    margin: 0.5em;
-    background-color: #555555;
-    color: #eeeeee;
-  }
-
-  span {
-    margin: 0.5em;
   }
 </style>

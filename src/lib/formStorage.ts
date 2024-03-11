@@ -1,20 +1,21 @@
 import { writable } from "svelte/store";
+import type { MappedValue, TextValue } from "$lib/generateDOCX/docxTypes.ts";
 
-export interface FormData {
+/* export interface FormData {
   label: string;
   title?: string;
   dimensions: [number, number];
   data: string | string[][] | null;
   extra?: [string, string];
-}
+} */
 
-const temp: FormData[] = [];
-export const formData = writable(temp);
+/* const temp: FormData[] = [];
+export const formData = writable(temp); */
 
-const temp_: Map<string, string> = new Map();
+/* const temp_: Map<string, string> = new Map();
 temp_.set("documentTitle", "");
 temp_.set("manager", "");
-export const titleData = writable(new Map());
+export const titleData = writable(new Map()); */
 
 function storageAvailable(type: string) {
   let storage;
@@ -38,7 +39,7 @@ function storageAvailable(type: string) {
   }
 }
 
-export function readFromLocalStorage(): FormData[] | null {
+/* export function readFromLocalStorage(): FormData[] | null {
   if (!storageAvailable("localStorage")) {
     console.error("localStorage no available");
     return null;
@@ -51,9 +52,9 @@ export function readFromLocalStorage(): FormData[] | null {
   }
 
   return JSON.parse(item);
-}
+} */
 
-function setToLocalStorage(data: (FormData | null)[]): void {
+function setToLocalStorage(data: (SavedElement | null)[][]): void {
   try {
     localStorage.setItem("formData", JSON.stringify(data));
   } catch (e) {
@@ -61,7 +62,7 @@ function setToLocalStorage(data: (FormData | null)[]): void {
   }
 }
 
-export function saveCellToLocalStorage(
+/* export function saveCellToLocalStorage(
   cellData: FormData,
   cellNumber: number,
 ): void {
@@ -84,13 +85,166 @@ export function saveCellToLocalStorage(
   formDataList[cellNumber] = cellData;
 
   setToLocalStorage(formDataList);
-}
+} */
 
-export function saveAll(form_data: FormData[]): void {
+export function saveAll(formData: SavedElement[][]): void {
   if (!storageAvailable("localStorage")) {
-    console.error("localStorage no available");
+    console.error("localStorage not available");
     return;
   }
 
-  setToLocalStorage(form_data);
+  setToLocalStorage(formData);
 }
+
+export function readFromLocalStorage(): SavedElement[][] | null {
+  if (!storageAvailable("localStorage")) {
+    console.error("localStorage not available");
+    return null;
+  }
+
+  const item: string | null = localStorage.getItem("formData");
+  return item ? JSON.parse(item) : null;
+}
+
+export interface SavedTitle {
+  readonly identifier: "title";
+  readonly inner: string;
+  readonly notRender?: boolean;
+}
+
+export interface SavedLabel {
+  readonly identifier: "label";
+  readonly inner: string;
+  readonly notRender?: boolean;
+}
+
+export interface SavedText {
+  readonly identifier: "text";
+  inner: string;
+  implicit: MappedValue | "mappedOnly" | null;
+}
+
+export interface SavedImplicitText {
+  readonly identifier: "implicitText";
+  readonly inner: TextValue;
+}
+
+export interface SavedDefinition {
+  readonly identifier: "definition";
+  readonly word: string;
+  // inner === definition
+  inner: string;
+}
+
+/**
+ * Array of [boolean, string]
+ * where boolean signifies whether the line is checked
+ * and string signifies value of the line
+ */
+export interface SavedCheckbox {
+  readonly identifier: "checkbox";
+  inner: [boolean, string][];
+}
+
+interface SavedTable {
+  readonly identifier: "table";
+  inner: string[][];
+}
+
+export interface SavedSubsystem {
+  readonly identifier: "subsystem";
+  inner: {
+    readonly name: SavedLabel;
+    nameInput: SavedText;
+    readonly description: SavedLabel;
+    descInput: SavedText;
+  }[];
+}
+
+export type SavedElement =
+  | SavedTitle
+  | SavedLabel
+  | SavedText
+  | SavedImplicitText
+  | SavedDefinition
+  | SavedCheckbox
+  | SavedTable
+  | SavedSubsystem;
+
+export const formData = writable(new Array<Array<SavedElement>>());
+
+/**
+ * # Side effects
+ * Updates `formData` model if successful
+ */
+export function loadElement<T extends SavedElement>(
+  componentId: number,
+  elementId: number,
+  identifier: T["identifier"],
+): T["inner"] | null {
+  if (!storageAvailable("localStorage")) {
+    console.error("localStorage not available");
+    return null;
+  }
+
+  const item: string | null = localStorage.getItem("formData");
+
+  if (!item) {
+    return null;
+  }
+
+  const data: SavedElement | null | undefined =
+    JSON.parse(item)[componentId][elementId];
+
+  if (
+    !data ||
+    data.identifier !== identifier ||
+    data.identifier === "title" ||
+    data.identifier === "label"
+  ) {
+    console.log(data?.identifier, identifier);
+    return null;
+  }
+
+  formData.update((thisData: SavedElement[][]) => {
+    const element: SavedElement = data;
+    thisData[componentId][elementId] = element;
+    return thisData;
+  });
+
+  return data.inner;
+}
+
+export function saveElement(
+  element: SavedElement,
+  componentId: number,
+  elementId: number,
+): void {
+  if (!storageAvailable("localStorage")) {
+    console.error("localStorage not available");
+    return;
+  }
+  const data: SavedElement[][] | null = readFromLocalStorage();
+  if (!data) {
+    const mockList: SavedElement[][] = new Array(componentId + 1)
+      .fill(null)
+      .map((_null) => new Array(elementId + 1));
+    mockList[componentId][elementId] = element;
+    setToLocalStorage(mockList);
+    return;
+  }
+  data[componentId][elementId] = element;
+  setToLocalStorage(data);
+}
+
+export function initStorage(formData: SavedElement[][]): void {
+  const prevData: SavedElement[][] | null = readFromLocalStorage();
+  if (!prevData) {
+    saveAll(formData);
+  }
+}
+
+/**
+ * TODO
+ */
+export const valueMap = writable(new Map<string, string>());

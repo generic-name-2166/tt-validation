@@ -1,4 +1,4 @@
-import * as docx from "docx";
+/* import * as docx from "docx";
 import {
   generateSubheading,
   getGenericParagraph,
@@ -28,3 +28,4 @@ export function generateList(
     getGenericParagraph(extra ? extra[1] : ""),
   ].filter(filterParagraphs);
 }
+ */
