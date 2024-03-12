@@ -1,9 +1,8 @@
-<script lang="ts">
-  import type { FormData } from "$lib/formStorage.ts";
+<!-- <script lang="ts">
   import {
     formData,
-    saveCellToLocalStorage,
-    readFromLocalStorage,
+    saveElement,
+    loadElement,
   } from "$lib/formStorage.ts";
 
   // First number is row number, second is column number
@@ -204,3 +203,4 @@
     color: #eeeeee;
   }
 </style>
+ -->

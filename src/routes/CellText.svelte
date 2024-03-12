@@ -95,7 +95,25 @@
   }
 
   onMount(() => {
-    // TODO make this non-descructive if there's already something
+    const element: SavedElement | undefined = $formData[componentId][elementId];
+    if (
+      element?.identifier === "definition" ||
+      element?.identifier === "text"
+    ) {
+      // non-descructive if there's already something in the model
+      if (type === "number") {
+        try {
+          num = parseInt(element.inner);
+        } catch {
+          // Saved element doesn't match the shown element
+          return;
+        }
+      } else {
+        value = element.inner;
+      }
+      return;
+    }
+
     formData.update((thisData: SavedElement[][]) => {
       const element: SavedText | SavedDefinition = defined
         ? {
@@ -139,6 +157,7 @@
     inner={defined ? defined : "this should never occur"}
     {componentId}
     {elementId}
+    notRender={false}
   />
   <br />
   <input {id} bind:value on:change={updateText} />

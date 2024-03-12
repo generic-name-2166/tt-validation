@@ -19,12 +19,21 @@
   let dataList: string[] = [""];
   let additional: number = 1; */
 
-  let values: [boolean, string][] = labels.map((label) => [false, label]);
+  interface Row {
+    checked: boolean;
+    value: string;
+    element?: HTMLInputElement;
+  }
+
+  let values: Row[] = labels.map((label) => {
+    return { checked: false, value: label };
+  });
   //  .concat(new Array([true, ""]));
   // All my homies hate JavaScript
-  values.push([true, ""]);
+  values = [...values, { checked: true, value: "" }];
   // If localStorage has less than labels.length then do nothing
   // If localStorage has more than labels.length then change only the ones <= labels.length
+  // inputRefs for calling .focus() on elements
 
   /* interface FormDataList extends FormData {
     data: [string][];
@@ -118,6 +127,38 @@
     return form_data;
   }); */
 
+  function serialize(rows: Row[]): [boolean, string][] {
+    return rows.map((row: Row) => [row.checked, row.value]);
+  }
+
+  function deserialize(rows: [boolean, string][]): Row[] {
+    return rows.map((row: [boolean, string]) => {
+      return { checked: row[0], value: row[1] };
+    });
+  }
+
+  // Set for performance and convenience
+  const focusKeys = new Set(["Enter", "ArrowUp", "ArrowDown"]);
+
+  function changeFocus(event: KeyboardEvent, rowId: number): void {
+    const key: string = event.key;
+    if (!focusKeys.has(key)) {
+      return;
+    }
+
+    switch (key) {
+      case "Enter":
+        values[rowId + 1]?.element?.focus();
+        return;
+      case "ArrowUp":
+        values[rowId - 1]?.element?.focus();
+        return;
+      case "ArrowDown":
+        values[rowId + 1]?.element?.focus();
+        return;
+    }
+  }
+
   function load(): void {
     const savedValues: [boolean, string][] | null = loadElement<SavedCheckbox>(
       componentId,
@@ -129,7 +170,7 @@
       // TODO better comparison
       return;
     }
-    values = savedValues;
+    values = deserialize(savedValues);
   }
 
   function save(): void {
@@ -137,6 +178,16 @@
   }
 
   function update(): void {
+    const lastRowId: number = values.length - 1;
+    if (
+      values[lastRowId - 1].value.length === 0 &&
+      values[lastRowId].value.length === 0
+    ) {
+      values = values.slice(0, lastRowId);
+    } else if (values[lastRowId].value.length > 0) {
+      values = [...values, { checked: true, value: "" }];
+    }
+
     formData.update((thisData: SavedElement[][]) => {
       const element: SavedElement = thisData[componentId][elementId];
       if (element.identifier !== "checkbox") {
@@ -146,7 +197,7 @@
       }
       const checkboxes: SavedCheckbox = {
         ...element,
-        inner: values,
+        inner: serialize(values),
       };
       thisData[componentId][elementId] = checkboxes;
       return thisData;
@@ -154,11 +205,22 @@
   }
 
   onMount(() => {
-    // TODO make this non-descructive if there's already something
+    const element: SavedElement | undefined = $formData[componentId][elementId];
+    if (element?.identifier === "checkbox") {
+      // non-descructive if there's already something in the model
+      if (!element.inner || labels.length >= element.inner.length) {
+        // nothing saved or saved values are clearly different from shown
+        // TODO better comparison
+        return;
+      }
+      values = deserialize(element.inner);
+      return;
+    }
+
     formData.update((thisData: SavedElement[][]) => {
       const element: SavedCheckbox = {
         identifier: "checkbox",
-        inner: values,
+        inner: serialize(values),
       };
       thisData[componentId][elementId] = element;
       return thisData;
@@ -210,18 +272,20 @@
       <input
         type="checkbox"
         id={`${componentId}_${elementId}_${rowId}`}
-        bind:checked={row[0]}
+        bind:checked={row.checked}
         on:change={update}
       />
       <label for={`${componentId}_${elementId}_${rowId}`}>
-        <span>{row[1]}</span>
+        <span>{row.value}</span>
       </label>
     {:else}
       <input
         type="text"
         id={`${componentId}_${elementId}_${rowId}`}
-        bind:value={row[1]}
-        on:change={update}
+        bind:this={row.element}
+        on:keydown={(e) => changeFocus(e, rowId)}
+        bind:value={row.value}
+        on:input={update}
       />
     {/if}
   </div>

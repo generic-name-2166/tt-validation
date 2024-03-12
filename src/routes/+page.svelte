@@ -4,8 +4,12 @@
   import Header from "./Header.svelte";
 </script>
 
+<svelte:head>
+  <title>Конструктор ТЗ</title>
+</svelte:head>
+
 <Header />
-<h1>Validate TT</h1>
+<h1>Конструктор ТЗ</h1>
 
 <Form />
 <Footer />
