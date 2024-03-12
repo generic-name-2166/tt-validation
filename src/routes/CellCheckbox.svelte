@@ -13,6 +13,8 @@
   export let componentId: number;
   export let elementId: number;
 
+  const id: string = `${componentId}_${elementId}`;
+
   /* const amount: number = labels.length;
   // amount never mutates
   const checkedList: boolean[] = new Array(amount!).fill(false);
@@ -271,17 +273,17 @@
     {#if rowId < labels.length}
       <input
         type="checkbox"
-        id={`${componentId}_${elementId}_${rowId}`}
+        id={`${id}_${rowId}`}
         bind:checked={row.checked}
         on:change={update}
       />
-      <label for={`${componentId}_${elementId}_${rowId}`}>
+      <label for={`${id}_${rowId}`}>
         <span>{row.value}</span>
       </label>
     {:else}
       <input
         type="text"
-        id={`${componentId}_${elementId}_${rowId}`}
+        id={`${id}_${rowId}`}
         bind:this={row.element}
         on:keydown={(e) => changeFocus(e, rowId)}
         bind:value={row.value}

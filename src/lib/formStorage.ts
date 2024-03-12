@@ -146,7 +146,7 @@ export interface SavedCheckbox {
   inner: [boolean, string][];
 }
 
-interface SavedTable {
+export interface SavedTable {
   readonly identifier: "table";
   inner: string[][];
 }

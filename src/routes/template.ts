@@ -76,7 +76,7 @@ interface Checkbox {
 
 interface Table {
   readonly identifier: "table";
-  readonly columnCount: number;
+  // readonly columnCount: number;
 }
 
 interface Subsystems {
@@ -218,7 +218,7 @@ export const cell_list: Component[] = [
     inner: [
       { identifier: "title", inner: "4. Обозначения и сокращения" },
       { identifier: "label", inner: "Обозначения и сокращения" },
-      { identifier: "table", columnCount: 2 },
+      { identifier: "table" /* columnCount: 2 */ },
     ],
   },
   /* {

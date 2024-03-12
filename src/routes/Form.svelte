@@ -12,8 +12,7 @@
 
   let dataURL: string = ""; // = "data:application/pdf;base64,";
 
-  async function validate(event: Event): Promise<void> {
-    event.preventDefault();
+  async function validate(): Promise<void> {
     dataURL = await generateDoc($formData, $valueMap);
   }
 
@@ -50,7 +49,7 @@
     {/each}
   </div>
 
-  <button type="button" on:click={validate}> Submit </button>
+  <button type="button" on:click|preventDefault={validate}> Submit </button>
   <br />
   <button type="button">
     <a href={dataURL} download="Заготовка_ТЗ.docx">Download docx file</a>
