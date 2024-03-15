@@ -100,24 +100,12 @@ export const cell_list: Component[] = [
         inner: "1. Организационная структура выполнения работ",
       },
       { identifier: "definition", mappedTo: "customer", word: "Заказчик" },
-    ],
-  },
-  {
-    inner: [
       {
         identifier: "definition",
         mappedTo: "funcCustomer",
         word: "Функциональный заказчик",
       },
-    ],
-  },
-  {
-    inner: [
       { identifier: "definition", mappedTo: "executor", word: "Исполнитель" },
-    ],
-  },
-  {
-    inner: [
       {
         identifier: "definition",
         mappedTo: "coexecutor",
@@ -197,16 +185,8 @@ export const cell_list: Component[] = [
           after: " этап(а/ов)",
         },
       },
-    ],
-  },
-  {
-    inner: [
       { identifier: "label", inner: "Начало выполнения работ" },
       { identifier: "text", type: "date", mappedTo: null, implicit: null },
-    ],
-  },
-  {
-    inner: [
       { identifier: "label", inner: "Конец выполнения работ" },
       { identifier: "text", type: "date", mappedTo: null, implicit: null },
     ],
@@ -228,10 +208,6 @@ export const cell_list: Component[] = [
           "Создание опытных (не имеющих сертификата соответствия) образцов машин, оборудования, материалов, обладающих характерными для нововведений принципиальными особенностями и не предназначенных для реализации третьим лицам, их испытания в течение времени, необходимого для получения данных, накопления опыта и отражения их в технической документации. ",
         ],
       },
-    ],
-  },
-  {
-    inner: [
       {
         identifier: "label",
         inner: "Прогнозный срок полезного использования (в месяцах)",

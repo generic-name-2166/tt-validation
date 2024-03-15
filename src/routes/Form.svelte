@@ -9,11 +9,17 @@
   import { onMount } from "svelte";
   import Cell from "./Cell.svelte";
   import { cell_list } from "./template.ts";
+  import { display } from "./Header.svelte";
 
   let dataURL: string = ""; // = "data:application/pdf;base64,";
+  let current: number = 0;
 
   async function validate(): Promise<void> {
     dataURL = await generateDoc($formData, $valueMap);
+  }
+
+  function setCurrent(id: number): void {
+    current = id;
   }
 
   formData.set(
@@ -21,16 +27,30 @@
       .fill([])
       .map((_null, i) => new Array<SavedElement>(cell_list[i].inner.length)),
   );
-  onMount(() => {
-    initStorage($formData);
-  });
+  onMount(() => initStorage($formData));
 </script>
 
 <main>
   <div>
-    {#each cell_list as component, componentId}
-      <Cell {componentId} {component} />
-    {/each}
+    {#if $display === "consequtive"}
+      {#each cell_list as component, componentId}
+        <Cell {componentId} {component} />
+      {/each}
+    {:else if $display === "pages"}
+      <ul>
+        {#each cell_list as _component, componentId}
+          <li>
+            <button
+              class="navbar {componentId === current ? 'selected' : ''}"
+              type="button"
+              on:click={() => setCurrent(componentId)}>{componentId}</button
+            >
+          </li>
+        {/each}
+      </ul>
+
+      <Cell componentId={current} component={cell_list[current]} />
+    {/if}
   </div>
 
   <button type="button" on:click|preventDefault={validate}>
@@ -63,5 +83,27 @@
 
   br + button {
     margin: 0 2em 2em 2em;
+  }
+
+  ul {
+    display: flex;
+    list-style-type: none;
+    margin: 1em 1em 0 1em;
+    padding: 0;
+  }
+
+  li {
+    margin: 0.2em;
+  }
+
+  button.navbar {
+    block-size: 2em;
+    inline-size: 2em;
+    margin: 0;
+    padding: 0;
+  }
+
+  .selected {
+    background-color: lightgreen;
   }
 </style>
