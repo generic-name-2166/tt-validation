@@ -3,12 +3,14 @@ import type { MappedValue } from "$lib/generateDOCX/docxTypes";
 interface Title {
   readonly identifier: "title";
   readonly inner: string;
+  readonly hidden?: boolean;
   readonly notRender?: boolean;
 }
 
 interface Label {
   readonly identifier: "label";
   readonly inner: string;
+  readonly hidden?: boolean;
   readonly notRender?: boolean;
 }
 
@@ -35,6 +37,11 @@ interface Checkbox {
   readonly inner: string[];
 }
 
+interface ImplicitCheckbox {
+  readonly identifier: "implicitCheckbox";
+  readonly inner: string[];
+}
+
 interface Table {
   readonly identifier: "table";
   // readonly columnCount: number;
@@ -58,12 +65,12 @@ type Element =
   | ImplicitText
   | Definition
   | Checkbox
+  | ImplicitCheckbox
   | Table
   | Subsystems;
 
 export interface Component {
   readonly inner: Element[];
-  readonly implicit?: boolean;
 }
 
 export const cell_list: Component[] = [
@@ -286,16 +293,16 @@ export const cell_list: Component[] = [
     ],
   },
   {
-    implicit: true,
     inner: [
       { identifier: "title", inner: "9.3. Разработка рабочей документации" },
       {
         identifier: "label",
         inner:
           "В рамках данного раздела, в соответствии с требованиями комплекса стандартов СТО РЖД «Автоматизированные системы и программные средства ОАО «РЖД», должна быть разработана, согласована и утверждена следующая рабочая документация:",
+        hidden: true,
       },
       {
-        identifier: "checkbox",
+        identifier: "implicitCheckbox",
         inner: [
           "описание информационной технологии;",
           "руководство пользователя;",
@@ -316,7 +323,6 @@ export const cell_list: Component[] = [
     ],
   },
   {
-    implicit: true,
     inner: [
       {
         identifier: "title",
@@ -327,6 +333,7 @@ export const cell_list: Component[] = [
         identifier: "label",
         inner:
           "Полигоном внедрения Программы для ЭВМ в рамках настоящего технического задания является ГВЦ (приемка в ГВЦ при участии ФЗ).",
+        hidden: true,
       },
       {
         identifier: "implicitText",
@@ -334,7 +341,7 @@ export const cell_list: Component[] = [
           "В рамках данного раздела должны быть выполнены следующие работы:",
       },
       {
-        identifier: "checkbox",
+        identifier: "implicitCheckbox",
         inner: [
           "организована сдача Программы для ЭВМ комиссии ГВЦ при участии ФЗ в опытную эксплуатацию, проведены испытания в соответствии с Программой и методикой испытаний, по результатам проведения испытаний оформлен Протокол испытаний; осуществлён ввод Программы для ЭВМ в опытную эксплуатацию на полигоне внедрения, оформлен акт приемки в опытную эксплуатацию;",
           "проведена опытная эксплуатация Программы для ЭВМ, скорректированы Программа для ЭВМ и комплект документации по результатам опытной эксплуатации (при необходимости), оформлен Отчет о проведении опытной эксплуатации;",
@@ -344,7 +351,6 @@ export const cell_list: Component[] = [
     ],
   },
   {
-    implicit: true,
     inner: [
       { identifier: "title", inner: "Передача отчётных материалов в ОФАП." },
       {
@@ -353,7 +359,7 @@ export const cell_list: Component[] = [
           "После подписания акта приемки Программы для ЭВМ в постоянную эксплуатацию Исполнитель должен передать на хранение в ОФАП следующие отчётные материалы1:",
       },
       {
-        identifier: "checkbox",
+        identifier: "implicitCheckbox",
         inner: [
           "ТЗ/ЧТЗ;",
           "описание информационной технологии;",
@@ -387,7 +393,7 @@ export const cell_list: Component[] = [
           "Получить консультацию и задать вопросы, связанные с передачей материалов в ОФАП, можно следующим образом:",
       },
       {
-        identifier: "checkbox",
+        identifier: "implicitCheckbox",
         inner: [
           "по электронной почте: ofk@pktbcdt.ru;",
           "по телефону: 8-499-260-88-43.",
@@ -396,7 +402,6 @@ export const cell_list: Component[] = [
     ],
   },
   {
-    implicit: true,
     inner: [
       { identifier: "title", inner: "10. Форма представления результатов" },
       {
@@ -410,7 +415,7 @@ export const cell_list: Component[] = [
           "По окончании выполнения работ Заказчику должны быть переданы следующие документы:",
       },
       {
-        identifier: "checkbox",
+        identifier: "implicitCheckbox",
         inner: [
           "акт сдачи-приемки электронных копий отчётных документов;",
           "акт приемки в опытную эксплуатацию с приложениями",

@@ -9,6 +9,7 @@
   export let inner: string;
   export let componentId: number;
   export let elementId: number;
+  export let hidden: boolean | undefined;
   export let notRender: boolean | undefined;
 
   const for_: string = `${componentId}_${elementId}`;
@@ -32,7 +33,7 @@
   });
 </script>
 
-<label for={for_}>
+<label for={for_} {hidden}>
   <span>{inner}</span>
 </label>
 

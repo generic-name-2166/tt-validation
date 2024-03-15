@@ -6,12 +6,13 @@
   import CellCheckbox from "./CellCheckbox.svelte";
   import CellTable from "./CellTable.svelte";
   import CellSubsystems from "./CellSubsystems.svelte";
+  import Implicit from "./CellImplicit.svelte";
 
   export let componentId: number;
   export let component: Component;
 </script>
 
-<div hidden={component.implicit}>
+<div>
   <!-- Using hidden rather than if for the side effects -->
   {#each component.inner as element, elementId}
     {#if element.identifier === "title"}
@@ -19,6 +20,7 @@
         inner={element.inner}
         {componentId}
         {elementId}
+        hidden={element.hidden}
         notRender={element.notRender}
       />
     {:else if element.identifier === "label"}
@@ -26,6 +28,7 @@
         inner={element.inner}
         {componentId}
         {elementId}
+        hidden={element.hidden}
         notRender={element.notRender}
       />
     {:else if element.identifier === "text"}
@@ -52,6 +55,8 @@
       <CellTable {componentId} {elementId} />
     {:else if element.identifier === "subsystem"}
       <CellSubsystems {componentId} {elementId} template={element.inner} />
+    {:else}
+      <Implicit {componentId} {elementId} inner={element.inner} />
     {/if}
     {#if elementId + 1 < component.inner.length}
       <br />

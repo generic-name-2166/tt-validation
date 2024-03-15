@@ -104,6 +104,6 @@
   }
 
   .selected {
-    background-color: lightgreen;
+    background-color: yellow;
   }
 </style>

@@ -9,6 +9,7 @@
   export let inner: string;
   export let componentId: number;
   export let elementId: number;
+  export let hidden: boolean | undefined;
   export let notRender: boolean | undefined;
 
   onMount(() => {
@@ -30,4 +31,4 @@
   });
 </script>
 
-<h2>{inner}</h2>
+<h2 {hidden}>{inner}</h2>

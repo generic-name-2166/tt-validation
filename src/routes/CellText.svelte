@@ -115,7 +115,7 @@
     }
 
     formData.update((thisData: SavedElement[][]) => {
-      const element: SavedText | SavedDefinition = defined
+      const text: SavedText | SavedDefinition = defined
         ? {
             identifier: "definition",
             inner: value,
@@ -126,7 +126,7 @@
             inner: value,
             implicit,
           };
-      thisData[componentId][elementId] = element;
+      thisData[componentId][elementId] = text;
       return thisData;
     });
   });
@@ -157,6 +157,7 @@
     inner={defined ? defined : "this should never occur"}
     {componentId}
     {elementId}
+    hidden={false}
     notRender={false}
   />
   <br />
