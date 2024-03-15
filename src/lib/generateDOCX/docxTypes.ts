@@ -231,14 +231,14 @@ export function serialize(
         element.inner.flatMap(
           (
             subsystem: SavedSubsystem["inner"][0],
-          ): [
-            SerializedLabel,
-            SerializedText,
-            SerializedLabel,
-            SerializedText,
-          ] => {
+          ):
+            | [SerializedLabel, SerializedText, SerializedLabel, SerializedText]
+            | [] => {
             const name = subsystem.name satisfies SerializedLabel;
             const nameInput = subsystem.nameInput satisfies SerializedText;
+            if (nameInput.inner.length === 0) {
+              return [];
+            }
             const description = subsystem.description satisfies SerializedLabel;
             const descInput = subsystem.descInput satisfies SerializedText;
             return [name, nameInput, description, descInput];

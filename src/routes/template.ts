@@ -79,7 +79,7 @@ interface Table {
   // readonly columnCount: number;
 }
 
-interface Subsystems {
+export interface Subsystems {
   readonly identifier: "subsystem";
   readonly label: Label;
   readonly inner: {

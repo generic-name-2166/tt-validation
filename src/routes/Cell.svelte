@@ -5,6 +5,7 @@
   import Title from "$lib/CellComponents/Title.svelte";
   import CellCheckbox from "./CellCheckbox.svelte";
   import CellTable from "./CellTable.svelte";
+  import CellSubsystems from "./CellSubsystems.svelte";
 
   export let componentId: number;
   export let component: Component;
@@ -163,7 +164,7 @@
     {:else if element.identifier === "table"}
       <CellTable {componentId} {elementId} />
     {:else if element.identifier === "subsystem"}
-      <!-- TODO -->
+      <CellSubsystems {componentId} {elementId} template={element.inner} />
     {/if}
     {#if elementId + 1 < component.inner.length}
       <br />
