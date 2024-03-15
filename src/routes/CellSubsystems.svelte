@@ -1,12 +1,15 @@
 <script lang="ts">
   import {
     formData,
+    saveElement,
     type SavedElement,
     type SavedSubsystem,
     type SavedText,
+    loadElement,
   } from "$lib/formStorage.ts";
   import { onMount } from "svelte";
   import type { Subsystems } from "./template.ts";
+  import Buttons from "$lib/CellComponents/Buttons.svelte";
 
   export let componentId: number;
   export let elementId: number;
@@ -61,12 +64,19 @@
     });
   }
 
-  function save(): void {
-    // TODO
+  function load(): void {
+    const savedValues: SavedSubsystem["inner"] | null =
+      loadElement<SavedSubsystem>(componentId, elementId, "subsystem");
+    if (!savedValues) {
+      // nothing saved or saved values are clearly different from shown
+      // TODO better comparison
+      return;
+    }
+    values = savedValues;
   }
 
-  function load(): void {
-    // TODO
+  function save(): void {
+    saveElement($formData[componentId][elementId], componentId, elementId);
   }
 
   onMount(() => {
@@ -121,6 +131,8 @@
 {/each}
 <br />
 <button type="button" on:click={addSubsystem}>Add subsystem</button>
+
+<Buttons {save} {load} />
 
 <style>
   div {

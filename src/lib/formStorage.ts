@@ -118,6 +118,8 @@ export type SavedElement =
 export const formData = writable(new Array<Array<SavedElement>>());
 
 /**
+ * Returns `inner` field of saved element
+ *
  * # Side effects
  * Updates `formData` model if successful
  */

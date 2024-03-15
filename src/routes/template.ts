@@ -248,7 +248,7 @@ export const cell_list: Component[] = [
         },
       },
     ],
-  }, 
+  },
   {
     inner: [
       {
