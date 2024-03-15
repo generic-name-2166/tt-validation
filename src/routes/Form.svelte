@@ -6,20 +6,25 @@
     initStorage,
   } from "$lib/formStorage.ts";
   import { generateDoc } from "$lib/generateDOCX/generateDocx.ts";
-  import { onMount } from "svelte";
+  import { onMount, tick } from "svelte";
   import Cell from "./Cell.svelte";
   import { cell_list } from "./template.ts";
   import { display } from "./Header.svelte";
 
   let dataURL: string = ""; // = "data:application/pdf;base64,";
   let current: number = 0;
+  let crutch: boolean = true;
 
   async function validate(): Promise<void> {
     dataURL = await generateDoc($formData, $valueMap);
   }
 
-  function setCurrent(id: number): void {
+  async function setCurrent(id: number): Promise<void> {
+    crutch = false;
     current = id;
+    // Crutch to destroy and then remount the cell
+    await tick();
+    crutch = true;
   }
 
   formData.set(
@@ -49,7 +54,9 @@
         {/each}
       </ul>
 
-      <Cell componentId={current} component={cell_list[current]} />
+      {#if crutch}
+        <Cell componentId={current} component={cell_list[current]} />
+      {/if}
     {/if}
   </div>
 

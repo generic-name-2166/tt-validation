@@ -1,10 +1,10 @@
 <script lang="ts">
-  import { onMount } from "svelte";
   import {
     formData,
     type SavedElement,
     type SavedTitle,
   } from "$lib/formStorage";
+	import { afterUpdate } from "svelte";
 
   export let inner: string;
   export let componentId: number;
@@ -12,7 +12,7 @@
   export let hidden: boolean | undefined;
   export let notRender: boolean | undefined;
 
-  onMount(() => {
+  function onRender(): void {
     if (notRender) {
       // Since you can't save or load titles and labels
       // Rather than filtering them when rendering
@@ -28,7 +28,9 @@
       thisData[componentId][elementId] = element;
       return thisData;
     });
-  });
+  }
+  // Crutch because doesn't rerun when changing pages
+  afterUpdate(onRender);
 </script>
 
 <h2 {hidden}>{inner}</h2>

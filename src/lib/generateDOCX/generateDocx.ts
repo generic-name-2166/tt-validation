@@ -91,7 +91,6 @@ export async function generateDoc(
   formData: SavedElement[][],
   valueMap: Map<string, string>,
 ): Promise<string> {
-  // TODO
   const components: SerializedElement[][] = formData.map(
     (component: SavedElement[]): SerializedElement[] =>
       component.flatMap(serialize),

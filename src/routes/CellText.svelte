@@ -20,6 +20,8 @@
   export let implicit: MappedValue | "mappedOnly" | null;
   export let defined: string | null;
   // ids should never mutate
+  // but they do because svelte instead of destroying elements
+  // and mounting them again, simply mutates props
   const id: string = `${componentId}_${elementId}`;
 
   let value: string = "";
