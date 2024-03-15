@@ -1,44 +1,5 @@
 import type { MappedValue } from "$lib/generateDOCX/docxTypes";
 
-interface IInputLayout {
-  type: "text" | "textarea" | "number";
-}
-// Having extra: ["label", "text"] is going to indicate labelOnSameLine
-
-interface SubsystemsLayout {
-  type: "subsystems";
-  amount: number;
-}
-
-interface CheckboxLayout {
-  type: "checkbox";
-  amount: number;
-  labels: string[];
-}
-
-interface TableLayout {
-  type: "table";
-  amount: [number, number];
-}
-
-interface DateLayout {
-  type: "date";
-}
-
-export type InputLayout =
-  | CheckboxLayout
-  | TableLayout
-  | IInputLayout
-  | SubsystemsLayout
-  | DateLayout;
-
-/* interface ICell {
-  label: string;
-  title?: string;
-  layout: InputLayout;
-  extra?: [string, string];
-} */
-
 interface Title {
   readonly identifier: "title";
   readonly inner: string;
@@ -132,12 +93,6 @@ export const cell_list: Component[] = [
       },
     ],
   },
-  /* {
-    title: "1. Организационная структура выполнения работ",
-    label: "Заказчик",
-    layout: { type: "text" },
-    extra: ["label", "text"],
-  }, */
   {
     inner: [
       {
@@ -147,11 +102,6 @@ export const cell_list: Component[] = [
       { identifier: "definition", mappedTo: "customer", word: "Заказчик" },
     ],
   },
-  /* {
-    label: "Функциональный заказчик",
-    layout: { type: "text" },
-    extra: ["label", "text"],
-  }, */
   {
     inner: [
       {
@@ -161,21 +111,11 @@ export const cell_list: Component[] = [
       },
     ],
   },
-  /* {
-    label: "Исполнитель",
-    layout: { type: "text" },
-    extra: ["label", "text"],
-  }, */
   {
     inner: [
       { identifier: "definition", mappedTo: "executor", word: "Исполнитель" },
     ],
   },
-  /* {
-    label: "Соисполнитель",
-    layout: { type: "text" },
-    extra: ["label", "text"],
-  }, */
   {
     inner: [
       {
@@ -185,11 +125,6 @@ export const cell_list: Component[] = [
       },
     ],
   },
-  /* {
-    title: "2. Основание для проведения работ",
-    label: "Концепция на разработку",
-    layout: { type: "text" },
-  }, */
   {
     inner: [
       { identifier: "title", inner: "2. Основание для проведения работ" },
@@ -197,11 +132,6 @@ export const cell_list: Component[] = [
       { identifier: "text", type: "text", mappedTo: null, implicit: null },
     ],
   },
-  /* {
-    title: "3. Цель выполнения работ",
-    label: "Цель работы",
-    layout: { type: "textarea" },
-  }, */
   {
     inner: [
       { identifier: "title", inner: "3. Цель выполнения работ" },
@@ -209,11 +139,6 @@ export const cell_list: Component[] = [
       { identifier: "text", type: "textarea", mappedTo: null, implicit: null },
     ],
   },
-  /* {
-    title: "4. Обозначения и сокращения",
-    label: "Обозначения и сокращения",
-    layout: { type: "table", amount: [3, 2] },
-  }, */
   {
     inner: [
       { identifier: "title", inner: "4. Обозначения и сокращения" },
@@ -221,11 +146,6 @@ export const cell_list: Component[] = [
       { identifier: "table" /* columnCount: 2 */ },
     ],
   },
-  /* {
-    title: "5. Состояние вопроса",
-    label: "Техническая документация",
-    layout: { type: "textarea" },
-  }, */
   {
     inner: [
       { identifier: "title", inner: "5. Состояние вопроса" },
@@ -233,25 +153,6 @@ export const cell_list: Component[] = [
       { identifier: "text", type: "textarea", mappedTo: null, implicit: null },
     ],
   },
-  /* {
-    title: "6. Основные требования к работам",
-    label:
-      "Работы в рамках данного задания должны выполняться в соответствии со следующими руководящими, нормативными и методическими документами",
-    layout: {
-      type: "checkbox",
-      amount: 8,
-      labels: [
-        "Порядок удаленного доступа разработчиков к автоматизированным информационно-телекоммуникационным системам ОАО «РЖД», утвержденный Распоряжением №2519/р от 16.11.2020; ",
-        "Распоряжение от 26.01.2023 г. N 152/р об утверждении порядка представления доступа к информационным системам ОАО «РЖД»;",
-        "Комплекс стандартов СТО РЖД «Автоматизированные системы и программные средства ОАО «РЖД», утверждённый распоряжением №951р от 29.04.2021",
-        "СТО РЖД 04.001.0 Автоматизированные системы и программные средства. Общие положения. ",
-        "СТО РЖД 04.001.1 Автоматизированные системы и программные средства. Требования к составу, содержанию и оформлению документов при создании автоматизированных систем и программных средств. ",
-        "СТО РЖД 04.001.2 Автоматизированные системы и программные средства. Порядок ввода автоматизированных систем и программных средств в действие. ",
-        "СТО РЖД 04.001.3 Автоматизированные системы и программные средства. Порядок внесения изменений в автоматизированные системы и программные средства. ",
-        "СТО РЖД 04.001.4 Автоматизированные системы и программные средства. Порядок согласования и утверждения документов, разрабатываемых при создании и модификации автоматизированных систем и программных средств.",
-      ],
-    },
-  }, */
   {
     inner: [
       { identifier: "title", inner: "6. Основные требования к работам" },
@@ -275,11 +176,6 @@ export const cell_list: Component[] = [
       },
     ],
   },
-  /* {
-    title: "7. Назначение программы для ЭВМ",
-    label: "Предназначение",
-    layout: { type: "textarea" },
-  }, */
   {
     inner: [
       { identifier: "title", inner: "7. Назначение программы для ЭВМ" },
@@ -287,12 +183,6 @@ export const cell_list: Component[] = [
       { identifier: "text", type: "textarea", mappedTo: null, implicit: null },
     ],
   },
-  /* {
-    title: "8. Сроки и этапы выполнения работ",
-    label: "Количество этапов",
-    layout: { type: "number" },
-    extra: ["Работы по настоящему ТЗ выполняются в ", " этап(а/ов)"],
-  }, */
   {
     inner: [
       { identifier: "title", inner: "8. Сроки и этапы выполнения работ" },
@@ -309,42 +199,18 @@ export const cell_list: Component[] = [
       },
     ],
   },
-  /* {
-    label: "Начало выполнения работ",
-    layout: { type: "date" },
-    extra: ["label", "text"],
-  }, */
   {
     inner: [
       { identifier: "label", inner: "Начало выполнения работ" },
       { identifier: "text", type: "date", mappedTo: null, implicit: null },
     ],
   },
-  /* {
-    label: "Конец выполнения работ",
-    layout: { type: "date" },
-    extra: ["label", "text"],
-  }, */
   {
     inner: [
       { identifier: "label", inner: "Конец выполнения работ" },
       { identifier: "text", type: "date", mappedTo: null, implicit: null },
     ],
   },
-  /* {
-    title: "9. Содержание работ",
-    label: "В рамках данного Технического задания выполняются следующие Работы",
-    layout: {
-      type: "checkbox",
-      amount: 4,
-      labels: [
-        "Работы, выполняемые по требованиям настоящего ТЗ, не относятся к НИОКР, не приводят к созданию новой продукции и технологий (как способов объединения физических, химических, технологических и других процессов с трудовыми процессами в целостную систему, производящую новую продукцию – товары, работы, услуги) или к усовершенствованию производимой продукции и технологий. ",
-        "Разработку конструкции инженерного объекта или технической системы. ",
-        "Разработку новых технологий (как способов объединения физических, химических, технологических и других процессов с трудовыми процессами в целостную систему, производящую новую продукцию – товары, работы, услуги).",
-        "Создание опытных (не имеющих сертификата соответствия) образцов машин, оборудования, материалов, обладающих характерными для нововведений принципиальными особенностями и не предназначенных для реализации третьим лицам, их испытания в течение времени, необходимого для получения данных, накопления опыта и отражения их в технической документации. ",
-      ],
-    },
-  }, */
   {
     inner: [
       { identifier: "title", inner: "9. Содержание работ" },
@@ -364,16 +230,6 @@ export const cell_list: Component[] = [
       },
     ],
   },
-  /* {
-    label: "Прогнозный срок полезного использования (в месяцах)",
-    layout: {
-      type: "number",
-    },
-    extra: [
-      "Срок полезного использования Программы для ЭВМ, разрабатываемой в рамках данного технического задания, определяется комиссией при приемке в постоянную эксплуатацию. Прогнозный срок полезного использования составляет не менее ",
-      " месяцев",
-    ],
-  }, */
   {
     inner: [
       {
@@ -392,18 +248,8 @@ export const cell_list: Component[] = [
         },
       },
     ],
-  },
-  /* {
-    title: "9.1. Разработка ЧТЗ и описания информационной технологии",
-    label: "ЧТЗ должно быть разработа в соответствии со следующими стандартами",
-    layout: {
-      type: "checkbox",
-      amount: 1,
-      labels: [
-        "СТО РЖД 04.001.1 Автоматизированные системы и программные средства. Требования к составу, содержанию и оформлению документов при создании автоматизированных систем и программных средств. ",
-      ],
-    },
-  }, */ {
+  }, 
+  {
     inner: [
       {
         identifier: "title",
@@ -422,11 +268,6 @@ export const cell_list: Component[] = [
       },
     ],
   },
-  /* {
-    title: "9.2. Состав и содержание работ по разработке Программы для ЭВМ",
-    label: "Должны быть разработаны следующие подсистемы",
-    layout: { type: "subsystems", amount: 2 },
-  }, */
   {
     inner: [
       {

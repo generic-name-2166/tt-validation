@@ -16,21 +16,6 @@
     dataURL = await generateDoc($formData, $valueMap);
   }
 
-  /* {
-    const form_data: FormData[] = cell_list.map((cell) => ({
-      label: cell.label,
-      title: cell.title,
-      dimensions: [1, 1],
-      data: null,
-      extra: cell.extra,
-    }));
-    formData.set(form_data);
-
-    const title_data: Map<string, string> = new Map();
-    title_data.set("documentTitle", "N/A");
-    title_data.set("managerName", "N/A");
-    titleData.set(title_data);
-  } */
   formData.set(
     new Array<Array<SavedElement>>(cell_list.length)
       .fill([])
@@ -43,7 +28,6 @@
 
 <main>
   <div>
-    <!-- <CellTitle /> -->
     {#each cell_list as cell, componentId}
       <Cell {componentId} component={cell} />
     {/each}

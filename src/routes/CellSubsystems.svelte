@@ -122,23 +122,6 @@
 <br />
 <button type="button" on:click={addSubsystem}>Add subsystem</button>
 
-<!-- <br />
-
-{#each [...Array(amount).keys()] as s_id}
-  <label for={String(s_id)} hidden>
-    В подсистеме должны быть реализованы следующие функции
-  </label>
-
-  <br />
-  <label for={`${s_id}_name`}>Название функции</label>
-  <br />
-  <input id={`${s_id}_name`} type="text" />
-  <br />
-  <label for={`${s_id}_desc`}>Описание функции</label>
-  <br />
-  <textarea id={`${s_id}_desc`}></textarea>
-{/each} -->
-
 <style>
   div {
     border: solid black;
