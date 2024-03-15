@@ -225,7 +225,11 @@ export function serialize(
           .map(([_check, value]) => value),
       } satisfies SerializedCheckbox;
     case "table":
-      return element satisfies SerializedTable;
+      return {
+        ...element,
+        inner: element.inner.slice(0, element.inner.length - 1),
+        // removing the last empty row
+      } satisfies SerializedTable;
     case "subsystem":
       const subsystems: (SerializedLabel | SerializedText)[] =
         element.inner.flatMap(
