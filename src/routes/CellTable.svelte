@@ -229,6 +229,7 @@
   .word {
     padding: 0.5em;
     inline-size: 15%;
+    min-inline-size: min-content;
   }
 
   .definition {

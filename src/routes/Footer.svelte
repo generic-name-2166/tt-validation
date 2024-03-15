@@ -24,8 +24,14 @@
 
 <style>
   footer {
+    display: flex;
+    flex-direction: row;
     padding: 1em;
     border: solid;
     border-color: black rgba(0, 0, 0, 0) rgba(0, 0, 0, 0) rgba(0, 0, 0, 0);
+  }
+
+  button {
+    margin: 0.5em;
   }
 </style>
