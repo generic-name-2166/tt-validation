@@ -125,12 +125,12 @@
     ></textarea>
     <br />
     <button type="button" on:click={() => deleteSubsystem(rowId)}
-      >Delete subsystem</button
+      >Удалить подсистему</button
     >
   </div>
 {/each}
 <br />
-<button type="button" on:click={addSubsystem}>Add subsystem</button>
+<button type="button" on:click={addSubsystem}>Добавить подсистему</button>
 
 <Buttons {save} {load} />
 

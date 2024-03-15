@@ -190,4 +190,8 @@ export function initStorage(formData: SavedElement[][]): void {
   }
 }
 
+export function clearStorage(): void {
+  localStorage.clear();
+}
+
 export const valueMap = writable(new Map<string, string>());

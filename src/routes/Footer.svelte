@@ -1,15 +1,25 @@
 <script lang="ts">
-  function deleteLocalStorage(): void {
-    localStorage.clear();
-  }
+  import { formData, saveAll, clearStorage } from "$lib/formStorage.ts";
 </script>
 
 <br />
 
 <footer>
-  <button type="button" on:click={deleteLocalStorage}>
-    Delete localStorage
+  <button type="button" on:click={() => saveAll($formData)}>
+    Сохранить все ячейки
   </button>
+
+  <!-- <button type="button">
+    Загрузить все ячейки
+  </button> -->
+
+  <button type="button" on:click={clearStorage}>
+    Удалить сохранённые ячейки
+  </button>
+
+  <!-- <button type="button">
+    Очистить все ячейки
+  </button> -->
 </footer>
 
 <style>

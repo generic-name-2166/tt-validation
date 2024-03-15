@@ -28,15 +28,17 @@
 
 <main>
   <div>
-    {#each cell_list as cell, componentId}
-      <Cell {componentId} component={cell} />
+    {#each cell_list as component, componentId}
+      <Cell {componentId} {component} />
     {/each}
   </div>
 
-  <button type="button" on:click|preventDefault={validate}> Submit </button>
+  <button type="button" on:click|preventDefault={validate}>
+    Подтвердить
+  </button>
   <br />
   <button type="button">
-    <a href={dataURL} download="Заготовка_ТЗ.docx">Download docx file</a>
+    <a href={dataURL} download="Заготовка_ТЗ.docx">Скачать docx файл</a>
   </button>
 </main>
 

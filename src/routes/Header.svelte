@@ -1,19 +1,22 @@
 <script lang="ts">
-  import { formData, saveAll } from "$lib/formStorage";
+  import { formData, saveAll, clearStorage } from "$lib/formStorage.ts";
 </script>
 
 <header>
-  <button
-    type="button"
-    on:click={(e) => {
-      saveAll($formData);
-    }}
-  >
-    Save everything to localStorage
+  <button type="button" on:click={() => saveAll($formData)}>
+    Сохранить все ячейки
   </button>
 
   <!-- <button type="button">
-    Load everything from localStorage (experimental)
+    Загрузить все ячейки
+  </button> -->
+
+  <button type="button" on:click={clearStorage}>
+    Удалить сохранённые ячейки
+  </button>
+
+  <!-- <button type="button">
+    Очистить все ячейки
   </button> -->
 </header>
 
