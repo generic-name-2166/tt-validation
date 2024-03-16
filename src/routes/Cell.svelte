@@ -10,9 +10,10 @@
 
   export let componentId: number;
   export let component: Component;
+  export let hidden: boolean;
 </script>
 
-<div>
+<div {hidden}>
   <!-- Using hidden rather than if for the side effects -->
   {#each component.inner as element, elementId}
     {#if element.identifier === "title"}

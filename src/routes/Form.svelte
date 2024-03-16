@@ -13,18 +13,13 @@
 
   let dataURL: string = ""; // = "data:application/pdf;base64,";
   let current: number = 0;
-  let crutch: boolean = true;
 
   async function validate(): Promise<void> {
     dataURL = await generateDoc($formData, $valueMap);
   }
 
-  async function setCurrent(id: number): Promise<void> {
-    crutch = false;
+  function setCurrent(id: number): void {
     current = id;
-    // Crutch to destroy and then remount the cell
-    await tick();
-    crutch = true;
   }
 
   formData.set(
@@ -37,26 +32,26 @@
 
 <main>
   <div>
-    {#if $display === "consequtive"}
-      {#each cell_list as component, componentId}
-        <Cell {componentId} {component} />
-      {/each}
-    {:else if $display === "pages"}
+    {#if $display === "pages"}
       <ul>
-        {#each cell_list as _component, componentId}
+        {#each [...cell_list.keys()] as componentId}
           <li>
             <button
-              class="navbar {componentId === current ? 'selected' : ''}"
+              class="navbar{componentId === current ? ' selected' : ''}"
               type="button"
               on:click={() => setCurrent(componentId)}>{componentId}</button
             >
           </li>
         {/each}
       </ul>
-
-      {#if crutch}
-        <Cell componentId={current} component={cell_list[current]} />
-      {/if}
+      
+      {#each cell_list as component, componentId}
+        <Cell 
+          hidden={$display === "pages" && componentId !== current} 
+          {componentId}  
+          {component} 
+        />
+      {/each}
     {/if}
   </div>
 
