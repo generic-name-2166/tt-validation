@@ -138,7 +138,7 @@
         // Do nothing
         break;
     }
-  };
+  }
 
   function update(): void {
     const lastRowId: number = values.length - 1;

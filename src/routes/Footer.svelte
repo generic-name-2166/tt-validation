@@ -10,17 +10,13 @@
     Сохранить все ячейки
   </button>
 
-  <button type="button" on:click={loadAll}>
-    Загрузить все ячейки
-  </button>
+  <button type="button" on:click={loadAll}> Загрузить все ячейки </button>
 
   <button type="button" on:click={clearStorage}>
     Удалить сохранённые ячейки
   </button>
 
-  <button type="button" on:click={clearAll}>
-    Очистить все ячейки
-  </button>
+  <button type="button" on:click={clearAll}> Очистить все ячейки </button>
 </footer>
 
 <style>

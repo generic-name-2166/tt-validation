@@ -79,7 +79,7 @@
         // Do nothing
         break;
     }
-  };
+  }
 
   function update(data: string): void {
     if (mappedTo) {
@@ -207,7 +207,8 @@
   }
 
   @media (max-width: 600px) {
-    input, textarea {
+    input,
+    textarea {
       box-sizing: border-box;
       inline-size: calc(100% - 1em);
     }

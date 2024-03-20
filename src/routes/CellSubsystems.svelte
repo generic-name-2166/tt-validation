@@ -97,7 +97,7 @@
         // Do nothing
         break;
     }
-  };
+  }
 
   onMount(() => {
     const element: SavedElement | undefined = $formData[componentId][elementId];
@@ -180,7 +180,8 @@
   }
 
   @media (max-width: 600px) {
-    input, textarea {
+    input,
+    textarea {
       box-sizing: border-box;
       inline-size: calc(100% - 1em);
     }

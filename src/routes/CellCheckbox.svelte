@@ -88,7 +88,7 @@
       ...labels.map((label) => {
         return { checked: false, value: label };
       }),
-      { checked: true, value: "" }
+      { checked: true, value: "" },
     ];
     update();
   }
@@ -105,7 +105,7 @@
         // Do nothing
         break;
     }
-  };
+  }
 
   function update(): void {
     const lastRowId: number = values.length - 1;
@@ -193,7 +193,7 @@
 <style>
   div {
     margin: 0.5em;
-    box-sizing: border-box; 
+    box-sizing: border-box;
   }
 
   div:has(input[type="text"]) {
