@@ -208,6 +208,7 @@
     {#each values as row, rowId}
       <tr>
         <td class="word">
+          <!-- TODO use custom Input -->
           <input
             type="text"
             id={`${id}_${rowId}_0`}
@@ -253,7 +254,8 @@
 
   .word {
     padding: 0.5em;
-    inline-size: min(15%, 15ch);
+    inline-size: 15%;
+    /* TODO fix this for mobile */
   }
 
   .definition {

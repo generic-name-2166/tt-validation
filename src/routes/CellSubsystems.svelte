@@ -11,6 +11,7 @@
   import type { Subsystems } from "./template.ts";
   import Buttons from "$lib/CellComponents/Buttons.svelte";
   import { eventBus, CellEvent } from "./Header.svelte";
+  import Input from "$lib/CellComponents/Input.svelte";
 
   export let componentId: number;
   export let elementId: number;
@@ -125,28 +126,27 @@
     <label for={`${id}_${rowId}_name`}><span>{template.name.inner}</span></label
     >
     <br />
-    <input
-      type="text"
+    <Input
       id={`${id}_${rowId}_name`}
       bind:value={subsystem.nameInput.inner}
       on:input={update}
     />
     <br />
 
-    <label for={`${id}_${rowId}_desc`}
-      ><span>{template.description.inner}</span></label
-    >
+    <label for={`${id}_${rowId}_desc`}>
+      <span>{template.description.inner}</span>
+    </label>
     <br />
-    <textarea
+    <Input
       id={`${id}_${rowId}_desc`}
-      contenteditable="true"
+      textarea={true}
       bind:value={subsystem.descInput.inner}
       on:input={update}
-    ></textarea>
+    />
     <br />
-    <button type="button" on:click={() => deleteSubsystem(rowId)}
-      >Удалить подсистему</button
-    >
+    <button type="button" on:click={() => deleteSubsystem(rowId)}>
+      Удалить подсистему
+    </button>
   </div>
 {/each}
 <br />
@@ -161,29 +161,5 @@
     box-sizing: border-box;
     margin: 0.5em;
     padding: 0.5em;
-  }
-
-  input {
-    block-size: 2em;
-    inline-size: 50%;
-    margin: 0.5em;
-    border-width: 0;
-    box-shadow: 0 0 1em 0.5em rgba(0, 0, 0, 0.2);
-  }
-
-  textarea {
-    block-size: 5em;
-    inline-size: 50%;
-    margin: 0.5em;
-    border-width: 0;
-    box-shadow: 0 0 1em 0.5em rgba(0, 0, 0, 0.2);
-  }
-
-  @media (max-width: 600px) {
-    input,
-    textarea {
-      box-sizing: border-box;
-      inline-size: calc(100% - 1em);
-    }
   }
 </style>

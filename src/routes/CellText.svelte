@@ -13,6 +13,7 @@
   import Label from "$lib/CellComponents/Label.svelte";
   import Buttons from "$lib/CellComponents/Buttons.svelte";
   import { eventBus, CellEvent } from "./Header.svelte";
+  import Input from "$lib/CellComponents/Input.svelte";
 
   export let componentId: number;
   export let elementId: number;
@@ -158,12 +159,11 @@
 </script>
 
 {#if type === "text"}
-  <input {id} bind:value on:change={updateText} />
+  <Input {id} bind:value on:input={updateText} />
   <br />
   <Buttons {save} load={loadText} />
 {:else if type === "textarea"}
-  <textarea {id} contenteditable="true" bind:value on:input={updateText}
-  ></textarea>
+  <Input {id} bind:value on:input={updateText} textarea={true} />
   <br />
   <Buttons {save} load={loadText} />
 {:else if type === "number"}
@@ -184,12 +184,13 @@
     notRender={false}
   />
   <br />
-  <input {id} bind:value on:change={updateText} />
+  <Input {id} bind:value on:change={updateText} />
   <br />
   <Buttons {save} load={loadText} />
 {/if}
 
 <style>
+  /* TODO match this input style with the custom element */
   input {
     block-size: 2em;
     inline-size: 50%;
@@ -198,17 +199,8 @@
     box-shadow: 0 0 1em 0.5em rgba(0, 0, 0, 0.2);
   }
 
-  textarea {
-    block-size: 5em;
-    inline-size: 50%;
-    margin: 0.5em;
-    border-width: 0;
-    box-shadow: 0 0 1em 0.5em rgba(0, 0, 0, 0.2);
-  }
-
   @media (max-width: 600px) {
-    input,
-    textarea {
+    input {
       box-sizing: border-box;
       inline-size: calc(100% - 1em);
     }

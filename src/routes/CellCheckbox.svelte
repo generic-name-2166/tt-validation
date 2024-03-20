@@ -9,6 +9,7 @@
   } from "$lib/formStorage.ts";
   import { onMount } from "svelte";
   import { CellEvent, eventBus } from "./Header.svelte";
+  import Input, { type InputComponent } from "$lib/CellComponents/Input.svelte";
 
   export let labels: string[];
   export let componentId: number;
@@ -19,7 +20,7 @@
   interface Row {
     checked: boolean;
     value: string;
-    element?: HTMLInputElement;
+    element?: InputComponent;
   }
 
   let values: Row[] = labels.map((label) => {
@@ -176,8 +177,7 @@
       </label>
     {:else}
       <input type="checkbox" checked={true} disabled />
-      <input
-        type="text"
+      <Input
         id={`${id}_${rowId}`}
         bind:this={row.element}
         on:keydown={(e) => changeFocus(e, rowId)}
@@ -198,21 +198,5 @@
 
   div:has(input[type="text"]) {
     display: flex;
-  }
-
-  input[type="text"] {
-    block-size: 2em;
-    inline-size: 50%;
-    margin: 0 0.5em 0 0.5em;
-    border-width: 0;
-    box-shadow: 0 0 1em 0.5em rgba(0, 0, 0, 0.2);
-  }
-
-  @media (max-width: 600px) {
-    input[type="text"] {
-      box-sizing: border-box;
-      inline-size: 100%;
-      margin: 0;
-    }
   }
 </style>
