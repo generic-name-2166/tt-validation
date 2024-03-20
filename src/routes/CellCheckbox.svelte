@@ -8,6 +8,7 @@
     type SavedCheckbox,
   } from "$lib/formStorage.ts";
   import { onMount } from "svelte";
+  import { CellEvent, eventBus } from "./Header.svelte";
 
   export let labels: string[];
   export let componentId: number;
@@ -81,6 +82,30 @@
   function save(): void {
     saveElement($formData[componentId][elementId], componentId, elementId);
   }
+
+  function clear(): void {
+    values = [
+      ...labels.map((label) => {
+        return { checked: false, value: label };
+      }),
+      { checked: true, value: "" }
+    ];
+    update();
+  }
+
+  $: {
+    switch ($eventBus.event) {
+      case CellEvent.Load:
+        load();
+        break;
+      case CellEvent.Clear:
+        clear();
+        break;
+      case CellEvent.None:
+        // Do nothing
+        break;
+    }
+  };
 
   function update(): void {
     const lastRowId: number = values.length - 1;

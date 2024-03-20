@@ -10,6 +10,7 @@
   import { onMount } from "svelte";
   import type { Subsystems } from "./template.ts";
   import Buttons from "$lib/CellComponents/Buttons.svelte";
+  import { eventBus, CellEvent } from "./Header.svelte";
 
   export let componentId: number;
   export let elementId: number;
@@ -78,6 +79,25 @@
   function save(): void {
     saveElement($formData[componentId][elementId], componentId, elementId);
   }
+
+  function clear(): void {
+    values = [newSubsystem(), newSubsystem()];
+    update();
+  }
+
+  $: {
+    switch ($eventBus.event) {
+      case CellEvent.Load:
+        load();
+        break;
+      case CellEvent.Clear:
+        clear();
+        break;
+      case CellEvent.None:
+        // Do nothing
+        break;
+    }
+  };
 
   onMount(() => {
     const element: SavedElement | undefined = $formData[componentId][elementId];

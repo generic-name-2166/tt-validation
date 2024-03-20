@@ -8,6 +8,7 @@
     type SavedTable,
   } from "$lib/formStorage.ts";
   import { onMount } from "svelte";
+  import { eventBus, CellEvent } from "./Header.svelte";
 
   export let componentId: number;
   export let elementId: number;
@@ -114,6 +115,30 @@
   function save(): void {
     saveElement($formData[componentId][elementId], componentId, elementId);
   }
+
+  function clear(): void {
+    values = new Array(2).fill(null).map(() => {
+      return {
+        word: "",
+        definition: "",
+      } satisfies TableRow;
+    });
+    update();
+  }
+
+  $: {
+    switch ($eventBus.event) {
+      case CellEvent.Load:
+        load();
+        break;
+      case CellEvent.Clear:
+        clear();
+        break;
+      case CellEvent.None:
+        // Do nothing
+        break;
+    }
+  };
 
   function update(): void {
     const lastRowId: number = values.length - 1;

@@ -1,5 +1,6 @@
 <script lang="ts">
   import { formData, saveAll, clearStorage } from "$lib/formStorage.ts";
+  import { loadAll, clearAll } from "./Header.svelte";
 </script>
 
 <br />
@@ -9,17 +10,17 @@
     Сохранить все ячейки
   </button>
 
-  <!-- <button type="button">
+  <button type="button" on:click={loadAll}>
     Загрузить все ячейки
-  </button> -->
+  </button>
 
   <button type="button" on:click={clearStorage}>
     Удалить сохранённые ячейки
   </button>
 
-  <!-- <button type="button">
+  <button type="button" on:click={clearAll}>
     Очистить все ячейки
-  </button> -->
+  </button>
 </footer>
 
 <style>

@@ -12,6 +12,7 @@
   import { onMount } from "svelte";
   import Label from "$lib/CellComponents/Label.svelte";
   import Buttons from "$lib/CellComponents/Buttons.svelte";
+  import { eventBus, CellEvent } from "./Header.svelte";
 
   export let componentId: number;
   export let elementId: number;
@@ -25,7 +26,7 @@
   const id: string = `${componentId}_${elementId}`;
 
   let value: string = "";
-  let num: number;
+  let num: number = 0;
 
   function load(): string | null {
     const savedValue: string | null = loadElement<SavedText | SavedDefinition>(
@@ -59,6 +60,26 @@
   function save(): void {
     saveElement($formData[componentId][elementId], componentId, elementId);
   }
+
+  function clear(): void {
+    value = "";
+    num = 0;
+    update(value);
+  }
+
+  $: {
+    switch ($eventBus.event) {
+      case CellEvent.Load:
+        load();
+        break;
+      case CellEvent.Clear:
+        clear();
+        break;
+      case CellEvent.None:
+        // Do nothing
+        break;
+    }
+  };
 
   function update(data: string): void {
     if (mappedTo) {

@@ -6,6 +6,40 @@
     Consequtive = "consequtive",
   }
   export const display = writable<DisplayType>(DisplayType.Pages);
+
+  export enum CellEvent {
+    Load,
+    Clear,
+    None
+  }
+  
+  export interface EventBus {
+    crutch: boolean;
+    event: CellEvent;
+  }
+
+  export const eventBus = writable<EventBus>({
+    crutch: false,
+    event: CellEvent.None,
+  });
+
+  export function loadAll(): void {
+    eventBus.update((bus: EventBus): EventBus => {
+      return {
+        crutch: !bus.crutch,
+        event: CellEvent.Load,
+      };
+    });
+  }
+
+  export function clearAll(): void {
+    eventBus.update((bus: EventBus): EventBus => {
+      return {
+        crutch: !bus.crutch,
+        event: CellEvent.Clear,
+      };
+    });
+  }
 </script>
 
 <script lang="ts">
@@ -23,17 +57,17 @@
     Сохранить все ячейки
   </button>
 
-  <!-- <button type="button">
+  <button type="button" on:click={loadAll}>
     Загрузить все ячейки
-  </button> -->
+  </button>
 
   <button type="button" on:click={clearStorage}>
     Удалить сохранённые ячейки
   </button>
 
-  <!-- <button type="button">
+  <button type="button" on:click={clearAll}>
     Очистить все ячейки
-  </button> -->
+  </button>
 
   <div>
     <label for="page_view">Вид ячеек</label>
