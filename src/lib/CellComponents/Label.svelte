@@ -4,7 +4,7 @@
     type SavedElement,
     type SavedLabel,
   } from "$lib/formStorage";
-	import { afterUpdate } from "svelte";
+  import { afterUpdate } from "svelte";
 
   export let inner: string;
   export let componentId: number;
@@ -31,7 +31,7 @@
       return thisData;
     });
   }
-  
+
   afterUpdate(onRender);
 </script>
 

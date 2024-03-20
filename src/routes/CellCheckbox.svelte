@@ -66,7 +66,11 @@
       elementId,
       "checkbox",
     );
-    if (!savedValues || labels.length >= savedValues.length || labels[0] !== savedValues[0][1]) {
+    if (
+      !savedValues ||
+      labels.length >= savedValues.length ||
+      labels[0] !== savedValues[0][1]
+    ) {
       // nothing saved or saved values are clearly different from shown
       // TODO better comparison
       return;
@@ -109,7 +113,11 @@
     const element: SavedElement | undefined = $formData[componentId][elementId];
     if (element?.identifier === "checkbox") {
       // non-descructive if there's already something in the model
-      if (!element.inner || labels.length >= element.inner.length || labels[0] !== element.inner[0][1]) {
+      if (
+        !element.inner ||
+        labels.length >= element.inner.length ||
+        labels[0] !== element.inner[0][1]
+      ) {
         // nothing saved or saved values are clearly different from shown
         // TODO better comparison
         return;

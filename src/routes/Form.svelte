@@ -6,10 +6,10 @@
     initStorage,
   } from "$lib/formStorage.ts";
   import { generateDoc } from "$lib/generateDOCX/generateDocx.ts";
-  import { onMount, tick } from "svelte";
+  import { onMount } from "svelte";
   import Cell from "./Cell.svelte";
   import { cell_list } from "./template.ts";
-  import { display } from "./Header.svelte";
+  import { DisplayType, display } from "./Header.svelte";
 
   let dataURL: string = ""; // = "data:application/pdf;base64,";
   let current: number = 0;
@@ -32,9 +32,9 @@
 
 <main>
   <div>
-    {#if $display === "pages"}
+    {#if $display === DisplayType.Pages}
       <ul>
-        {#each [...cell_list.keys()] as componentId}
+        {#each cell_list.keys() as componentId}
           <li>
             <button
               class="navbar{componentId === current ? ' selected' : ''}"
@@ -44,15 +44,15 @@
           </li>
         {/each}
       </ul>
-      
-      {#each cell_list as component, componentId}
-        <Cell 
-          hidden={$display === "pages" && componentId !== current} 
-          {componentId}  
-          {component} 
-        />
-      {/each}
     {/if}
+
+    {#each cell_list as component, componentId}
+      <Cell
+        hidden={$display === DisplayType.Pages && componentId !== current}
+        {componentId}
+        {component}
+      />
+    {/each}
   </div>
 
   <button type="button" on:click|preventDefault={validate}>

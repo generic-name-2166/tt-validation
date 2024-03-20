@@ -1,8 +1,11 @@
 <script context="module" lang="ts">
   import { writable } from "svelte/store";
 
-  type DisplayType = "pages" | "consequtive";
-  export const display = writable<DisplayType>("pages");
+  export enum DisplayType {
+    Pages = "pages",
+    Consequtive = "consequtive",
+  }
+  export const display = writable<DisplayType>(DisplayType.Pages);
 </script>
 
 <script lang="ts">
@@ -35,8 +38,8 @@
   <div>
     <label for="page_view">Вид ячеек</label>
     <select id="page_view" bind:value={view} on:change={changeView}>
-      <option value="pages">Страницы</option>
-      <option value="consequtive">Последовательно</option>
+      <option value={DisplayType.Pages}>Страницы</option>
+      <option value={DisplayType.Consequtive}>Последовательно</option>
     </select>
   </div>
 </header>
