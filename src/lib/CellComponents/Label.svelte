@@ -42,5 +42,6 @@
 <style>
   span {
     margin: 0.5em;
+    padding: 0.5em; 
   }
 </style>

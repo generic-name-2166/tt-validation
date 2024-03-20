@@ -8,6 +8,7 @@
 
 <style>
   button {
+    inline-size: 20ch;
     border-radius: 0;
     margin: 0.5em;
     background-color: #555555;

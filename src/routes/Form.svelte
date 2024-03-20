@@ -109,4 +109,11 @@
   .selected {
     background-color: yellow;
   }
+
+  @media (max-width: 600px) {
+    button {
+      box-sizing: border-box;
+      inline-size: calc(100% - 4em);
+    }
+  }
 </style>

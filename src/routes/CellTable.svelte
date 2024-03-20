@@ -228,8 +228,7 @@
 
   .word {
     padding: 0.5em;
-    inline-size: 15%;
-    min-inline-size: min-content;
+    inline-size: min(15%, 15ch);
   }
 
   .definition {

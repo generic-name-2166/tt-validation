@@ -150,6 +150,7 @@
         <span>{row.value}</span>
       </label>
     {:else}
+      <input type="checkbox" checked={true} disabled />
       <input
         type="text"
         id={`${id}_${rowId}`}
@@ -167,13 +168,26 @@
 <style>
   div {
     margin: 0.5em;
+    box-sizing: border-box; 
+  }
+
+  div:has(input[type="text"]) {
+    display: flex;
   }
 
   input[type="text"] {
     block-size: 2em;
     inline-size: 50%;
-    margin: 0.5em;
+    margin: 0 0.5em 0 0.5em;
     border-width: 0;
     box-shadow: 0 0 1em 0.5em rgba(0, 0, 0, 0.2);
+  }
+
+  @media (max-width: 600px) {
+    input[type="text"] {
+      box-sizing: border-box;
+      inline-size: 100%;
+      margin: 0;
+    }
   }
 </style>

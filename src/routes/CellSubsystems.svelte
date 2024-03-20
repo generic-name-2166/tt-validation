@@ -158,4 +158,11 @@
     border-width: 0;
     box-shadow: 0 0 1em 0.5em rgba(0, 0, 0, 0.2);
   }
+
+  @media (max-width: 600px) {
+    input, textarea {
+      box-sizing: border-box;
+      inline-size: calc(100% - 1em);
+    }
+  }
 </style>
