@@ -146,7 +146,7 @@
   <br />
   <Buttons {save} load={loadText} />
 {:else if type === "number"}
-  <input type="number" {id} bind:value={num} on:change={updateNumber} />
+  <input type="number" min="0" {id} bind:value={num} on:change={updateNumber} />
   <br />
   <Buttons {save} load={loadNumber} />
 {:else if type === "date"}
