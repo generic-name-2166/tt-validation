@@ -9,7 +9,7 @@
   } from "$lib/formStorage.ts";
   import { onMount } from "svelte";
   import { CellEvent, eventBus } from "./Header.svelte";
-  import Input, { type InputComponent } from "$lib/CellComponents/Input.svelte";
+  import Input from "$lib/CellComponents/Input.svelte";
 
   export let labels: string[];
   export let componentId: number;
@@ -20,7 +20,6 @@
   interface Row {
     checked: boolean;
     value: string;
-    element?: InputComponent;
   }
 
   let values: Row[] = labels.map((label) => {
@@ -38,28 +37,6 @@
     return rows.map((row: [boolean, string]) => {
       return { checked: row[0], value: row[1] };
     });
-  }
-
-  // Set for performance and convenience
-  const focusKeys = new Set(["Enter", "ArrowUp", "ArrowDown"]);
-
-  function changeFocus(event: KeyboardEvent, rowId: number): void {
-    const key: string = event.key;
-    if (!focusKeys.has(key)) {
-      return;
-    }
-
-    switch (key) {
-      case "Enter":
-        values[rowId + 1]?.element?.focus();
-        return;
-      case "ArrowUp":
-        values[rowId - 1]?.element?.focus();
-        return;
-      case "ArrowDown":
-        values[rowId + 1]?.element?.focus();
-        return;
-    }
   }
 
   function load(): void {
@@ -179,8 +156,6 @@
       <input type="checkbox" checked={true} disabled />
       <Input
         id={`${id}_${rowId}`}
-        bind:this={row.element}
-        on:keydown={(e) => changeFocus(e, rowId)}
         bind:value={row.value}
         on:input={update}
       />
