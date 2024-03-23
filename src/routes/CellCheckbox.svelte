@@ -154,11 +154,7 @@
       </label>
     {:else}
       <input type="checkbox" checked={true} disabled />
-      <Input
-        id={`${id}_${rowId}`}
-        bind:value={row.value}
-        on:input={update}
-      />
+      <Input id={`${id}_${rowId}`} bind:value={row.value} on:input={update} />
     {/if}
   </div>
 {/each}

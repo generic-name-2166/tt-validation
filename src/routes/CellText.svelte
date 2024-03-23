@@ -3,17 +3,18 @@
     formData,
     loadElement,
     valueMap,
+    saveElement,
     type SavedElement,
     type SavedText,
-    saveElement,
     type SavedDefinition,
-  } from "$lib/formStorage";
-  import type { MappedValue } from "$lib/generateDOCX/docxTypes";
+  } from "$lib/formStorage.ts";
+  import type { MappedValue } from "$lib/generateDOCX/docxTypes.ts";
   import { onMount } from "svelte";
   import Label from "$lib/CellComponents/Label.svelte";
   import Buttons from "$lib/CellComponents/Buttons.svelte";
   import { eventBus, CellEvent } from "./Header.svelte";
   import Input from "$lib/CellComponents/Input.svelte";
+  import { predict } from "$lib/predict.ts";
 
   export let componentId: number;
   export let elementId: number;
@@ -28,6 +29,8 @@
 
   let value: string = "";
   let num: number = 0;
+  let predictionPool: string[] = ["gaming", ""];
+  let prediction: string = "";
 
   function load(): string | null {
     const savedValue: string | null = loadElement<SavedText | SavedDefinition>(
@@ -110,6 +113,13 @@
   }
 
   function updateText(): void {
+    const result: string | string[] = predict(value, predictionPool);
+    if (Array.isArray(result)) {
+      prediction = result[0];
+      predictionPool = result;
+    } else {
+      prediction = result;
+    }
     update(value);
   }
 
@@ -159,11 +169,11 @@
 </script>
 
 {#if type === "text"}
-  <Input {id} bind:value on:input={updateText} />
+  <Input {id} bind:value {prediction} on:input={updateText} />
   <br />
   <Buttons {save} load={loadText} />
 {:else if type === "textarea"}
-  <Input {id} bind:value on:input={updateText} textarea={true} />
+  <Input {id} bind:value {prediction} on:input={updateText} textarea={true} />
   <br />
   <Buttons {save} load={loadText} />
 {:else if type === "number"}
@@ -184,7 +194,7 @@
     notRender={false}
   />
   <br />
-  <Input {id} bind:value on:change={updateText} />
+  <Input {id} bind:value {prediction} on:change={updateText} />
   <br />
   <Buttons {save} load={loadText} />
 {/if}

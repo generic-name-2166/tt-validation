@@ -1,22 +1,9 @@
-<script context="module" lang="ts">
-  import { SvelteComponent } from "svelte";
-
-  export interface InputComponent extends SvelteComponent {
-    focus: () => void;
-  }
-</script>
-
 <script lang="ts">
   // To be bound to parent
   export let id: string;
   export let value: string;
   export let textarea: boolean = false;
-
-  let self: HTMLSpanElement;
-
-  export function focus(): void {
-    self.focus();
-  }
+  export let prediction: string = "";
 </script>
 
 <p>
@@ -26,8 +13,7 @@
     tabindex="0"
     class:textarea
     contenteditable="true"
-    bind:this={self}
-    on:keydown
+    data-prediction={prediction}
     bind:textContent={value}
     on:input
   ></span>
@@ -69,5 +55,12 @@
     p {
       inline-size: calc(100% - 1em);
     }
+  }
+
+  span::after {
+    content: ""; /* fallback */
+    /* var() doesn't work, using attr() as a crutch */
+    content: attr(data-prediction);
+    color: #999999;
   }
 </style>

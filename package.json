@@ -23,7 +23,7 @@
     "check": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json",
     "check:watch": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json --watch",
     "wasm": "wasm-pack build ./form-validation --target web --release",
-    "lint_prettier": "prettier . --plugin node_modules/prettier-plugin-svelte --no-config -w"
+    "format": "prettier . --plugin node_modules/prettier-plugin-svelte --no-config -w"
   },
   "type": "module",
   "dependencies": {

@@ -17,9 +17,7 @@
 
   interface TableRow {
     word: string;
-    wordElement?: HTMLInputElement;
     definition: string;
-    defElement?: HTMLInputElement;
   }
 
   function serialize(table: TableRow[]): string[][] {
@@ -52,51 +50,6 @@
     "ArrowLeft",
     "ArrowRight",
   ]);
-
-  function changeFocus(
-    event: KeyboardEvent,
-    rowId: number,
-    colId: number,
-  ): void {
-    const key: string = event.key;
-    if (!focusKeys.has(key)) {
-      return;
-    }
-
-    switch (key) {
-      case "Enter":
-        if (colId < 1) {
-          values[rowId]?.defElement?.focus();
-        } else {
-          values[rowId + 1]?.wordElement?.focus();
-        }
-        return;
-      case "ArrowUp":
-        if (colId < 1) {
-          values[rowId - 1]?.wordElement?.focus();
-        } else {
-          values[rowId - 1]?.defElement?.focus();
-        }
-        return;
-      case "ArrowDown":
-        if (colId < 1) {
-          values[rowId + 1]?.wordElement?.focus();
-        } else {
-          values[rowId + 1]?.defElement?.focus();
-        }
-        return;
-      case "ArrowRight":
-        if (colId < 1) {
-          values[rowId]?.defElement?.focus();
-        }
-        return;
-      case "ArrowLeft":
-        if (colId >= 1) {
-          values[rowId]?.wordElement?.focus();
-        }
-        return;
-    }
-  }
 
   function load(): void {
     const savedValues: string[][] | null = loadElement<SavedTable>(
@@ -212,8 +165,6 @@
           <input
             type="text"
             id={`${id}_${rowId}_0`}
-            bind:this={row.wordElement}
-            on:keydown={(e) => changeFocus(e, rowId, 0)}
             bind:value={row.word}
             on:input={update}
           />
@@ -222,8 +173,6 @@
           <input
             type="text"
             id={`${id}_${rowId}_1`}
-            bind:this={row.defElement}
-            on:keydown={(e) => changeFocus(e, rowId, 1)}
             bind:value={row.definition}
             on:input={update}
           />
