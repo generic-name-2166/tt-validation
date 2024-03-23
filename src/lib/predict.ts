@@ -2,16 +2,16 @@
  * Returns an array of predicted strings with the elements ordered from the most likely
  * to the least likely
  */
-function predict_(value: string): string[] {
+function predict_(str: string): string[] {
   // TODO
-  return [];
+  return ["gaming", ""];
 }
 
 /**
  * Gets the characters after the last space in the string
  */
-function lastWord(value: string): string {
-  return value.slice(value.lastIndexOf(" ") + 1);
+function lastWord(str: string): string {
+  return str.slice(str.lastIndexOf(" ") + 1);
 }
 
 /**
@@ -23,10 +23,12 @@ export function predict(
   value: string,
   predictions: string[],
 ): string | string[] {
-  if (!value.includes(" ")) {
+  // Removing non-breaking spaces
+  const str: string = value.replaceAll("\u00A0", "\u0020");
+  if (!str.includes(" ")) {
     // predict nothing if there is one word or less
     return "";
-  } else if (value.at(-1) === " ") {
+  } else if (str.at(-1) === " ") {
     // Pool the neural network for a new pool of predictions when the word ends
     // This should also take care of the case
     // when the user accidentally types space and then deletes it
@@ -34,7 +36,7 @@ export function predict(
     const pool = predict_(value);
     return pool;
   }
-  const chars: string = lastWord(value);
+  const chars: string = lastWord(str);
   return predictions.filter(
     (prediction: string) => prediction === "" || prediction.startsWith(chars),
   )[0].slice(chars.length);

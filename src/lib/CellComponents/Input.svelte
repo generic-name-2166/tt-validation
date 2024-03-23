@@ -1,9 +1,36 @@
 <script lang="ts">
+	import { createEventDispatcher } from "svelte";
+  import { mutateTextContent } from "./input.ts";
   // To be bound to parent
   export let id: string;
   export let value: string;
   export let textarea: boolean = false;
   export let prediction: string = "";
+
+  const dispatch = createEventDispatcher();
+  let self: HTMLSpanElement;
+
+  function replaceSpaces(): void {
+    const mutate: () => void = () => value = value.replaceAll("\u0020", "\u00A0");
+    mutateTextContent(self, mutate, 0);
+  }
+
+  function forward(): void {
+    if (value.length > 0 && self?.childNodes && value.includes("\u0020")) {
+      replaceSpaces();
+    }
+    dispatch("input");
+  }
+
+  function autocomplete(event: KeyboardEvent): void {
+    if (prediction.length === 0 || event.key !== "Tab") {
+      return;
+    }
+    event.preventDefault();
+    const mutate: () => void = () => value = value + prediction;
+    mutateTextContent(self, mutate, prediction.length);
+    forward();
+  }
 </script>
 
 <p>
@@ -14,8 +41,10 @@
     class:textarea
     contenteditable="true"
     data-prediction={prediction}
+    bind:this={self}
+    on:keydown={autocomplete}
     bind:textContent={value}
-    on:input
+    on:input={forward}
   ></span>
 </p>
 
@@ -41,14 +70,6 @@
     box-sizing: border-box;
     outline-offset: 0.5em;
     inline-size: 100%;
-    overflow-x: hidden;
-    scrollbar-width: none; /* Firefox */
-    -ms-overflow-style: none; /* Internet Explorer 10+ | Nonstandard */
-  }
-
-  span::-webkit-scrollbar {
-    width: 0; /* WebKit */
-    height: 0; /* This is for the overflow scrollbar */
   }
 
   @media (max-width: 600px) {

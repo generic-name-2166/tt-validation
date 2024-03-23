@@ -29,7 +29,7 @@
 
   let value: string = "";
   let num: number = 0;
-  let predictionPool: string[] = ["gaming", ""];
+  let predictionPool: string[] = [""];
   let prediction: string = "";
 
   function load(): string | null {
