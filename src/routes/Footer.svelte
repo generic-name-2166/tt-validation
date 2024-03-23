@@ -5,7 +5,7 @@
 
 <br />
 
-<footer>
+<footer hidden>
   <button type="button" on:click={() => saveAll($formData)}>
     Сохранить все ячейки
   </button>
