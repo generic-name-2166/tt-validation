@@ -1,6 +1,5 @@
 <script>
   import Form from "./Form.svelte";
-  import Footer from "./Footer.svelte";
   import Header from "./Header.svelte";
 </script>
 
@@ -12,7 +11,6 @@
 <h1>Конструктор ТЗ</h1>
 
 <Form />
-<Footer />
 
 <style>
   :global(body) {
