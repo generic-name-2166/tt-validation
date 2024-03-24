@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { createEventDispatcher } from "svelte";
+  import { createEventDispatcher } from "svelte";
   import { mutateTextContent } from "./input.ts";
   // To be bound to parent
   export let id: string;
@@ -11,7 +11,8 @@
   let self: HTMLSpanElement;
 
   function replaceSpaces(): void {
-    const mutate: () => void = () => value = value.replaceAll("\u0020", "\u00A0");
+    const mutate: () => void = () =>
+      (value = value.replaceAll("\u0020", "\u00A0"));
     mutateTextContent(self, mutate, 0);
   }
 
@@ -27,7 +28,7 @@
       return;
     }
     event.preventDefault();
-    const mutate: () => void = () => value = value + prediction;
+    const mutate: () => void = () => (value = value + prediction);
     mutateTextContent(self, mutate, prediction.length);
     forward();
   }
@@ -55,7 +56,7 @@
     margin: 0.5em;
     padding: 0.5em;
     block-size: min-content;
-    inline-size: 50%;
+    inline-size: 75%;
     background-color: #ffffff;
     border-width: 0;
     box-shadow: 0 0 1em 0.5em rgba(0, 0, 0, 0.2);

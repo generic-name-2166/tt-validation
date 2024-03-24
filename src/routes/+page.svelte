@@ -16,10 +16,15 @@
   :global(body) {
     font-family: Helvetica, Arial, sans-serif;
     background-color: #eeeeee;
+    overflow-y: scroll;
   }
 
   :global(button),
   :global(input) {
     font-family: inherit;
+  }
+
+  h1 {
+    text-indent: 15%;
   }
 </style>

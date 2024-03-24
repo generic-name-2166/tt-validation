@@ -17,7 +17,7 @@ function lastWord(str: string): string {
 /**
  * Returns a value to be set as the next prediction or
  * an array of predicted strings with the elements ordered from the most likely
- * to the least likely. 
+ * to the least likely.
  */
 export function predict(
   value: string,
@@ -37,7 +37,9 @@ export function predict(
     return pool;
   }
   const chars: string = lastWord(str);
-  return predictions.filter(
-    (prediction: string) => prediction === "" || prediction.startsWith(chars),
-  )[0].slice(chars.length);
+  return predictions
+    .filter(
+      (prediction: string) => prediction === "" || prediction.startsWith(chars),
+    )[0]
+    .slice(chars.length);
 }
