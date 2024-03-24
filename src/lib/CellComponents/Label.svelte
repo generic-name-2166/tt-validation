@@ -1,10 +1,10 @@
 <script lang="ts">
   import {
     formData,
-    type SavedElement,
+    type SavedComponent,
     type SavedLabel,
   } from "$lib/formStorage";
-  import { afterUpdate } from "svelte";
+  import { onMount } from "svelte";
 
   export let inner: string;
   export let componentId: number;
@@ -12,7 +12,7 @@
   export let hidden: boolean | undefined;
   export let notRender: boolean | undefined;
 
-  $: for_ = `${componentId}_${elementId}`;
+  const for_: string = `${componentId}_${elementId}`;
 
   function onRender(): void {
     if (notRender) {
@@ -22,17 +22,16 @@
       return;
     }
 
-    formData.update((thisData: SavedElement[][]) => {
+    formData.update((thisData: SavedComponent[]) => {
       const element: SavedLabel = {
         identifier: "label",
         inner,
       };
-      thisData[componentId][elementId] = element;
+      thisData[componentId].inner[elementId] = element;
       return thisData;
     });
   }
-
-  afterUpdate(onRender);
+  onMount(onRender);
 </script>
 
 <label for={for_} {hidden}>

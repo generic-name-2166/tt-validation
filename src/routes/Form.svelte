@@ -4,6 +4,7 @@
     formData,
     valueMap,
     initStorage,
+    type SavedComponent,
   } from "$lib/formStorage.ts";
   import { generateDoc } from "$lib/generateDOCX/generateDocx.ts";
   import { onMount } from "svelte";
@@ -36,9 +37,12 @@
   }
 
   formData.set(
-    new Array<Array<SavedElement>>(cell_list.length)
-      .fill([])
-      .map((_null, i) => new Array<SavedElement>(cell_list[i].inner.length)),
+    new Array(cell_list.length).fill(null).map((_null, i) => {
+      return {
+        inner: new Array<SavedElement>(cell_list[i].inner.length),
+        saved: false,
+      } satisfies SavedComponent;
+    }),
   );
   onMount(() => initStorage($formData));
 </script>
@@ -51,6 +55,7 @@
           <button
             class="navbar"
             class:selected={componentId === current}
+            class:saved={$formData[componentId].saved}
             type="button"
             on:click={() => setCurrent(componentId)}>{componentId}</button
           >
@@ -109,6 +114,7 @@
     border: solid;
     border-width: 0.5em;
     border-color: black rgba(0, 0, 0, 0) black rgba(0, 0, 0, 0);
+    min-block-size: 700px;
   }
 
   .body > div {
@@ -122,6 +128,7 @@
   .cells {
     display: flex;
     flex-direction: column;
+    block-size: 80%;
   }
 
   .docx {
@@ -168,9 +175,17 @@
     background-color: rgba(100, 100, 100, 0.2);
   }
 
+  .navbar.saved {
+    background-color: rgba(128, 0, 128, 0.8);
+  }
+
   .navbar.selected {
     background-color: rgba(255, 255, 0, 0.8);
     color: black;
+  }
+
+  .navbar.saved:hover {
+    background-color: purple;
   }
 
   .navbar.selected:hover {

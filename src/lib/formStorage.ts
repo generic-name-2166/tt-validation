@@ -23,7 +23,7 @@ function storageAvailable(type: string) {
   }
 }
 
-function setToLocalStorage(data: (SavedElement | null)[][]): void {
+function setToLocalStorage(data: SavedComponent[]): void {
   try {
     localStorage.setItem("formData", JSON.stringify(data));
   } catch (e) {
@@ -31,7 +31,7 @@ function setToLocalStorage(data: (SavedElement | null)[][]): void {
   }
 }
 
-export function saveAll(formData: SavedElement[][]): void {
+export function saveAll(formData: SavedComponent[]): void {
   if (!storageAvailable("localStorage")) {
     console.error("localStorage not available");
     return;
@@ -40,7 +40,7 @@ export function saveAll(formData: SavedElement[][]): void {
   setToLocalStorage(formData);
 }
 
-export function readFromLocalStorage(): SavedElement[][] | null {
+export function readFromLocalStorage(): SavedComponent[] | null {
   if (!storageAvailable("localStorage")) {
     console.error("localStorage not available");
     return null;
@@ -115,7 +115,12 @@ export type SavedElement =
   | SavedTable
   | SavedSubsystem;
 
-export const formData = writable(new Array<Array<SavedElement>>());
+export interface SavedComponent {
+  inner: SavedElement[];
+  saved: boolean;
+}
+
+export const formData = writable<SavedComponent[]>();
 
 /**
  * Returns `inner` field of saved element
@@ -140,27 +145,33 @@ export function loadElement<T extends SavedElement>(
   }
 
   const data: SavedElement | null | undefined =
-    JSON.parse(item)[componentId][elementId];
+    JSON.parse(item)[componentId].inner[elementId];
 
-  if (
-    !data ||
+  if (!data) {
+    return null;
+  } else if (
     data.identifier !== identifier ||
     data.identifier === "title" ||
     data.identifier === "label"
   ) {
-    console.log(data?.identifier, identifier);
+    console.error("Wrong data in storage", data?.identifier, identifier);
     return null;
   }
 
-  formData.update((thisData: SavedElement[][]) => {
+  formData.update((thisData: SavedComponent[]) => {
     const element: SavedElement = data;
-    thisData[componentId][elementId] = element;
+    thisData[componentId].inner[elementId] = element;
     return thisData;
   });
 
   return data.inner;
 }
 
+/**
+ * # Side effects
+ *
+ * Sets component saved status to true
+ */
 export function saveElement(
   element: SavedElement,
   componentId: number,
@@ -170,28 +181,43 @@ export function saveElement(
     console.error("localStorage not available");
     return;
   }
-  const data: SavedElement[][] | null = readFromLocalStorage();
+  const data: SavedComponent[] | null = readFromLocalStorage();
   if (!data) {
-    const mockList: SavedElement[][] = new Array(componentId + 1)
+    const mockList: SavedComponent[] = new Array(componentId + 1)
       .fill(null)
-      .map((_null) => new Array(elementId + 1));
-    mockList[componentId][elementId] = element;
+      .map((_null) => {
+        return {
+          inner: new Array(elementId + 1),
+          saved: false,
+        } satisfies SavedComponent;
+      });
+    mockList[componentId].inner[elementId] = element;
     setToLocalStorage(mockList);
     return;
   }
-  data[componentId][elementId] = element;
+  data[componentId].inner[elementId] = element;
+  if (!data[componentId].saved) {
+    data[componentId].saved = true;
+  }
   setToLocalStorage(data);
 }
 
-export function initStorage(formData: SavedElement[][]): void {
-  const prevData: SavedElement[][] | null = readFromLocalStorage();
+export function initStorage(formData: SavedComponent[]): void {
+  const prevData: SavedComponent[] | null = readFromLocalStorage();
   if (!prevData) {
     saveAll(formData);
   }
 }
 
-export function clearStorage(): void {
+export function clearStorage(dimensions: number[]): void {
   localStorage.clear();
+  const clearData: SavedComponent[] = dimensions.map((len) => {
+    return {
+      inner: new Array(len),
+      saved: false,
+    } satisfies SavedComponent;
+  });
+  initStorage(clearData);
 }
 
 export const valueMap = writable(new Map<string, string>());

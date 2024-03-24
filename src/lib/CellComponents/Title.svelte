@@ -1,10 +1,10 @@
 <script lang="ts">
   import {
     formData,
-    type SavedElement,
+    type SavedComponent,
     type SavedTitle,
   } from "$lib/formStorage";
-  import { afterUpdate } from "svelte";
+  import { onMount } from "svelte";
 
   export let inner: string;
   export let componentId: number;
@@ -20,17 +20,16 @@
       return;
     }
 
-    formData.update((thisData: SavedElement[][]) => {
+    formData.update((thisData: SavedComponent[]) => {
       const element: SavedTitle = {
         identifier: "title",
         inner,
       };
-      thisData[componentId][elementId] = element;
+      thisData[componentId].inner[elementId] = element;
       return thisData;
     });
   }
-  // Crutch because doesn't rerun when changing pages
-  afterUpdate(onRender);
+  onMount(onRender);
 </script>
 
 <h2 {hidden}>{inner}</h2>

@@ -6,6 +6,7 @@
     type SavedSubsystem,
     type SavedText,
     loadElement,
+    type SavedComponent,
   } from "$lib/formStorage.ts";
   import { onMount } from "svelte";
   import type { Subsystems } from "./template.ts";
@@ -50,8 +51,8 @@
   }
 
   function update(): void {
-    formData.update((thisData: SavedElement[][]) => {
-      const element: SavedElement = thisData[componentId][elementId];
+    formData.update((thisData: SavedComponent[]) => {
+      const element: SavedElement = thisData[componentId].inner[elementId];
       if (element.identifier !== "subsystem") {
         // This should never be realistically reachable
         // because of onMount
@@ -61,7 +62,7 @@
         ...element,
         inner: values,
       };
-      thisData[componentId][elementId] = subsystems;
+      thisData[componentId].inner[elementId] = subsystems;
       return thisData;
     });
   }
@@ -78,7 +79,17 @@
   }
 
   function save(): void {
-    saveElement($formData[componentId][elementId], componentId, elementId);
+    if (!$formData[componentId].saved) {
+      formData.update((thisData: SavedComponent[]) => {
+        thisData[componentId].saved = true;
+        return thisData;
+      });
+    }
+    saveElement(
+      $formData[componentId].inner[elementId],
+      componentId,
+      elementId,
+    );
   }
 
   function clear(): void {
@@ -101,7 +112,8 @@
   }
 
   onMount(() => {
-    const element: SavedElement | undefined = $formData[componentId][elementId];
+    const element: SavedElement | undefined =
+      $formData[componentId].inner[elementId];
     if (element?.identifier === "subsystem") {
       // non-descructive if there's already something in the model
       if (element.inner) {
@@ -110,12 +122,12 @@
       }
       return;
     }
-    formData.update((thisData: SavedElement[][]) => {
+    formData.update((thisData: SavedComponent[]) => {
       const element: SavedSubsystem = {
         identifier: "subsystem",
         inner: values,
       };
-      thisData[componentId][elementId] = element;
+      thisData[componentId].inner[elementId] = element;
       return thisData;
     });
   });

@@ -2,7 +2,7 @@
   import {
     formData,
     type SavedCheckbox,
-    type SavedElement,
+    type SavedComponent,
     type SavedText,
   } from "$lib/formStorage";
   import { onMount } from "svelte";
@@ -12,20 +12,20 @@
   export let elementId: number;
 
   onMount(() => {
-    formData.update((thisData: SavedElement[][]) => {
+    formData.update((thisData: SavedComponent[]) => {
       if (Array.isArray(inner)) {
         const element: SavedCheckbox = {
           identifier: "checkbox",
           inner: inner.map((value) => [true, value]),
         };
-        thisData[componentId][elementId] = element;
+        thisData[componentId].inner[elementId] = element;
       } else {
         const element: SavedText = {
           identifier: "text",
           inner,
           implicit: null,
         };
-        thisData[componentId][elementId] = element;
+        thisData[componentId].inner[elementId] = element;
       }
       return thisData;
     });

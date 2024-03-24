@@ -7,6 +7,7 @@
     type SavedElement,
     type SavedText,
     type SavedDefinition,
+    type SavedComponent,
   } from "$lib/formStorage.ts";
   import type { MappedValue } from "$lib/generateDOCX/docxTypes.ts";
   import { onMount } from "svelte";
@@ -62,7 +63,17 @@
   }
 
   function save(): void {
-    saveElement($formData[componentId][elementId], componentId, elementId);
+    if (!$formData[componentId].saved) {
+      formData.update((thisData: SavedComponent[]) => {
+        thisData[componentId].saved = true;
+        return thisData;
+      });
+    }
+    saveElement(
+      $formData[componentId].inner[elementId],
+      componentId,
+      elementId,
+    );
   }
 
   function clear(): void {
@@ -74,7 +85,11 @@
   $: {
     switch ($eventBus.event) {
       case CellEvent.Load:
-        load();
+        if (type === "number") {
+          loadNumber();
+        } else {
+          loadText();
+        }
         break;
       case CellEvent.Clear:
         clear();
@@ -93,8 +108,8 @@
         return map;
       });
     }
-    formData.update((thisData: SavedElement[][]) => {
-      const element: SavedElement = thisData[componentId][elementId];
+    formData.update((thisData: SavedComponent[]) => {
+      const element: SavedElement = thisData[componentId].inner[elementId];
       if (
         element.identifier !== "text" &&
         element.identifier !== "definition"
@@ -107,7 +122,7 @@
         ...element,
         inner: data,
       };
-      thisData[componentId][elementId] = text;
+      thisData[componentId].inner[elementId] = text;
       return thisData;
     });
   }
@@ -129,7 +144,8 @@
   }
 
   onMount(() => {
-    const element: SavedElement | undefined = $formData[componentId][elementId];
+    const element: SavedElement | undefined =
+      $formData[componentId].inner[elementId];
     if (
       element?.identifier === "definition" ||
       element?.identifier === "text"
@@ -148,7 +164,7 @@
       return;
     }
 
-    formData.update((thisData: SavedElement[][]) => {
+    formData.update((thisData: SavedComponent[]) => {
       const text: SavedText | SavedDefinition = defined
         ? {
             identifier: "definition",
@@ -160,7 +176,7 @@
             inner: value,
             implicit,
           };
-      thisData[componentId][elementId] = text;
+      thisData[componentId].inner[elementId] = text;
       return thisData;
     });
   });
@@ -191,7 +207,7 @@
     {componentId}
     {elementId}
     hidden={false}
-    notRender={false}
+    notRender={true}
   />
   <br />
   <Input {id} bind:value {prediction} on:change={updateText} />

@@ -43,12 +43,29 @@
 </script>
 
 <script lang="ts">
-  import { formData, saveAll, clearStorage } from "$lib/formStorage.ts";
+  import {
+    formData,
+    saveAll,
+    clearStorage,
+    type SavedComponent,
+  } from "$lib/formStorage.ts";
 
   let view: DisplayType;
 
   function changeView(): void {
     display.set(view);
+  }
+
+  function clearSaved(): void {
+    formData.update((thisData: SavedComponent[]) =>
+      thisData.map((component: SavedComponent) => {
+        return {
+          ...component,
+          saved: false,
+        } satisfies SavedComponent;
+      }),
+    );
+    clearStorage($formData.map((component) => component.inner.length));
   }
 </script>
 
@@ -59,7 +76,7 @@
 
   <button type="button" on:click={loadAll}> Загрузить все ячейки </button>
 
-  <button type="button" on:click={clearStorage}>
+  <button type="button" on:click={clearSaved}>
     Удалить сохранённые ячейки
   </button>
 

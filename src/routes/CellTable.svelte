@@ -6,6 +6,7 @@
     loadElement,
     type SavedElement,
     type SavedTable,
+    type SavedComponent,
   } from "$lib/formStorage.ts";
   import { onMount } from "svelte";
   import { eventBus, CellEvent } from "./Header.svelte";
@@ -42,15 +43,6 @@
     } satisfies TableRow;
   });
 
-  // Set for performance and convenience for jumpCell func
-  const focusKeys = new Set([
-    "Enter",
-    "ArrowUp",
-    "ArrowDown",
-    "ArrowLeft",
-    "ArrowRight",
-  ]);
-
   function load(): void {
     const savedValues: string[][] | null = loadElement<SavedTable>(
       componentId,
@@ -66,7 +58,17 @@
   }
 
   function save(): void {
-    saveElement($formData[componentId][elementId], componentId, elementId);
+    if (!$formData[componentId].saved) {
+      formData.update((thisData: SavedComponent[]) => {
+        thisData[componentId].saved = true;
+        return thisData;
+      });
+    }
+    saveElement(
+      $formData[componentId].inner[elementId],
+      componentId,
+      elementId,
+    );
   }
 
   function clear(): void {
@@ -110,8 +112,8 @@
       values = [...values, { word: "", definition: "" }];
     }
 
-    formData.update((thisData: SavedElement[][]) => {
-      const element: SavedElement = thisData[componentId][elementId];
+    formData.update((thisData: SavedComponent[]) => {
+      const element: SavedElement = thisData[componentId].inner[elementId];
       if (element.identifier !== "table") {
         // This should never be realistically reachable
         // because of onMount
@@ -121,13 +123,14 @@
         ...element,
         inner: serialize(values),
       };
-      thisData[componentId][elementId] = table;
+      thisData[componentId].inner[elementId] = table;
       return thisData;
     });
   }
 
   onMount(() => {
-    const element: SavedElement | undefined = $formData[componentId][elementId];
+    const element: SavedElement | undefined =
+      $formData[componentId].inner[elementId];
     if (element?.identifier === "table") {
       // non-descructive if there's already something in the model
       if (!element.inner) {
@@ -139,12 +142,12 @@
       return;
     }
 
-    formData.update((thisData: SavedElement[][]) => {
+    formData.update((thisData: SavedComponent[]) => {
       const element: SavedTable = {
         identifier: "table",
         inner: serialize(values),
       };
-      thisData[componentId][elementId] = element;
+      thisData[componentId].inner[elementId] = element;
       return thisData;
     });
   });

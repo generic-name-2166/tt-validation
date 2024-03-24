@@ -1,5 +1,5 @@
 import * as docx from "docx";
-import type { SavedElement } from "$lib/formStorage.ts";
+import type { SavedComponent, SavedElement } from "$lib/formStorage.ts";
 import {
   docxComponent,
   serialize,
@@ -88,12 +88,13 @@ function getTitlePage(valueMap: Map<string, string>): docx.ISectionOptions {
 }
 
 export async function generateDoc(
-  formData: SavedElement[][],
+  formData: SavedComponent[],
   valueMap: Map<string, string>,
 ): Promise<string> {
+  console.log(formData);
   const components: SerializedElement[][] = formData.map(
-    (component: SavedElement[]): SerializedElement[] =>
-      component.flatMap(serialize),
+    (component: SavedComponent): SerializedElement[] =>
+      component.inner.flatMap(serialize),
   );
   const title: docx.ISectionOptions = getTitlePage(valueMap);
   const sections: docx.ISectionOptions[] = [title].concat(

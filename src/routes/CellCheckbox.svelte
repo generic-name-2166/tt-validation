@@ -6,6 +6,7 @@
     loadElement,
     type SavedElement,
     type SavedCheckbox,
+    type SavedComponent,
   } from "$lib/formStorage.ts";
   import { onMount } from "svelte";
   import { CellEvent, eventBus } from "./Header.svelte";
@@ -58,7 +59,17 @@
   }
 
   function save(): void {
-    saveElement($formData[componentId][elementId], componentId, elementId);
+    if (!$formData[componentId].saved) {
+      formData.update((thisData: SavedComponent[]) => {
+        thisData[componentId].saved = true;
+        return thisData;
+      });
+    }
+    saveElement(
+      $formData[componentId].inner[elementId],
+      componentId,
+      elementId,
+    );
   }
 
   function clear(): void {
@@ -96,8 +107,8 @@
       values = [...values, { checked: true, value: "" }];
     }
 
-    formData.update((thisData: SavedElement[][]) => {
-      const element: SavedElement = thisData[componentId][elementId];
+    formData.update((thisData: SavedComponent[]) => {
+      const element: SavedElement = thisData[componentId].inner[elementId];
       if (element.identifier !== "checkbox") {
         // This should never be realistically reachable
         // because of onMount
@@ -107,13 +118,14 @@
         ...element,
         inner: serialize(values),
       };
-      thisData[componentId][elementId] = checkboxes;
+      thisData[componentId].inner[elementId] = checkboxes;
       return thisData;
     });
   }
 
   onMount(() => {
-    const element: SavedElement | undefined = $formData[componentId][elementId];
+    const element: SavedElement | undefined =
+      $formData[componentId].inner[elementId];
     if (element?.identifier === "checkbox") {
       // non-descructive if there's already something in the model
       if (
@@ -129,12 +141,12 @@
       return;
     }
 
-    formData.update((thisData: SavedElement[][]) => {
+    formData.update((thisData: SavedComponent[]) => {
       const element: SavedCheckbox = {
         identifier: "checkbox",
         inner: serialize(values),
       };
-      thisData[componentId][elementId] = element;
+      thisData[componentId].inner[elementId] = element;
       return thisData;
     });
   });
