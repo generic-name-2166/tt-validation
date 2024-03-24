@@ -83,6 +83,7 @@
     padding: 1em;
     border: solid;
     border-color: rgba(0, 0, 0, 0) rgba(0, 0, 0, 0) black rgba(0, 0, 0, 0);
+    overflow-x: auto;
   }
 
   button,

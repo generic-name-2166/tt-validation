@@ -131,7 +131,7 @@
     background-color: #ffffff;
   }
 
-  br + button {
+  br + .docx {
     margin: 0 2em 2em 2em;
   }
 
