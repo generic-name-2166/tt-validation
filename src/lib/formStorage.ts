@@ -116,7 +116,7 @@ export type SavedElement =
   | SavedSubsystem;
 
 export interface SavedComponent {
-  inner: SavedElement[];
+  inner: (SavedElement | undefined)[];
   saved: boolean;
 }
 

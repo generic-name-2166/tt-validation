@@ -52,7 +52,7 @@
 
   function update(): void {
     formData.update((thisData: SavedComponent[]) => {
-      const element: SavedElement = thisData[componentId].inner[elementId];
+      const element: SavedElement = thisData[componentId].inner[elementId]!;
       if (element.identifier !== "subsystem") {
         // This should never be realistically reachable
         // because of onMount
@@ -86,7 +86,7 @@
       });
     }
     saveElement(
-      $formData[componentId].inner[elementId],
+      $formData[componentId].inner[elementId]!,
       componentId,
       elementId,
     );

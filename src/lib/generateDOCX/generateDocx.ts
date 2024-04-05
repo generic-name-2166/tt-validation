@@ -91,10 +91,11 @@ export async function generateDoc(
   formData: SavedComponent[],
   valueMap: Map<string, string>,
 ): Promise<string> {
-  console.log(formData);
   const components: SerializedElement[][] = formData.map(
     (component: SavedComponent): SerializedElement[] =>
-      component.inner.flatMap(serialize),
+      component.inner
+        .filter((el): el is SavedElement => Boolean(el))
+        .flatMap(serialize),
   );
   const title: docx.ISectionOptions = getTitlePage(valueMap);
   const sections: docx.ISectionOptions[] = [title].concat(

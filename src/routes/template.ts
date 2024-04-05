@@ -71,6 +71,7 @@ type Element =
 
 export interface Component {
   readonly inner: Element[];
+  readonly implicit?: boolean;
 }
 
 export const cell_list: Component[] = [
@@ -293,6 +294,7 @@ export const cell_list: Component[] = [
     ],
   },
   {
+    implicit: true,
     inner: [
       { identifier: "title", inner: "9.3. Разработка рабочей документации" },
       {
@@ -323,6 +325,7 @@ export const cell_list: Component[] = [
     ],
   },
   {
+    implicit: true,
     inner: [
       {
         identifier: "title",
@@ -351,6 +354,7 @@ export const cell_list: Component[] = [
     ],
   },
   {
+    implicit: true,
     inner: [
       { identifier: "title", inner: "Передача отчётных материалов в ОФАП." },
       {
@@ -402,6 +406,7 @@ export const cell_list: Component[] = [
     ],
   },
   {
+    implicit: true,
     inner: [
       { identifier: "title", inner: "10. Форма представления результатов" },
       {

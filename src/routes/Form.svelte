@@ -80,9 +80,9 @@
     <div class="cells">
       {#each cell_list as component, componentId}
         <Cell
-          hidden={$display === DisplayType.Pages && componentId !== current}
           {componentId}
           {component}
+          hidden={$display === DisplayType.Pages && componentId !== current}
         />
       {/each}
     </div>

@@ -3,15 +3,16 @@
     formData,
     type SavedCheckbox,
     type SavedComponent,
+    type SavedElement,
     type SavedText,
   } from "$lib/formStorage";
-  import { onMount } from "svelte";
+  import { onDestroy, onMount } from "svelte";
 
   export let inner: string | string[];
   export let componentId: number;
   export let elementId: number;
 
-  onMount(() => {
+  onMount((): void => {
     formData.update((thisData: SavedComponent[]) => {
       if (Array.isArray(inner)) {
         const element: SavedCheckbox = {
@@ -27,6 +28,13 @@
         };
         thisData[componentId].inner[elementId] = element;
       }
+      return thisData;
+    });
+  });
+
+  onDestroy((): void => {
+    formData.update((thisData: SavedComponent[]) => {
+      thisData[componentId].inner[elementId] = undefined;
       return thisData;
     });
   });

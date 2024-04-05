@@ -11,10 +11,11 @@
   export let componentId: number;
   export let component: Component;
   export let hidden: boolean;
+  let checked: boolean | undefined = component.implicit;
 </script>
 
+<!-- Using hidden rather than if for the side effects -->
 <div {hidden}>
-  <!-- Using hidden rather than if for the side effects -->
   {#each component.inner as element, elementId}
     {#if element.identifier === "title"}
       <Title
@@ -56,13 +57,21 @@
       <CellTable {componentId} {elementId} />
     {:else if element.identifier === "subsystem"}
       <CellSubsystems {componentId} {elementId} template={element.inner} />
-    {:else}
+    {:else if checked}
+      <!-- Leaving label rendered even if unchecked -->
       <Implicit {componentId} {elementId} inner={element.inner} />
     {/if}
-    {#if elementId + 1 < component.inner.length}
+    {#if elementId + 1 < component.inner.length && checked === undefined}
       <br />
     {/if}
   {/each}
+
+  {#if checked !== undefined}
+    <input id="{componentId}_implicit" type="checkbox" bind:checked />
+    <label for="{componentId}_implicit">
+      Подтвердить - раздел {componentId} будет включён в документ
+    </label>
+  {/if}
 </div>
 
 <style>

@@ -70,7 +70,8 @@
       });
     }
     saveElement(
-      $formData[componentId].inner[elementId],
+      // onMount should take care that this isn't undefined
+      $formData[componentId].inner[elementId]!,
       componentId,
       elementId,
     );
@@ -109,7 +110,7 @@
       });
     }
     formData.update((thisData: SavedComponent[]) => {
-      const element: SavedElement = thisData[componentId].inner[elementId];
+      const element: SavedElement = thisData[componentId].inner[elementId]!;
       if (
         element.identifier !== "text" &&
         element.identifier !== "definition"
