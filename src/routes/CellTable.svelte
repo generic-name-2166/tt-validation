@@ -65,7 +65,7 @@
       });
     }
     saveElement(
-      $formData[componentId].inner[elementId],
+      $formData[componentId].inner[elementId]!,
       componentId,
       elementId,
     );
@@ -113,7 +113,7 @@
     }
 
     formData.update((thisData: SavedComponent[]) => {
-      const element: SavedElement = thisData[componentId].inner[elementId];
+      const element: SavedElement = thisData[componentId].inner[elementId]!;
       if (element.identifier !== "table") {
         // This should never be realistically reachable
         // because of onMount
