@@ -83,6 +83,6 @@
     content: ""; /* fallback */
     /* var() doesn't work, using attr() as a crutch */
     content: attr(data-prediction);
-    color: #999999;
+    color: #9ea3ab;
   }
 </style>

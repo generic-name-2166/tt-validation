@@ -26,7 +26,7 @@
   }
 
   button:hover {
-    background-color: rgba(0, 0, 0, 0.2);
+    background-color: rgba(46, 48, 51, 0.2);
   }
 
   button:disabled:hover {
@@ -34,14 +34,14 @@
   }
 
   polygon {
-    fill: rgba(0, 0, 0, 0.2);
+    fill: rgba(213, 38, 39, 0.5);
   }
 
   button:hover polygon {
-    fill: #eeeeee;
+    fill: rgba(213, 38, 39, 1);
   }
 
   button:disabled polygon {
-    fill: rgba(0, 0, 0, 0.05);
+    fill: rgba(213, 38, 39, 0.2);
   }
 </style>

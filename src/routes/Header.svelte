@@ -95,11 +95,11 @@
 
 <style>
   header {
-    display: flex;
-    flex-direction: row;
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
     padding: 1em;
     border: solid;
-    border-color: rgba(0, 0, 0, 0) rgba(0, 0, 0, 0) black rgba(0, 0, 0, 0);
+    border-color: rgba(0, 0, 0, 0) rgba(0, 0, 0, 0) #2e3033 rgba(0, 0, 0, 0);
     overflow-x: auto;
   }
 
@@ -111,5 +111,11 @@
   div {
     display: flex;
     flex-direction: column;
+  }
+
+  button {
+    background-color: rgba(158, 163, 171, 0.5);
+    color: #2e3033;
+    font-weight: bold;
   }
 </style>

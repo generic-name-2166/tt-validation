@@ -47,24 +47,6 @@
   onMount(() => initStorage($formData));
 </script>
 
-{#if $display === DisplayType.Pages}
-  <navbar>
-    <ul>
-      {#each cell_list.keys() as componentId}
-        <li>
-          <button
-            class="navbar"
-            class:selected={componentId === current}
-            class:saved={$formData[componentId].saved}
-            type="button"
-            on:click={() => setCurrent(componentId)}>{componentId}</button
-          >
-        </li>
-      {/each}
-    </ul>
-  </navbar>
-{/if}
-
 <div class="body">
   <div>
     {#if $display === DisplayType.Pages}
@@ -107,14 +89,32 @@
   </div>
 </div>
 
+{#if $display === DisplayType.Pages}
+  <navbar>
+    <ul>
+      {#each cell_list.keys() as componentId}
+        <li>
+          <button
+            class="navbar"
+            class:selected={componentId === current}
+            class:saved={$formData[componentId].saved}
+            type="button"
+            on:click={() => setCurrent(componentId)}>{componentId}</button
+          >
+        </li>
+      {/each}
+    </ul>
+  </navbar>
+{/if}
+
 <style>
   .body {
     display: flex;
     flex-direction: row;
     border: solid;
     border-width: 0.5em;
-    border-color: black rgba(0, 0, 0, 0) black rgba(0, 0, 0, 0);
-    min-block-size: 700px;
+    border-color: #2e3033 rgba(0, 0, 0, 0) #2e3033 rgba(0, 0, 0, 0);
+    min-block-size: 690px;
   }
 
   .body > div {
@@ -135,7 +135,7 @@
     margin: 2em 2em 1em 2em;
     block-size: 2em;
     inline-size: 20em;
-    background-color: #ffffff;
+    background-color: rgba(158, 163, 171, 0.5);
   }
 
   br + .docx {
@@ -143,7 +143,7 @@
   }
 
   ul {
-    background-color: #222222;
+    background-color: #2e3033;
     display: flex;
     flex-wrap: wrap;
     list-style-type: none;
@@ -161,18 +161,19 @@
     border-right: 1px solid #aaaaaa;
   }
 
-  button.navbar {
+  .navbar {
     block-size: 100%;
     inline-size: 100%;
     border: transparent;
     background-color: transparent;
     color: #eeeeee;
+    font-weight: bold;
     margin: 0;
     padding: 0;
   }
 
-  button.navbar:hover {
-    background-color: rgba(100, 100, 100, 0.2);
+  .navbar:hover {
+    background-color: rgba(46, 48, 51, 0.8);
   }
 
   .navbar.saved {
@@ -180,8 +181,7 @@
   }
 
   .navbar.selected {
-    background-color: rgba(255, 255, 0, 0.8);
-    color: black;
+    background-color: rgb(213, 38, 39, 0.8);
   }
 
   .navbar.saved:hover {
@@ -189,7 +189,7 @@
   }
 
   .navbar.selected:hover {
-    background-color: yellow;
+    background-color: #d52627;
   }
 
   @media (max-width: 600px) {

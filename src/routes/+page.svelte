@@ -17,6 +17,7 @@
     font-family: Helvetica, Arial, sans-serif;
     background-color: #eeeeee;
     overflow-y: scroll;
+    color: #2e3033;
   }
 
   :global(button),

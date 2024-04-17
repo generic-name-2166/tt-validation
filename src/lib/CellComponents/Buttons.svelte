@@ -11,7 +11,8 @@
     inline-size: 20ch;
     border-radius: 0;
     margin: 0.5em;
-    background-color: #555555;
-    color: #eeeeee;
+    background-color: rgba(158, 163, 171, 0.5);
+    color: #2e3033;
+    font-weight: bold;
   }
 </style>
