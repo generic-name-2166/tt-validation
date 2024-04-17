@@ -117,5 +117,6 @@
     background-color: rgba(158, 163, 171, 0.5);
     color: #2e3033;
     font-weight: bold;
+    border-radius: 1em;
   }
 </style>

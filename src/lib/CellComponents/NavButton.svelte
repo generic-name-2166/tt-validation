@@ -3,7 +3,7 @@
   export let disabled: boolean;
 </script>
 
-<button {disabled} class="navigation" on:click>
+<button {disabled} class="navigation {toTheLeft ? 'left' : 'right'}" on:click>
   <svg
     height="50px"
     width="50px"
@@ -23,6 +23,14 @@
     display: inline-flex;
     justify-content: center;
     align-items: center;
+  }
+
+  .left {
+    border-radius: 4em 0 0 4em;
+  }
+
+  .right {
+    border-radius: 0 4em 4em 0;
   }
 
   button:hover {

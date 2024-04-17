@@ -113,11 +113,12 @@
   .body {
     display: grid;
     grid-template-columns: 10% 1fr 10%;
-    border: solid;
-    border-width: 0.5em;
-    border-color: #2e3033 rgba(0, 0, 0, 0) #2e3033 rgba(0, 0, 0, 0);
-    min-block-size: calc(100vh - 236.875px);
+    border: 0.5em solid #2e3033;
+    /* 260px is a ballpark estimate of all other heights */
+    min-block-size: calc(100vh - 260px);
     box-sizing: border-box;
+    margin: 1em;
+    border-radius: 4em;
   }
 
   main {

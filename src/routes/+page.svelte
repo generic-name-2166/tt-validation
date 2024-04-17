@@ -14,14 +14,15 @@
 
 <style>
   :global(body) {
-    font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
+    font-family: Cambria, Cochin, Georgia, Times, "Times New Roman", serif;
     background-color: #eeeeee;
     overflow-y: scroll;
     color: #2e3033;
   }
 
   :global(button),
-  :global(input) {
+  :global(input),
+  :global(select) {
     font-family: inherit;
   }
 
