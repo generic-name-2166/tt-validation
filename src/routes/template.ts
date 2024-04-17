@@ -12,6 +12,7 @@ interface Label {
   readonly inner: string;
   readonly hidden?: boolean;
   readonly notRender?: boolean;
+  readonly intro?: true;
 }
 
 interface Text {
@@ -89,6 +90,7 @@ export const cell_list: Component[] = [
 После заполнения всех разделов ТЗ(ЧТЗ) нажмите кнопку "Сохранить docx файл" внизу экрана. После этого в Вас в Загрузках Вашего компьютера появится готовый  WORD-ский файл Вашего ТЗ(ЧТЗ).
 Чтобы приступить к составлению Вашего ТЗ(ЧТЗ), нажмите красную стрелочку справа или перейдите в раздел 2 внизу экрана. `,
         notRender: true,
+        intro: true,
       },
     ],
   },

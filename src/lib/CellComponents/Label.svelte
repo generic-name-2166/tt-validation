@@ -11,6 +11,7 @@
   export let elementId: number;
   export let hidden: boolean | undefined;
   export let notRender: boolean | undefined;
+  export let intro: true | undefined;
 
   const for_: string = `${componentId}_${elementId}`;
 
@@ -34,7 +35,7 @@
   onMount(onRender);
 </script>
 
-<label for={for_} {hidden}>
+<label for={for_} {hidden} class:intro>
   <span>{inner}</span>
 </label>
 
@@ -42,5 +43,9 @@
   span {
     margin: 0.5em;
     padding: 0.5em;
+  }
+
+  .intro {
+    line-height: 1.5em;
   }
 </style>

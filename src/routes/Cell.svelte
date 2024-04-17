@@ -32,6 +32,7 @@
         {elementId}
         hidden={element.hidden}
         notRender={element.notRender}
+        intro={element.intro}
       />
     {:else if element.identifier === "text"}
       <CellText
