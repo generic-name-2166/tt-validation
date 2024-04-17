@@ -7,6 +7,7 @@
   import CellTable from "./CellTable.svelte";
   import CellSubsystems from "./CellSubsystems.svelte";
   import Implicit from "./CellImplicit.svelte";
+  import Intro from "$lib/CellComponents/Intro.svelte";
 
   export let componentId: number;
   export let component: Component;
@@ -32,7 +33,6 @@
         {elementId}
         hidden={element.hidden}
         notRender={element.notRender}
-        intro={element.intro}
       />
     {:else if element.identifier === "text"}
       <CellText
@@ -58,6 +58,8 @@
       <CellTable {componentId} {elementId} />
     {:else if element.identifier === "subsystem"}
       <CellSubsystems {componentId} {elementId} template={element.inner} />
+    {:else if element.identifier === "intro"}
+      <Intro inner={element.inner} />
     {:else if checked}
       <!-- Leaving label rendered even if unchecked -->
       <Implicit {componentId} {elementId} inner={element.inner} />

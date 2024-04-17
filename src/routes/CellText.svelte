@@ -209,7 +209,6 @@
     {elementId}
     hidden={false}
     notRender={true}
-    intro={undefined}
   />
   <br />
   <Input {id} bind:value {prediction} on:change={updateText} />
