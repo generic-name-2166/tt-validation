@@ -69,13 +69,15 @@
       {/each}
     </div>
 
-    <button class="docx" type="button" on:click|preventDefault={validate}>
-      Подтвердить
-    </button>
-    <br />
-    <button class="docx" type="button">
-      <a href={dataURL} download="Заготовка_ТЗ.docx">Скачать docx файл</a>
-    </button>
+    <div class="docx">
+      <button type="button" on:click|preventDefault={validate}>
+        Подтвердить
+      </button>
+      <br />
+      <button type="button">
+        <a href={dataURL} download="Заготовка_ТЗ.docx">Скачать docx файл</a>
+      </button>
+    </div>
   </main>
 
   <div>
@@ -109,37 +111,39 @@
 
 <style>
   .body {
-    display: flex;
-    flex-direction: row;
+    display: grid;
+    grid-template-columns: 10% 1fr 10%;
     border: solid;
     border-width: 0.5em;
     border-color: #2e3033 rgba(0, 0, 0, 0) #2e3033 rgba(0, 0, 0, 0);
-    min-block-size: 690px;
-  }
-
-  .body > div {
-    flex: 0.5 0 10%;
+    min-block-size: calc(100vh - 236.875px);
+    box-sizing: border-box;
   }
 
   main {
-    flex: 4 0 80%;
+    box-sizing: border-box;
+    min-inline-size: min-content;
   }
 
   .cells {
     display: flex;
     flex-direction: column;
-    block-size: 80%;
+    margin: 0;
+    padding: 0;
   }
 
   .docx {
-    margin: 2em 2em 1em 2em;
+    display: flex;
+    flex-direction: column;
+    box-sizing: border-box;
+    justify-content: start;
+    padding: 1em;
+  }
+
+  .docx button {
     block-size: 2em;
     inline-size: 20em;
     background-color: rgba(158, 163, 171, 0.5);
-  }
-
-  br + .docx {
-    margin: 0 2em 2em 2em;
   }
 
   ul {
@@ -195,11 +199,15 @@
   @media (max-width: 600px) {
     button {
       box-sizing: border-box;
-      inline-size: calc(100% - 4em);
+      /* inline-size: calc(100% - 4em); */
     }
 
     .body > div {
       display: none;
+    }
+
+    .body {
+      grid-template-columns: 1fr;
     }
   }
 </style>
