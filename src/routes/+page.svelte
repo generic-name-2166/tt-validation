@@ -14,7 +14,7 @@
 
 <style>
   :global(body) {
-    font-family: Helvetica, Arial, sans-serif;
+    font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
     background-color: #eeeeee;
     overflow-y: scroll;
     color: #2e3033;
