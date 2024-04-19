@@ -92,7 +92,7 @@
 </div>
 
 {#if $display === DisplayType.Pages}
-  <navbar>
+  <nav>
     <ul>
       {#each cell_list.keys() as componentId}
         <li>
@@ -106,7 +106,7 @@
         </li>
       {/each}
     </ul>
-  </navbar>
+  </nav>
 {/if}
 
 <style>
