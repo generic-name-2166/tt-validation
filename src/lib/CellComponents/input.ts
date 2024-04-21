@@ -1,3 +1,10 @@
+/**
+ * Takes an element and a function that mutates it. \
+ * The order of actions is as follows \
+ * User action --> `mutateTextContent` is called -->
+ * observer instantiates --> `mutate` function is called -->
+ * observer disconnects
+ */
 export function mutateTextContent(
   element: HTMLSpanElement,
   mutate: () => void,
