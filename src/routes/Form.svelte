@@ -137,7 +137,7 @@
     display: flex;
     flex-direction: column;
     box-sizing: border-box;
-    justify-content: start;
+    align-items: center;
     padding: 1em;
   }
 
