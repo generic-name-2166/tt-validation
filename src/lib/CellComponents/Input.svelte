@@ -56,7 +56,7 @@
     margin: 0.5em;
     padding: 0.5em;
     block-size: min-content;
-    inline-size: 75%;
+    inline-size: calc(100% - 3em);
     background-color: #ffffff;
     border-width: 0;
     box-shadow: 0 0 1em 0.5em rgba(0, 0, 0, 0.2);
@@ -71,6 +71,7 @@
     box-sizing: border-box;
     outline-offset: 0.5em;
     inline-size: 100%;
+    overflow-wrap: anywhere;
   }
 
   @media (max-width: 600px) {
