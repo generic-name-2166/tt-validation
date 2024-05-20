@@ -1,10 +1,27 @@
+import dictionary_ from "./dictionary.json?raw";
+
+const dictionary: Set<string> = new Set(
+  JSON.parse(dictionary_).flatMap((word: string) => word.split(" ")),
+);
+
+function shuffle<T>(a: T[]): T[] {
+  let j: number, x: T, i: number;
+  for (i = a.length - 1; i > 0; i--) {
+    j = Math.floor(Math.random() * (i + 1));
+    x = a[i];
+    a[i] = a[j];
+    a[j] = x;
+  }
+  return a;
+}
+
 /**
  * Returns an array of predicted strings with the elements ordered from the most likely
  * to the least likely
  */
-function predict_(str: string): string[] {
-  // TODO
-  return ["gaming", ""];
+function predict_(_str: string): string[] {
+  const dict: string[] = [...dictionary, ""];
+  return shuffle(dict);
 }
 
 /**
