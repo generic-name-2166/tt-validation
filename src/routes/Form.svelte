@@ -152,7 +152,7 @@
   }
 
   .docx > :active:not([disabled]) {
-    background-color: red;
+    background-color: #d52627;
   }
 
   ul {
