@@ -39,3 +39,22 @@
     });
   });
 </script>
+
+{#if Array.isArray(inner)}
+  <ul>
+    {#each inner as point}
+      <li>{point}</li>
+    {/each}
+  </ul>
+{:else}
+  <pre>{inner}</pre>
+{/if}
+
+<style>
+  pre {
+    white-space: pre-line;
+    text-wrap: wrap;
+    font-family: inherit;
+    line-height: 1.5rem;
+  }
+</style>

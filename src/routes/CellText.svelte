@@ -207,7 +207,6 @@
     inner={defined ? defined : "this should never occur"}
     {componentId}
     {elementId}
-    hidden={false}
     notRender={true}
   />
   <br />

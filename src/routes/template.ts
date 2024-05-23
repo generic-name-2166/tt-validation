@@ -10,7 +10,6 @@ interface Title {
 interface Label {
   readonly identifier: "label";
   readonly inner: string;
-  readonly hidden?: boolean;
   readonly notRender?: boolean;
   readonly intro?: true;
 }
@@ -324,7 +323,6 @@ export const cell_list: Component[] = [
         identifier: "label",
         inner:
           "В рамках данного раздела, в соответствии с требованиями комплекса стандартов СТО РЖД «Автоматизированные системы и программные средства ОАО «РЖД», должна быть разработана, согласована и утверждена следующая рабочая документация:",
-        hidden: true,
       },
       {
         identifier: "implicitCheckbox",
@@ -359,7 +357,6 @@ export const cell_list: Component[] = [
         identifier: "label",
         inner:
           "Полигоном внедрения Программы для ЭВМ в рамках настоящего технического задания является ГВЦ (приемка в ГВЦ при участии ФЗ).",
-        hidden: true,
       },
       {
         identifier: "implicitText",
@@ -383,7 +380,7 @@ export const cell_list: Component[] = [
       {
         identifier: "implicitText",
         inner:
-          "После подписания акта приемки Программы для ЭВМ в постоянную эксплуатацию Исполнитель должен передать на хранение в ОФАП следующие отчётные материалы1:",
+          "После подписания акта приемки Программы для ЭВМ в постоянную эксплуатацию Исполнитель должен передать на хранение в ОФАП следующие отчётные материалы:",
       },
       {
         identifier: "implicitCheckbox",

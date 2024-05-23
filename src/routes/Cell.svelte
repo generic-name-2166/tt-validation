@@ -31,7 +31,6 @@
         inner={element.inner}
         {componentId}
         {elementId}
-        hidden={element.hidden}
         notRender={element.notRender}
       />
     {:else if element.identifier === "text"}

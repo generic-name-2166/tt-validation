@@ -9,7 +9,6 @@
   export let inner: string;
   export let componentId: number;
   export let elementId: number;
-  export let hidden: boolean | undefined;
   export let notRender: boolean | undefined;
 
   const for_: string = `${componentId}_${elementId}`;
@@ -34,7 +33,7 @@
   onMount(onRender);
 </script>
 
-<label for={for_} {hidden}>
+<label for={for_}>
   {inner}
 </label>
 
