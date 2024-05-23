@@ -6,6 +6,7 @@
 
 <style>
   pre {
+    white-space: pre-line;
     text-wrap: wrap;
     font-family: inherit;
     line-height: 1.5em;
