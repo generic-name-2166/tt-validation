@@ -74,8 +74,12 @@
         Подтвердить
       </button>
       <br />
-      <button type="button">
-        <a href={dataURL} download="Заготовка_ТЗ.docx">Скачать docx файл</a>
+      <button type="button" disabled={dataURL.length === 0}>
+        {#if dataURL.length === 0}
+          <span>Скачать docx файл</span>
+        {:else}
+          <a href={dataURL} download="Заготовка_ТЗ.docx">Скачать docx файл</a>
+        {/if}
       </button>
     </div>
   </main>
@@ -145,6 +149,10 @@
     block-size: 2em;
     inline-size: 20em;
     background-color: rgba(158, 163, 171, 0.5);
+  }
+
+  .docx > :active:not([disabled]) {
+    background-color: red;
   }
 
   ul {
